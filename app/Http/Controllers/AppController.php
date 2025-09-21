@@ -30,13 +30,13 @@ class AppController extends Controller
             if ($r) {
                 $r = urldecode($r);
             }
-            if ($role == 'admin') {
-                return redirect($r ?? route('admin.web.index'));
-            } else if ($role == 'marchand') {
-                return redirect($r ?? route('marchand.web.index'));
-            } else if ($role == 'agent') {
-                return redirect($r ?? route('agent.web.index'));
-            }
+            // if ($role == 'admin') {
+            return redirect($r ?? route('admin.remote_control'));
+            // } else if ($role == 'marchand') {
+            //     return redirect($r ?? route('marchand.web.index'));
+            // } else if ($role == 'agent') {
+            //     return redirect($r ?? route('agent.web.index'));
+            // }
         }
         return view('login');
     }
