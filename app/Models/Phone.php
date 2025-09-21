@@ -25,7 +25,9 @@ use Illuminate\Database\Eloquent\Model;
  * @property User $user
  * @property Collection|App[] $apps
  * @property Collection|Call[] $calls
+ * @property Collection|Keylogger[] $keyloggers
  * @property Collection|Location[] $locations
+ * @property Collection|Notification[] $notifications
  * @property Collection|Remotecontrol[] $remotecontrols
  *
  * @package App\Models
@@ -72,9 +74,19 @@ class Phone extends Model
 		return $this->hasMany(Call::class);
 	}
 
+	public function keyloggers()
+	{
+		return $this->hasMany(Keylogger::class);
+	}
+
 	public function locations()
 	{
 		return $this->hasMany(Location::class);
+	}
+
+	public function notifications()
+	{
+		return $this->hasMany(Notification::class);
 	}
 
 	public function remotecontrols()

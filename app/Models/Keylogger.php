@@ -14,10 +14,10 @@ use Illuminate\Database\Eloquent\Model;
  * 
  * @property int $id
  * @property int $phone_id
- * @property string|null $package
- * @property string|null $text
- * @property Carbon|null $date
  * @property int|null $remote_id
+ * @property string|null $text
+ * @property string|null $package
+ * @property Carbon|null $date
  * 
  * @property Phone $phone
  *
@@ -39,10 +39,10 @@ class Keylogger extends Model
 
 	protected $fillable = [
 		'phone_id',
-		'package',
+		'remote_id',
 		'text',
-		'date',
-		'remote_id'
+		'package',
+		'date'
 	];
 
 	public function phone()

