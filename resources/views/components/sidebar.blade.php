@@ -2,24 +2,24 @@
     data-scroll-container="#scrollContainer">
     <div class="mt-4">
         <div id="header-content" class="pl-3 d-flex justify-content-center">
-            <img src="{{ asset('img/logo2.png') }}" alt="" class="mb-3" height="70px" width="130px" />
+            {{-- <img src="{{ asset('img/logo2.png') }}" alt="" class="mb-3" height="70px" width="130px" /> --}}
         </div>
         <hr class="mb-0" />
     </div>
     <div id="scrollContainer">
         <ul class="sidenav-menu">
             @if (auth()->user()->user_role == 'admin')
-                <li class="sidenav-item">
+                {{-- <li class="sidenav-item">
                     <a class="sidenav-link" link href="{{ route('admin.web.index') }}">
                         <i class="fas fa-gauge pr-3"></i>Dashboard</a>
-                </li>
+                </li> --}}
                 <li class="sidenav-item">
                     <a class="sidenav-link" link href="{{ route('admin.remote_control') }}">
                         <i class="fas fa-right-left pr-3"></i>
                         Controle à distance
                     </a>
                 </li>
-                <li class="sidenav-item">
+                {{-- <li class="sidenav-item">
                     <a class="sidenav-link">
                         <i class="fa-solid fa-money-bill-trend-up pr-3"></i>
                         Envoi fonds</a>
@@ -72,7 +72,7 @@
                             </a>
                         </li>
                     </ul>
-                </li>
+                </li> --}}
             @endif
             @if (auth()->user()->user_role == 'marchand')
                 <li class="sidenav-item">
