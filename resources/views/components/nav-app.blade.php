@@ -3,7 +3,7 @@
 <nav id="main-navbar" class="mb-1 navbar navbar-expand-lg navbar-dark bg-dark fixed-top scrolling-navbar">
     <div class="container-fluid">
         <a class="navbar-brand" href="{{ route('app.index') }}">
-            <img src="{{ asset('img/logo1.png') }}" class="img-fluidr" height="40px" width="80px" alt="">
+            {{-- <img src="{{ asset('img/logo1.png') }}" class="img-fluidr" height="40px" width="80px" alt=""> --}}
         </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#app-nav" aria-controls="app-nav"
             aria-expanded="false" aria-label="Toggle navigation">

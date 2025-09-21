@@ -18,6 +18,7 @@ class AppController extends Controller
     use ApiResponser;
     public function index()
     {
+        return redirect(route('app.login'));
         return view('landing');
     }
 
