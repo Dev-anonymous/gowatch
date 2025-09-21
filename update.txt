@@ -1,0 +1,27 @@
+#admin :
+- marchand : possibilite de modifier les infos : commsion               [OK] uhm
+- datatable sur : marchand, demande fonds,                              [OK]
+- filtre date sur transaction                                           [ok]
+
+
+#web marchand
+ - possiblite d'ajouter les compte bancaire                                                                         [OK]
+ - possibilite de faire le transfert dans le compte bancaire                                                        [OK]
+ - possibilite de voir les transaction, par date, sous compte, pay_source : afficher le total selon la plage        [OK]
+ - possibilite d;ajouter le logo du marchand pour l'afficher sur le lien de paiememt                                [OK]
+
+
+
+migration ;
+- table demande trnas : column via
+- autotrans channel --> autosendcanal dans config
+- demande transfert : colonne statucode  ---- marchand table :: colonne via
+- table config, parametre : autosenddata -> autosendnumbers
+
+- table demande transfert : colonne via
+- table user, commission banque
+- maj colonne tranction users_id : defaut idmarchant
+
+documentation api v2 payout --> tranfer/trans_id | myref    [OK]
+
+
