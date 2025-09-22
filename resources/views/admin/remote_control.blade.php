@@ -179,7 +179,7 @@
         integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
     <style>
         #map {
-            height: 500px;
+            height: 800px;
         }
     </style>
     <script>
@@ -348,13 +348,15 @@
                                         );
                                     markerGroup.addLayer(marker);
                                     if (center) {
-                                        center = false;
                                         if (index === e.locations.length - 1) {
+                                            center = false;
                                             map.setView([lat, lng],
                                                 18);
                                         }
                                     }
                                 });
+                            }else{
+                                alert("Map Error");
                             }
 
                         });
