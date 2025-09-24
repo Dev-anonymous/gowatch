@@ -299,7 +299,7 @@
                             var txt = '';
                             data.forEach(e => {
                                 txt += `
-                            <option value="${e.id}" data='${JSON.stringify(e)}'>${e.phone}</option>
+                            <option value="${e.id}" data='${JSON.stringify(e)}'>[${e.id}] ${e.phone}</option>
                             `;
                             });
                             phonesel.select2('destroy');
