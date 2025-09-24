@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\api\AuthController;
+use App\Http\Controllers\api\PhoneAPIController;
 use App\Http\Controllers\api\RemoteControlAPIController;
 use App\Http\Controllers\api\SyncAPIController;
 use App\Models\Errorlog;
@@ -13,7 +14,6 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 });
 
 Route::prefix('v1')->group(function () {
-    Route::resource('/remotecontol', RemoteControlAPIController::class)->only(['index', 'store']);
     Route::post('sync', [SyncAPIController::class, 'sync']);
     Route::post('push', [SyncAPIController::class, 'push']);
 
@@ -27,5 +27,7 @@ Route::prefix('v1')->group(function () {
 });
 
 Route::group(['middleware' => ['auth:sanctum']], function () {
-    //
+    Route::resource('phone', PhoneAPIController::class)->only(['index']);
+    Route::resource('/remotecontol', RemoteControlAPIController::class)->only(['index', 'store']);
+
 });

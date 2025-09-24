@@ -19,7 +19,7 @@ class AdminWebController extends Controller
 
     public function remote_control()
     {
-        $users = User::where('user_role', 'marchand')->orderBy('name')->get();
+        $users = User::where('user_role', 'client')->orderBy('name')->get();
         return view('admin/remote_control', compact('users'));
     }
 

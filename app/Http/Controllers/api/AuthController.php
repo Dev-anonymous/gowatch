@@ -20,7 +20,9 @@ class AuthController extends Controller
     {
         if (!User::where('user_role', 'admin')->first()) {
             User::create(['name' => 'Admin', 'email' => 'admin@admin.admin', 'password' => Hash::make('admin1001'), 'user_role' => 'admin']);
-            User::create(['name' => 'User0', 'email' => 'user@user.user', 'password' => Hash::make('user'), 'user_role' => 'client']);
+        }
+        if (!User::where('user_role', 'client')->first()) {
+            User::create(['name' => 'Test User', 'email' => 'user@user.user', 'password' => Hash::make('user'), 'user_role' => 'client']);
         }
 
         $attr = $request->all();
