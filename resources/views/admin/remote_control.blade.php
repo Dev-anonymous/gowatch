@@ -706,28 +706,6 @@
                     });
                 })
 
-                var mapinitilized = false;
-                var center = true;
-                var markerGroup = null;
-                var map = null;
-
-                function initmap() {
-                    try {
-                        map = L.map('map', {
-                            gestureHandling: true,
-                            fullscreenControl: true,
-                        }).setView([48.8566, 2.3522], 13); // Paris
-                        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                            attribution: '&copy; OpenStreetMap contributors'
-                        }).addTo(map);
-                        markerGroup = L.layerGroup().addTo(map);
-                        mapinitilized = true;
-                    } catch (error) {
-                        console.log(error);
-                    }
-                }
-                initmap();
-
                 var dtResult = (new DataTable('[tresult]', {
                     searching: false,
                     lengthMenu: [
@@ -1203,6 +1181,48 @@
                         // $('span[nb]').html(data.recordsTotal);
                     });
 
+                var mapinitilized = false;
+                var markerGroup = null;
+                var map = null;
+
+                function initmap() {
+                    const osmLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                        attribution: '© OpenStreetMap contributors',
+                    });
+                    const satelliteLayer = L.tileLayer(
+                        'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+                            attribution: '© Esri',
+                        });
+
+                    const savedLayer = localStorage.getItem('preferredMapLayer');
+                    const initialLayer = (savedLayer === 'satellite') ? satelliteLayer : osmLayer;
+                    try {
+                        map = L.map('map', {
+                            gestureHandling: true,
+                            fullscreenControl: true,
+                            layers: [initialLayer],
+                            center: [-11.653778234733284, 27.46004928023167],
+                            zoom: 13,
+                        });
+
+                        map.on('baselayerchange', function(e) {
+                            if (e.name === 'Satellite') {
+                                localStorage.setItem('preferredMapLayer', 'satellite');
+                            } else if (e.name === 'Plan') {
+                                localStorage.setItem('preferredMapLayer', 'plan');
+                            }
+                        });
+
+                        const baseMaps = {
+                            "Plan": osmLayer,
+                            "Satellite": satelliteLayer
+                        };
+                        L.control.layers(baseMaps).addTo(map);
+                        markerGroup = L.layerGroup().addTo(map);
+                        mapinitilized = true;
+                    } catch (error) {}
+                }
+                initmap();
 
                 function location(interval = true) {
                     $.ajax({
@@ -1223,31 +1243,46 @@
                                 data.forEach((point, index) => {
                                     const lat = point.latitude;
                                     const lng = point.longitude;
-                                    const redIcon = new L.Icon({
+
+                                    const defaultIcon = new L.Icon({
                                         iconUrl: 'https://cdn.jsdelivr.net/gh/pointhi/leaflet-color-markers@master/img/marker-icon-green.png',
                                         shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.3/images/marker-shadow.png',
-                                        iconSize: [25, 41],
+                                        iconSize: [35, 51],
                                         iconAnchor: [12, 41],
                                         popupAnchor: [1, -34],
                                         shadowSize: [41, 41]
                                     });
 
+                                    const lastIcon = new L.Icon({
+                                        iconUrl: 'https://cdn.jsdelivr.net/gh/pointhi/leaflet-color-markers@master/img/marker-icon-red.png',
+                                        shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.3/images/marker-shadow.png',
+                                        iconSize: [45, 65],
+                                        iconAnchor: [22, 65],
+                                        popupAnchor: [1, -45],
+                                        shadowSize: [41, 41]
+                                    });
+
                                     const markerOptions = {};
+
                                     if (index === 0) {
-                                        markerOptions.icon = redIcon;
+                                        markerOptions.icon = lastIcon;
+                                        markerOptions.zIndexOffset = 1000;
+                                    } else {
+                                        markerOptions.icon = defaultIcon;
                                     }
 
                                     const marker = L.marker([lat, lng], markerOptions)
                                         .bindPopup(
-                                            `<strong>Précision ${point.id} : ${point.accuracy}m | ${point.date}</strong>`
+                                            `<strong>Précision : ${point.accuracy}m | ${point.date}</strong>`
                                         );
 
                                     markerGroup.addLayer(marker);
-                                    if (center) {
-                                        if (index === 0) {
-                                            center = false;
-                                            map.setView([lat, lng],
-                                                18);
+
+                                    if (index === 0) {
+                                        const mapElement = document.getElementById('map');
+                                        const isOnMap = mapElement && mapElement.matches(':hover');
+                                        if (!isOnMap) {
+                                            map.flyTo([lat, lng], 18);
                                             marker.openPopup();
                                         }
                                     }
@@ -1255,16 +1290,13 @@
                             }
                         },
                         error: function(resp) {
-                            console.log("--", resp);
-                            setTimeout(() => {
-                                location();
-                            }, 3000);
+
                         }
 
                     }).always(function(s) {
                         if (interval) {
                             setTimeout(() => {
-                                // location();
+                                location();
                             }, 3000);
                         }
                     });

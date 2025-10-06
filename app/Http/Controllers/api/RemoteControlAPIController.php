@@ -148,7 +148,7 @@ class RemoteControlAPIController extends Controller
         }
 
         if ($type == 'location') {
-            $data = Location::where(compact('phone_id'))->orderBy('id', 'desc');
+            $data = Location::where(compact('phone_id'))->orderBy('date', 'desc');
             $locationdate = explode(' to ', request('locationdate'));
             $from = @trim($locationdate[0]);
             $to = @trim($locationdate[1]);
@@ -159,6 +159,13 @@ class RemoteControlAPIController extends Controller
             $data = $data->get()->map(function ($e) {
                 $o = (object) $e->toArray();
                 $o->date = $e->date?->format('d-m-Y H:i:s');
+                $ac = $o->accuracy;
+                if (fmod($ac, 1) == 0) {
+                    $ac = round($ac);
+                } else {
+                    $ac = round($ac, 2);
+                }
+                $o->accuracy = $ac;
                 return $o;
             });
             return $data;
