@@ -1184,6 +1184,7 @@
                 var mapinitilized = false;
                 var markerGroup = null;
                 var map = null;
+                let routeLine = null;
 
                 function initmap() {
                     const osmLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -1240,54 +1241,76 @@
 
                             if (mapinitilized) {
                                 markerGroup.clearLayers();
+                                const latlngs = [];
+
+                                data.forEach(point => {
+                                    latlngs.push([point.latitude, point.longitude]);
+                                });
+
                                 data.forEach((point, index) => {
                                     const lat = point.latitude;
                                     const lng = point.longitude;
+                                    const circleOptions = {
+                                        radius: index === 0 ? 8 : 6,
+                                        fillColor: index === 0 ? 'red' : '#3388ff',
+                                        color: '#fff',
+                                        weight: 2,
+                                        opacity: 1,
+                                        fillOpacity: 0.8,
+                                    };
 
-                                    const defaultIcon = new L.Icon({
-                                        iconUrl: 'https://cdn.jsdelivr.net/gh/pointhi/leaflet-color-markers@master/img/marker-icon-green.png',
-                                        shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.3/images/marker-shadow.png',
-                                        iconSize: [35, 51],
-                                        iconAnchor: [12, 41],
-                                        popupAnchor: [1, -34],
-                                        shadowSize: [41, 41]
-                                    });
-
-                                    const lastIcon = new L.Icon({
-                                        iconUrl: 'https://cdn.jsdelivr.net/gh/pointhi/leaflet-color-markers@master/img/marker-icon-red.png',
-                                        shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.3/images/marker-shadow.png',
-                                        iconSize: [45, 65],
-                                        iconAnchor: [22, 65],
-                                        popupAnchor: [1, -45],
-                                        shadowSize: [41, 41]
-                                    });
-
-                                    const markerOptions = {};
-
-                                    if (index === 0) {
-                                        markerOptions.icon = lastIcon;
-                                        markerOptions.zIndexOffset = 1000;
-                                    } else {
-                                        markerOptions.icon = defaultIcon;
-                                    }
-
-                                    const marker = L.marker([lat, lng], markerOptions)
+                                    const marker = L.circleMarker([lat, lng], circleOptions)
                                         .bindPopup(
                                             `<strong>Précision : ${point.accuracy}m | ${point.date}</strong>`
                                         );
 
                                     markerGroup.addLayer(marker);
-
-                                    if (index === 0) {
-                                        const mapElement = document.getElementById('map');
-                                        const isOnMap = mapElement && mapElement.matches(':hover');
-                                        if (!isOnMap) {
-                                            map.flyTo([lat, lng], 18);
-                                            marker.openPopup();
-                                        }
-                                    }
                                 });
+
+                                if (routeLine) {
+                                    map.removeLayer(routeLine);
+                                }
+
+                                routeLine = L.polyline(latlngs, {
+                                    color: 'blue',
+                                    weight: 4,
+                                    opacity: 0.7,
+                                    smoothFactor: 1
+                                }).addTo(map);
+
+                                const lastPoint = data[0];
+                                if (lastPoint) {
+                                    const lastLat = lastPoint.latitude;
+                                    const lastLng = lastPoint.longitude;
+
+                                    const lastIcon = new L.Icon({
+                                        iconUrl: 'https://cdn.jsdelivr.net/gh/pointhi/leaflet-color-markers@master/img/marker-icon-red.png',
+                                        shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.3/images/marker-shadow.png',
+                                        iconSize: [35, 51],
+                                        iconAnchor: [17, 51],
+                                        popupAnchor: [1, -34],
+                                        shadowSize: [41, 41]
+                                    });
+
+                                    const lastMarker = L.marker([lastLat, lastLng], {
+                                        icon: lastIcon,
+                                        zIndexOffset: 1000
+                                    }).bindPopup(
+                                        `<strong>Précision : ${lastPoint.accuracy}m | ${lastPoint.date}</strong>`
+                                    );
+
+                                    markerGroup.addLayer(lastMarker);
+
+                                    const mapElement = document.getElementById('map');
+                                    const isOnMap = mapElement && mapElement.matches(':hover');
+                                    if (!isOnMap) {
+                                        map.flyTo([lastLat, lastLng], 18);
+                                        lastMarker.openPopup();
+                                    }
+                                }
+
                             }
+
                         },
                         error: function(resp) {
 
