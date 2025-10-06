@@ -60,7 +60,12 @@ href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&amp;display
     .sidenav-link.active[link] {
         font-weight: 900;
         color: white;
-        background: #262626;
+        background: #43A047;
+    }
+
+    .app-btn {
+        color: white;
+        background: #43A047;
     }
 </style>
 

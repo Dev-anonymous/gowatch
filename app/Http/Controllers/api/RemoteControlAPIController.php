@@ -82,7 +82,13 @@ class RemoteControlAPIController extends Controller
                         if ($row->success) {
                             $status = "<span class='badge bg-success'><i class='fa fa-check-circle'></i> OK</span>";
                         } elseif (!$row->success && $st == 1) {
-                            $status = "<span class='badge bg-danger'><i class='fa fa-exclamation-circle'></i> Echec</span>";
+                            if ($row->retry < 10) {
+                                // commanded envoye au telephone
+                                // $t = "Cette commande peut encore passée tant que le nombre de tentatives est < 10.";
+                                // $status = "<span tooltip title='$t' class='badge bg-info' style='cursor:pointer'><i class='fa fa-times-circle'></i> CMD Récupérée</span>";
+                            } else {
+                                $status = "<span tooltip title='La commande a échouée' class='badge bg-danger' style='cursor:pointer'><i class='fa fa-times-circle'></i> Echec</span>";
+                            }
                         }
                     }
                     return $status;
@@ -298,7 +304,7 @@ class RemoteControlAPIController extends Controller
             'actionname' => $actionname,
             'success' => 0,
             'fetched' => 0,
-            'fromadmin' => $user->user_role == 'amdin',
+            'fromadmin' => $user->user_role == 'admin',
             'date' => nnow(),
         ]);
         $phone = $rem->phone;
