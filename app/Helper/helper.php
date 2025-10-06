@@ -125,3 +125,29 @@ function sendMessage($token, $payload = "")
     }
     return $ok;
 }
+
+function secIntime(int $seconds): string
+{
+    if (!$seconds) return '-';
+    $minutes = floor($seconds / 60);
+    $remainingSeconds = $seconds % 60;
+    return sprintf("%d:%02d sec", $minutes, $remainingSeconds);
+}
+
+function callIcon($type)
+{
+    if ($type == 'Manqué') {
+        return "<span  title='Appel $type'><i class='fas fa-phone-slash text-danger'></i> $type<span/>";
+    }
+    if ($type == 'Sortant') {
+        return "<span  title='Appel $type'><i class='fas fa-arrow-up text-info'></i> $type<span/>";
+    }
+    if ($type == 'Entrant') {
+        return "<span  title='Appel $type'><i class='fas fa-arrow-down text-success'></i> $type<span/>";
+    }
+    if ($type == 'Rejeté') {
+        return "<span  title='Appel $type'><i class='fas fa-ban text-danger'></i> $type<span/>";
+    }
+
+    return $type;
+}

@@ -19,6 +19,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property Carbon|null $installdate
  * @property int $phone_id
  * @property int|null $is_uninstalled
+ * @property Carbon|null $date
  * 
  * @property Phone $phone
  *
@@ -36,7 +37,8 @@ class App extends Model
 	];
 
 	protected $dates = [
-		'installdate'
+		'installdate',
+		'date'
 	];
 
 	protected $fillable = [
@@ -45,7 +47,8 @@ class App extends Model
 		'package',
 		'installdate',
 		'phone_id',
-		'is_uninstalled'
+		'is_uninstalled',
+		'date'
 	];
 
 	public function phone()

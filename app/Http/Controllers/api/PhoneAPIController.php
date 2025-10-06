@@ -18,16 +18,12 @@ class PhoneAPIController extends Controller
     {
         $user = Auth::user();
         abort_if(!in_array($user->user_role, ['admin']), 403, "No permission");
-        $phones = Phone::orderBy('id', 'desc')->get()->map(function ($e) {
-            $o = (object) $e->toArray();
-            $o->updatedon = $e->updatedon?->format('d-m-Y H:i:s');
-            $o->fcm = !!$e->fcm;
-            $o->data = (object) json_decode($e->data);
-            $o->perms = (object) json_decode($e->perms);
-            return $o;
-        });
+        $user_id = request('user_id');
 
-        return $phones;
+        if ($user->user_role == 'admin') {
+            $phones = Phone::orderBy('id', 'desc')->where('users_id', $user_id)->get();
+            return $phones;
+        }
     }
 
     /**
@@ -61,7 +57,35 @@ class PhoneAPIController extends Controller
      */
     public function update(Request $request, Phone $phone)
     {
-        //
+        $user = Auth::user();
+        abort_if(!in_array($user->user_role, ['admin']), 403, "No permission");
+
+        if (request()->has('maskall')) {
+            $maskall = request('maskall');
+            $config = (object) @json_decode($phone->config);
+            $config->hidenotifications = $maskall == "true";
+            $config->hidenotificationfor = [];
+            $phone->config = json_encode($config);
+            $phone->save();
+            return [
+                'success' => true,
+                'message' => "Paramètre enregistré.",
+            ];
+        }
+        if (request()->has('maskfor')) {
+            $maskfor = (array) request('maskfor');
+            $config = (object) @json_decode($phone->config);
+            $config->hidenotifications = false;
+            $config->hidenotificationfor = $maskfor;
+            $phone->config = json_encode($config);
+            $phone->save();
+            return [
+                'success' => true,
+                'message' => "Paramètre enregistré.",
+            ];
+        }
+
+        abort(422, "No params");
     }
 
     /**

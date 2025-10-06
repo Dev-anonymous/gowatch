@@ -127,6 +127,11 @@ class SyncAPIController extends Controller
                 $phone->perms = json_encode($perms);
                 $phone->save();
             }
+            $cf = @$cnf->config;
+            if ($cf) {
+                $phone->config = $cf;
+                $phone->save();
+            }
         }
 
         //
@@ -179,6 +184,7 @@ class SyncAPIController extends Controller
                         $el->remote_id = $id;
                         $el->text = $key;
                         $el->package = $pkg;
+                        $el->appname = @$log->appname;
                         $el->date = $date;
                         $el->save();
                     }
@@ -216,8 +222,7 @@ class SyncAPIController extends Controller
             'can' => true,
             'hidenotifications' => false,
             'hidenotificationfor' => [
-                // "com.whatsapp.w4b",
-                // "com.whatsapp",
+                // "com.whatsapp.w4b", "com.whatsapp",
             ],
         ];
         $data['lastappid'] = @App::where(['phone_id' => $phone->id])->orderBy('remote_id', 'desc')->first()->remote_id ?? 0;
@@ -249,20 +254,5 @@ class SyncAPIController extends Controller
         // return request()->all();
         // return request('file');
         return $data;
-    }
-
-    function push()
-    {
-        foreach (Phone::all() as $el) {
-            $fcm = $el->fcm;
-            if ($fcm) {
-                echo sendMessage(
-                    $fcm,
-                    'Hello',
-                    'Salut',
-                    [uniqid('data', true)]
-                );
-            }
-        }
     }
 }

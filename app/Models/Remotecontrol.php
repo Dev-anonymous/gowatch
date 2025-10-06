@@ -13,6 +13,7 @@ use Illuminate\Database\Eloquent\Model;
  * Class Remotecontrol
  * 
  * @property int $id
+ * @property string|null $actionname
  * @property string|null $action
  * @property int|null $success
  * @property string|null $errormessage
@@ -45,6 +46,7 @@ class Remotecontrol extends Model
 	];
 
 	protected $fillable = [
+		'actionname',
 		'action',
 		'success',
 		'errormessage',
