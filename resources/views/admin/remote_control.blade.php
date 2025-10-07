@@ -722,7 +722,6 @@
                     serverSide: true,
                     ajax: {
                         url: "{{ route('remotecontol.index', ['datatable' => '']) }}",
-
                         data: function(data) {
                             data.type = "result";
                             data.phone_id = phonesel.val();

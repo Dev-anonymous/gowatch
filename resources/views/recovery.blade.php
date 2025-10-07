@@ -16,13 +16,11 @@
                                     <h5 class="mb-3 font-weight-bold text-white">Mot de passe oublié</h5>
                                 </div>
                                 <div class="text-danger mb-3">
-                                    Pour récuperer votre compte, veuillez entrer votre numéro de téléphone ( avec indicatif,
-                                    ex
-                                    : 24399...) ou votre email (jarvis@email.com).
+                                    Pour récuperer votre compte, veuillez entrer votre email.
                                 </div>
                                 <div class="form-outline mb-4">
                                     <input id="form1Examplezzz" name="login" class="form-control" />
-                                    <label class="form-label text-white" for="form1Examplezzz">Email ou Téléphone</label>
+                                    <label class="form-label text-white" for="form1Examplezzz">Email</label>
                                 </div>
                                 <div id="rep">
                                 </div>

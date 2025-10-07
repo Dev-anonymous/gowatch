@@ -30,11 +30,12 @@ class AppController extends Controller
             if ($r) {
                 $r = urldecode($r);
             }
-            // if ($role == 'admin') {
-            return redirect($r ?? route('admin.remote_control'));
-            // } else if ($role == 'marchand') {
-            //     return redirect($r ?? route('marchand.web.index'));
-            // } else if ($role == 'agent') {
+            if ($role == 'admin') {
+                return redirect($r ?? route('admin.remote_control'));
+            } else if ($role == 'marchand') {
+                return redirect($r ?? route('marchand.web.index'));
+            }
+            //  else if ($role == 'agent') {
             //     return redirect($r ?? route('agent.web.index'));
             // }
         }
@@ -92,14 +93,8 @@ class AppController extends Controller
             if ($user) {
                 $find = true;
             }
-        } else if (is_numeric($login)) {
-            $login = "+" . (int) $login;
-            $user = User::where('phone', "$login")->first();
-            if ($user) {
-                $find = true;
-            }
         } else {
-            return $this->error('Veuillez entrer votre numéro de téléphone ou votre email.', 200);
+            return $this->error('Veuillez entrer votre votre email.', 200);
         }
 
         if (!$find) {
@@ -110,7 +105,7 @@ class AppController extends Controller
 
         $rec = $user->recoveries()->first();
         if (!$rec) {
-            $rec = Recovery::create(['users_id' => $user->id, 'code' => code(20), 'date' => time()]);
+            $rec = Recovery::create(['users_id' => $user->id, 'code' => makeRand(20), 'date' => time()]);
         }
 
         if ($rec->tentative >= 5) {

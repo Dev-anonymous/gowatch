@@ -21,6 +21,9 @@ Route::get('', [AppController::class, 'index'])->name('app.index');
 Route::get('login', [AppController::class, 'login'])->name('app.login');
 
 Route::post('/auth/login', [AuthController::class, 'login'])->name('login.web');
+Route::post('/auth/new-user', [AuthController::class, 'newuser'])->name('newuser.web');
+Route::post('/auth/confirm', [AuthController::class, 'confirmemail'])->name('confirmemail.web');
+
 Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::any('/auth/logout', [AuthController::class, 'logout'])->name('logout.web');
 
@@ -35,7 +38,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
         });
     });
 
-    
+
 
 });
 
