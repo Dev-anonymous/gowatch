@@ -22,6 +22,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property string|null $perms
  * @property string|null $fcm
  * @property string|null $config
+ * @property string|null $name
  * 
  * @property User $user
  * @property Collection|App[] $apps
@@ -58,7 +59,8 @@ class Phone extends Model
 		'token',
 		'perms',
 		'fcm',
-		'config'
+		'config',
+		'name'
 	];
 
 	public function user()

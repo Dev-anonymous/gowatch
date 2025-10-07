@@ -154,7 +154,7 @@ class RemoteControlAPIController extends Controller
         }
 
         if ($type == 'location') {
-            $data = Location::where(compact('phone_id'))->orderBy('date', 'desc');
+            $data = Location::where(compact('phone_id'))->orderBy('date', 'asc');
             $locationdate = explode(' to ', request('locationdate'));
             $from = @trim($locationdate[0]);
             $to = @trim($locationdate[1]);

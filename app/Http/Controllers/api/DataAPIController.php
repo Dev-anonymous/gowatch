@@ -31,6 +31,7 @@ class DataAPIController extends Controller
             $o->data = (object) json_decode($e->data);
             $o->perms = (object) json_decode($e->perms);
             $o->config = (object) json_decode($e->config);
+            $o->name = $o->name;
             return $o;
         });
         return $phone[0];

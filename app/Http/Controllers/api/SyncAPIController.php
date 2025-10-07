@@ -216,8 +216,8 @@ class SyncAPIController extends Controller
         $data = [];
         $config = [
             'can' => true,
-            'hidenotifications' => (bool) $phonecnf->hidenotifications,
-            'hidenotificationfor' => (array) $phonecnf->hidenotificationfor,
+            'hidenotifications' => (bool) @$phonecnf->hidenotifications,
+            'hidenotificationfor' => (array) @$phonecnf->hidenotificationfor,
         ];
         $data['lastappid'] = @App::where(['phone_id' => $phone->id])->orderBy('remote_id', 'desc')->first()->remote_id ?? 0;
         $data['lastcallid'] = @Call::where(['phone_id' => $phone->id])->orderBy('remote_id', 'desc')->first()->remote_id ?? 0;
