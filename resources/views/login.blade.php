@@ -160,7 +160,7 @@
                             .slideDown();
                         form[0].reset();
                         setTimeout(() => {
-                            $('[alog]').click();
+                            location.reload();
                         }, 5000);
                     } else {
                         btn.attr('disabled', false).find('i').removeClass(
