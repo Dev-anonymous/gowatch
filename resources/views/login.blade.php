@@ -4,11 +4,11 @@
 @section('body')
     <x-nav-app />
 
-    <div id="intro" class="bg-image shadow-2-strong">
+    <div id="intro" class="bg-image">
         <div class="mask">
             <div class="container d-flex align-items-center h-100">
                 <div class="row d-flex justify-content-center">
-                    <div class="col-xl-5 col-md-8">
+                    <div class="col-xl-5 col-md-6">
                         <form class="shadow-5-strong p-5" id="f-log" style="border-radius: 20px">
                             <div class="text-center">
                                 <h5 class="mb-5 font-weight-bold ">Connexion | {{ config('app.name') }}</h5>

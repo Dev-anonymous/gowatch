@@ -1,6 +1,6 @@
 <style>
     #intro {
-        height: 105vh;
+        height: 80vh;
     }
 
     /* Height for devices larger than 576px */
