@@ -1,6 +1,5 @@
 <style>
     #intro {
-        background-image: url('{{ asset('img/bg.jpg') }}');
         height: 105vh;
     }
 
@@ -16,12 +15,12 @@
     }
 
     a.nav-link.active>span {
-        border-bottom: 2px solid red;
+        border-bottom: 2px solid #43A047;
         border-radius: 5px;
         padding: 5px 5px;
     }
 
     a.nav-link:hover {
-        transform: scale(.8);
+        transform: scale(.95);
     }
 </style>

@@ -19,6 +19,20 @@
                         Controle à distance
                     </a>
                 </li>
+                <li class="sidenav-item">
+                    <a class="sidenav-link">
+                        <i class="fas fa-file pr-3"></i>
+                        Logs
+                    </a>
+                    <ul class="sidenav-collapse">
+                        <li class="sidenav-item">
+                            <a class="sidenav-link" link href="{{ route('admin.web.applog') }}">
+                                <i class="fas fa-bugs pr-1"></i>
+                                App logs
+                            </a>
+                        </li>
+                    </ul>
+                </li>
                 {{-- <li class="sidenav-item">
                     <a class="sidenav-link">
                         <i class="fa-solid fa-money-bill-trend-up pr-3"></i>

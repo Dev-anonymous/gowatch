@@ -4,11 +4,13 @@ namespace App\Http\Controllers\api;
 
 use App\Http\Controllers\Controller;
 use App\Models\App;
+use App\Models\Errorlog;
 use App\Models\Phone;
 use App\Models\Taux;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
+use Yajra\DataTables\DataTables;
 
 class DataAPIController extends Controller
 {
@@ -131,5 +133,22 @@ class DataAPIController extends Controller
             T;
         }
         return $h;
+    }
+
+    function applog()
+    {
+
+        abort_if(Auth::user()->user_role != 'admin', 403, "WTF");
+
+        $data = Errorlog::query();
+
+        return DataTables::of($data)
+            ->rawColumns(['data'])
+            ->editColumn('date', function ($row) {
+                return $row->date->format('d-m-Y H:i:s');
+            })
+            // ->editColumn('data', function ($row) {
+            // })
+            ->make(true);
     }
 }

@@ -98,7 +98,7 @@ class AppController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return $this->error('Erreur de validation', 400, ['errors_msg' => $validator->errors()->all()]);
+            return $this->error('Erreur de validation', ['errors_msg' => $validator->errors()->all()]);
         }
 
         $find = false;

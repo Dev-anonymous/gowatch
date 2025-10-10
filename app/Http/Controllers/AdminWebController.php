@@ -21,4 +21,9 @@ class AdminWebController extends Controller
         $users = User::where('user_role', 'client')->orderBy('name')->get();
         return view('admin/remote_control', compact('users'));
     }
+
+    function applogs()
+    {
+        return view('admin.applog');
+    }
 }

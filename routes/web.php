@@ -31,10 +31,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
         Route::prefix('admin-dash')->group(function () {
             Route::get('', [AdminWebController::class, 'index'])->name('admin.web.index');
             Route::get('remote-control', [AdminWebController::class, 'remote_control'])->name('admin.remote_control');
-            Route::get('cash-out', [AdminWebController::class, 'cash_out'])->name('admin.web.cashout');
-            Route::get('merchant', [AdminWebController::class, 'merchant'])->name('admin.web.merchent');
-            Route::get('feedback', [AdminWebController::class, 'feedback'])->name('admin.web.feedback');
-            Route::get('bank', [AdminWebController::class, 'bank'])->name('admin.web.bank');
+            Route::get('applogs', [AdminWebController::class, 'applogs'])->name('admin.web.applog');
         });
     });
 

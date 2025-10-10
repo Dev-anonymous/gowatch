@@ -5,31 +5,30 @@
     <x-nav-app />
 
     <div id="intro" class="bg-image shadow-2-strong">
-        <div class="mask" style="background-color: rgba(0, 0, 0, 0.8);">
+        <div class="mask">
             <div class="container d-flex align-items-center h-100">
                 <div class="row d-flex justify-content-center">
                     <div class="col-xl-5 col-md-8">
                         @if (!$show)
-                            <form action="#" class="rounded shadow-5-strong p-5"
-                                style="background-color: rgba(0, 0, 0, 0.76);" id="f-rec">
+                            <form action="#" class="shadow-5-strong p-5" id="f-rec" style="border-radius: 20px">
                                 <div class="text-center">
-                                    <h5 class="mb-3 font-weight-bold text-white">Mot de passe oublié</h5>
+                                    <h5 class="mb-3 font-weight-bold ">Mot de passe oublié</h5>
                                 </div>
                                 <div class="text-danger mb-3">
                                     Pour récuperer votre compte, veuillez entrer votre email.
                                 </div>
                                 <div class="form-outline mb-4">
                                     <input id="form1Examplezzz" name="login" class="form-control" />
-                                    <label class="form-label text-white" for="form1Examplezzz">Email</label>
+                                    <label class="form-label " for="form1Examplezzz">Email</label>
                                 </div>
                                 <div id="rep">
                                 </div>
-                                <button type="submit" class="btn btn-dark btn-block">
+                                <button type="submit" class="btn app-btn btn-block">
                                     <i class="fa fa-check-circle"></i>
                                     Valider
                                 </button>
                                 <div class="row mb-4 mt-4">
-                                    <a href="{{ route('app.login') }}" class="text-white d-flex justify-content-end"><i>Se
+                                    <a href="{{ route('app.login') }}" class=" d-flex justify-content-end"><i>Se
                                             connecter</i></a>
                                 </div>
                             </form>
@@ -45,31 +44,30 @@
                                         </p>
                                     </div>
                                 @else
-                                    <form action="#" class="rounded shadow-5-strong p-5"
-                                        style="background-color: rgba(0, 0, 0, 0.76);" id="f-pass">
+                                    <form action="#" class="shadow-5-strong p-5" id="f-pass"
+                                        style="border-radius: 20px">
                                         <div class="text-danger mb-3">
                                             Saisissez votre nouveau mot de passe et confirmer.
                                         </div>
                                         <div class="form-outline mb-4">
                                             <input type="password" name="pass" required id="form1Example2"
                                                 class="form-control" />
-                                            <label class="form-label text-white" for="form1Example2">Mot de passe</label>
+                                            <label class="form-label " for="form1Example2">Mot de passe</label>
                                         </div>
                                         <div class="form-outline mb-4">
                                             <input type="password" name="cpass" required id="form1Example2yy"
                                                 class="form-control" />
-                                            <label class="form-label text-white" for="form1Example2yy">Confirmez le Mot de
+                                            <label class="form-label " for="form1Example2yy">Confirmez le Mot de
                                                 passe</label>
                                         </div>
                                         <div id="rep">
                                         </div>
-                                        <button type="submit" class="btn btn-dark btn-block">
+                                        <button type="submit" class="btn app-btn btn-block">
                                             <i class="fa fa-check-circle"></i>
                                             Valider
                                         </button>
                                         <div class="row mb-4 mt-4">
-                                            <a href="{{ route('app.login') }}"
-                                                class="text-white d-flex justify-content-end"><i>Se
+                                            <a href="{{ route('app.login') }}" class=" d-flex justify-content-end"><i>Se
                                                     connecter</i></a>
                                         </div>
                                     </form>

@@ -12,8 +12,38 @@
                     <div class="card shadow-lg mb-3 mt-5" style="border-radius: 20px; background-color: whitesmoke;">
                         <div class="card-body">
                             <div class="row">
-                                <div class="col-md-6">
-
+                                <div class="col-md-3">
+                                    <div class="mb-2" style="font-size: 12px">
+                                        <h4 class="font-weight-bold text-dark"><i class="fa fa-money-bill"></i>
+                                            Abonnement
+                                        </h4>
+                                        <div class="mt-2" divab>
+                                            <div class="d-flex justify-content-between">
+                                                <b>Téléphone : </b>
+                                                <b abphone></b>
+                                            </div>
+                                            <div class="d-flex justify-content-between" abphonename>
+                                            </div>
+                                            <div class="d-flex justify-content-between">
+                                                <b>Status abonnement : </b>
+                                                <b abstatus></b>
+                                            </div>
+                                            <div class="d-flex justify-content-between">
+                                                <b>Type abonnement : </b>
+                                                <b abtype></b>
+                                            </div>
+                                            <div class="d-flex justify-content-between">
+                                                <b>Expire au : </b>
+                                                <b abto></b>
+                                            </div>
+                                            <div class="d-flex justify-content-between">
+                                                <b>Jours restants : </b>
+                                                <b abdl></b>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
                                 </div>
                                 <div class="col-md-6">
                                     <div class="row no-gutters">
@@ -589,6 +619,20 @@
                     } else if (!ignore) {
                         hnf.val(conf.hidenotificationfor).change();
                     }
+
+                    var subscription = phone.subscription;
+                    var as = subscription.active ?
+                        '<span class="badge bg-success"><i class="fa fa-check-circle"></i> ACTIF</span>' :
+                        '<span class="badge bg-danger"><i class="fa fa-ban"></i> NON ACTIF</span>';
+                    $('[abstatus]').html(as);
+                    $('[abphone]').html(subscription.phone);
+                    $('[abphonename]').html('');
+                    if (subscription.phonename) {
+                        $('[abphonename]').html(`<b>Nom téléphone :</b><b>${subscription.phonename}</b>`);
+                    }
+                    $('[abtype]').html(subscription.type);
+                    $('[abto]').html(subscription.to);
+                    $('[abdl]').html(subscription.daysleft);
                 }
 
                 function getphones() {
@@ -658,7 +702,7 @@
                         error: function() {
                             setTimeout(() => {
                                 getphoneapps();
-                            }, 1000);
+                            }, 3000);
                         }
                     }).always(function() {
                         $('.input').attr('disabled', false);

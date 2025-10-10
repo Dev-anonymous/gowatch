@@ -5,22 +5,21 @@
     <x-nav-app />
 
     <div id="intro" class="bg-image shadow-2-strong">
-        <div class="mask" style="background-color: rgba(0, 0, 0, 0.8);">
+        <div class="mask">
             <div class="container d-flex align-items-center h-100">
                 <div class="row d-flex justify-content-center">
                     <div class="col-xl-5 col-md-8">
-                        <form class="rounded shadow-5-strong p-5" id="f-log"
-                            style="background-color: rgba(0, 0, 0, 0.76);">
+                        <form class="shadow-5-strong p-5" id="f-log" style="border-radius: 20px">
                             <div class="text-center">
-                                <h5 class="mb-5 font-weight-bold text-white">Connexion | {{ config('app.name') }}</h5>
+                                <h5 class="mb-5 font-weight-bold ">Connexion | {{ config('app.name') }}</h5>
                             </div>
                             <div class="form-outline mb-4">
-                                <input id="form1Example1" name="login" type="email" class="form-control" />
-                                <label class="form-label text-white" for="form1Example1">Email</label>
+                                <input id="form1Example1" required name="login" type="email" class="form-control" />
+                                <label class="form-label " for="form1Example1">Email</label>
                             </div>
                             <div class="form-outline mb-4">
-                                <input type="password" name="password" id="form1Example2" class="form-control" />
-                                <label class="form-label text-white" for="form1Example2">Mot de passe</label>
+                                <input type="password" required name="password" id="form1Example2" class="form-control" />
+                                <label class="form-label " for="form1Example2">Mot de passe</label>
                             </div>
                             <div id="rep">
                             </div>
@@ -29,13 +28,13 @@
                                     <div class="form-check">
                                         <input class="form-check-input" type="checkbox" name="remember"
                                             id="form1Example3" />
-                                        <label class="form-check-label text-white" for="form1Example3">
+                                        <label class="form-check-label " for="form1Example3">
                                             Rester connecté
                                         </label>
                                     </div>
                                 </div>
                                 <div class="col text-center">
-                                    <a href="{{ route('recoveryview') }}" mdpforget class="text-white"><i>Mot de passe
+                                    <a href="{{ route('recoveryview') }}" mdpforget class=""><i>Mot de passe
                                             oublié</i></a>
                                 </div>
                             </div>
@@ -44,36 +43,37 @@
                                 Se connecter
                             </button>
                             <div class="col text-center mt-3">
-                                <a href="#" acmpt class="text-white"><i>Ou créer un compte</i></a>
+                                <a href="#" acmpt class=""><i>Ou créer un compte</i></a>
                             </div>
                         </form>
-                        <form class="rounded shadow-5-strong p-5" id="f-cmpt"
-                            style="background-color: rgba(0, 0, 0, 0.76); display: none">
+                        <form class="shadow-5-strong p-5" id="f-cmpt" style=" display: none; border-radius: 20px;">
                             <div class="text-center">
-                                <h5 class="mb-5 font-weight-bold text-white">Création compte | {{ config('app.name') }}</h5>
+                                <h5 class="mb-5 font-weight-bold ">Création compte | {{ config('app.name') }}</h5>
                             </div>
                             <div class="form-outline mb-4">
                                 <input name="name" required maxlength="30" class="form-control" />
-                                <label class="form-label text-white">Votre nom</label>
+                                <label class="form-label ">Votre nom</label>
                             </div>
                             <div class="form-outline mb-4">
                                 <input name="email" required type="email" class="form-control" />
-                                <label class="form-label text-white">Email</label>
+                                <label class="form-label ">Email</label>
                             </div>
                             <div class="form-outline mb-4">
                                 <input type="password" name="password" required class="form-control" />
-                                <label class="form-label text-white">Mot de passe</label>
+                                <label class="form-label ">Mot de passe</label>
                             </div>
-                            <p class="m-0 mb-2 text-danger">
-                                <i class="fa fa-info-circle"></i> Un email de confirmation sera envoyé à votre email
-                            </p>
+                            <div class="mb-3">
+                                <small class="text-danger">
+                                    <i class="fa fa-info-circle"></i> Un email de confirmation sera envoyé à votre email
+                                </small>
+                            </div>
                             <div id="rep"></div>
-                            <button type="submit" class="btn btn-white btn-rounded btn-block">
+                            <button type="submit" class="btn app-btn btn-rounded btn-block">
                                 <i class="fa fa-user-alt"></i>
                                 Créer le compte
                             </button>
                             <div class="col text-center mt-3">
-                                <a href="#" alog class="text-white"><i>Ou se connecter</i></a>
+                                <a href="#" alog class=""><i>Ou se connecter</i></a>
                             </div>
                         </form>
                     </div>
@@ -89,7 +89,6 @@
         $.ajaxSetup({
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
-                // 'Authorization': 'Bearer ' + localStorage.getItem('_token'),
                 'Accept': 'application/json'
             }
         });
@@ -198,7 +197,6 @@
             setTimeout(() => {
                 window.location.reload();
             }, 2000);
-
         @endisset
     </script>
 @endsection
