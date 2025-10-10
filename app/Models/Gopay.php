@@ -10,25 +10,26 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * Class Taux
+ * Class Gopay
  * 
  * @property int $id
- * @property float $cdf_usd
- * @property float $usd_cdf
+ * @property int|null $issaved
+ * @property int|null $isfailed
+ * @property string|null $myref
+ * @property string|null $ref
+ * @property string|null $paydata
  * @property Carbon|null $date
  *
  * @package App\Models
  */
-class Taux extends Model
+class Gopay extends Model
 {
-	protected $table = 'taux';
-	public $incrementing = false;
+	protected $table = 'gopay';
 	public $timestamps = false;
 
 	protected $casts = [
-		'id' => 'int',
-		'cdf_usd' => 'float',
-		'usd_cdf' => 'float'
+		'issaved' => 'int',
+		'isfailed' => 'int'
 	];
 
 	protected $dates = [
@@ -36,9 +37,11 @@ class Taux extends Model
 	];
 
 	protected $fillable = [
-		'id',
-		'cdf_usd',
-		'usd_cdf',
+		'issaved',
+		'isfailed',
+		'myref',
+		'ref',
+		'paydata',
 		'date'
 	];
 }

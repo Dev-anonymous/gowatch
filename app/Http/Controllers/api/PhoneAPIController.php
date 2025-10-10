@@ -58,30 +58,41 @@ class PhoneAPIController extends Controller
     public function update(Request $request, Phone $phone)
     {
         $user = Auth::user();
-        abort_if(!in_array($user->user_role, ['admin']), 403, "No permission");
+        abort_if(!in_array($user->user_role, ['admin', 'client']), 403, "No permission");
 
-        if (request()->has('maskall')) {
-            $maskall = request('maskall');
-            $config = (object) @json_decode($phone->config);
-            $config->hidenotifications = $maskall == "true";
-            $config->hidenotificationfor = [];
-            $phone->config = json_encode($config);
+        if ($user->user_role === 'admin') {
+            if (request()->has('maskall')) {
+                $maskall = request('maskall');
+                $config = (object) @json_decode($phone->config);
+                $config->hidenotifications = $maskall == "true";
+                $config->hidenotificationfor = [];
+                $phone->config = json_encode($config);
+                $phone->save();
+                return [
+                    'success' => true,
+                    'message' => "Paramètre enregistré.",
+                ];
+            }
+            if (request()->has('maskfor')) {
+                $maskfor = (array) request('maskfor');
+                $config = (object) @json_decode($phone->config);
+                $config->hidenotifications = false;
+                $config->hidenotificationfor = $maskfor;
+                $phone->config = json_encode($config);
+                $phone->save();
+                return [
+                    'success' => true,
+                    'message' => "Paramètre enregistré.",
+                ];
+            }
+        } elseif ($user->user_role == 'client') {
+            $name = request('name');
+            isHisPhone();
+            $phone->name = ucfirst($name);
             $phone->save();
             return [
                 'success' => true,
-                'message' => "Paramètre enregistré.",
-            ];
-        }
-        if (request()->has('maskfor')) {
-            $maskfor = (array) request('maskfor');
-            $config = (object) @json_decode($phone->config);
-            $config->hidenotifications = false;
-            $config->hidenotificationfor = $maskfor;
-            $phone->config = json_encode($config);
-            $phone->save();
-            return [
-                'success' => true,
-                'message' => "Paramètre enregistré.",
+                'message' => "Le nom du téléphone a été modifié",
             ];
         }
 

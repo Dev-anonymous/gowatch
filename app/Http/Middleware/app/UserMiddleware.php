@@ -5,7 +5,7 @@ namespace App\Http\Middleware\app;
 use Closure;
 use Illuminate\Http\Request;
 
-class AdminMiddleware
+class UserMiddleware
 {
     /**
      * Handle an incoming request.
@@ -16,7 +16,7 @@ class AdminMiddleware
      */
     public function handle(Request $request, Closure $next)
     {
-        if (auth()->user()->user_role !== 'admin') {
+        if (auth()->user()->user_role !== 'client') {
             if (request()->wantsJson()) {
                 return response(["message" => "Vous n'etes pas autorisé à acceder à cette ressource."], 403);
             }

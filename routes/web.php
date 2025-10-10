@@ -6,6 +6,7 @@ use App\Http\Controllers\api\AuthController;
 use App\Http\Controllers\api\PayementController;
 use App\Http\Controllers\AppController;
 use App\Http\Controllers\MarchandWebController;
+use App\Http\Controllers\UserWebController;
 use App\Models\Apikey;
 use App\Models\Config;
 use App\Models\DemandeTransfert;
@@ -22,7 +23,6 @@ Route::get('login', [AppController::class, 'login'])->name('app.login');
 
 Route::post('/auth/login', [AuthController::class, 'login'])->name('login.web');
 Route::post('/auth/new-user', [AuthController::class, 'newuser'])->name('newuser.web');
-Route::post('/auth/confirm', [AuthController::class, 'confirmemail'])->name('confirmemail.web');
 
 Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::any('/auth/logout', [AuthController::class, 'logout'])->name('logout.web');
@@ -38,8 +38,11 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
         });
     });
 
-
-
+    Route::middleware('user.mdwr')->group(function () {
+        Route::prefix('user-dash')->group(function () {
+            Route::get('', [UserWebController::class, 'index'])->name('user.web.index');
+        });
+    });
 });
 
 Route::get('recovery', [AppController::class, 'recoveryview'])->name('recoveryview');

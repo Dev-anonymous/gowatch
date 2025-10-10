@@ -67,6 +67,10 @@ href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&amp;display
         color: white;
         background: #43A047;
     }
+
+    .btn{
+        text-transform: none;
+    }
 </style>
 
 <link rel='shortcut icon' type='image/x-icon' href="{{ asset('img/icon.png') }}" />

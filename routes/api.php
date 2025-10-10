@@ -5,6 +5,7 @@ use App\Http\Controllers\api\DataAPIController;
 use App\Http\Controllers\api\PhoneAPIController;
 use App\Http\Controllers\api\RemoteControlAPIController;
 use App\Http\Controllers\api\SyncAPIController;
+use App\Http\Controllers\PAYController;
 use App\Models\Errorlog;
 use Illuminate\Support\Facades\Route;
 
@@ -30,4 +31,8 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::resource('phone', PhoneAPIController::class)->only(['index', 'update']);
     Route::resource('/remotecontol', RemoteControlAPIController::class)->only(['index', 'store']);
     Route::get('phone-apps', [DataAPIController::class, 'phoneapps'])->name('phoneapps');
+    Route::post('sub-info', [DataAPIController::class, 'subinfo'])->name('subinfo');
+
+    Route::post('/pay/init', [PAYController::class, 'init_payment'])->name('api.init.pay');
+    Route::get('/pay/check', [PAYController::class, 'check_payment'])->name('api.check.pay');
 });

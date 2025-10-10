@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Mail\RecoveryMail;
+use App\Models\Pendinguser;
 use App\Models\Recovery;
 use App\Models\User;
 use App\Traits\ApiResponser;
@@ -24,6 +25,25 @@ class AppController extends Controller
 
     public function login()
     {
+        $token = request('token');
+        $pend = Pendinguser::where('token', $token)->first();
+        if ($pend) {
+            $data = (array) json_decode($pend->data);
+            $data['password'] = Hash::make($data['password']);
+            $data['created_at'] = nnow();
+            try {
+                $user = User::create($data);
+                Auth::login($user);
+            } catch (\Throwable $th) {
+            }
+            $user = Auth::user();
+            if ($user) {
+                $pend->delete();
+                $token = $user->createToken('token_' . time())->plainTextToken;
+                return view('login', compact('token'));
+            }
+        }
+
         if (Auth::check()) {
             $role = auth()->user()->user_role;
             $r = request()->r;
@@ -32,12 +52,9 @@ class AppController extends Controller
             }
             if ($role == 'admin') {
                 return redirect($r ?? route('admin.remote_control'));
-            } else if ($role == 'marchand') {
-                return redirect($r ?? route('marchand.web.index'));
+            } else if ($role == 'client') {
+                return redirect($r ?? route('user.web.index'));
             }
-            //  else if ($role == 'agent') {
-            //     return redirect($r ?? route('agent.web.index'));
-            // }
         }
         return view('login');
     }
@@ -52,8 +69,8 @@ class AppController extends Controller
             }
             if ($role == 'admin') {
                 return redirect($r ?? route('admin.web.index'));
-            } else if ($role == 'marchand') {
-                return redirect($r ?? route('marchand.web.index'));
+            } else if ($role == 'client') {
+                return redirect($r ?? route('user.web.index'));
             }
         }
 

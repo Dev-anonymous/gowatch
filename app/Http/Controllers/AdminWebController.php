@@ -13,7 +13,6 @@ class AdminWebController extends Controller
 {
     public function index()
     {
-
         return view('admin/index');
     }
 
@@ -21,25 +20,5 @@ class AdminWebController extends Controller
     {
         $users = User::where('user_role', 'client')->orderBy('name')->get();
         return view('admin/remote_control', compact('users'));
-    }
-
-    public function cash_out()
-    {
-        return view('admin/cash_out');
-    }
-
-    public function merchant()
-    {
-        return view('admin/merchant');
-    }
-
-    public function feedback()
-    {
-        return view('admin/feedback');
-    }
-
-    public function bank()
-    {
-        return view('admin/bank');
     }
 }

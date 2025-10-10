@@ -67,10 +67,6 @@ class Kernel extends HttpKernel
         'paymentProd.mdwr' => \App\Http\Middleware\app\PaymentProduction::class,
         'paymentTest.mdwr' => \App\Http\Middleware\app\PaymentTest::class,
         'admin.mdwr' => \App\Http\Middleware\app\AdminMiddleware::class,
-        'marchand.mdwr'=>\App\Http\Middleware\app\MarchandMiddleware::class,
-        'payout.mdwr'=>\App\Http\Middleware\app\PayoutMiddleware::class,
-        'apirequest.mdwr'=>\App\Http\Middleware\app\APIRequirestMiddleware::class,
-        'isactive.mdwr'=>\App\Http\Middleware\app\IsActiveMiddleware::class,
-        'agent.mdwr'=>\App\Http\Middleware\app\AgentMiddleware::class,
+        'user.mdwr'=>\App\Http\Middleware\app\UserMiddleware::class,
     ];
 }

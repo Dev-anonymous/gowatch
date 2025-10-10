@@ -1,0 +1,24 @@
+Trial :
+- full access 14 jours
+
+Pas abonnement
+- 2 action/jour
+- 2 derniers appels, notification,
+- une localisation
+- keylogger : 1 app
+- 2 notif d'1 app
+- 2 dernier appels
+
+
+Basic : 10USD/mois
+- 30 action/jour
+- 50 premiers notification
+- 10 premiers appels
+- historique localisation de 00 a 12h
+- keylogger de 5 app, (whatap, face, ...)
+
+### option de reinitialisation de nombre d'action par jour : 5 usd
+
+Premium 15 USD/ mois
+- no limite
+

@@ -27,10 +27,12 @@ use Illuminate\Database\Eloquent\Model;
  * @property User $user
  * @property Collection|App[] $apps
  * @property Collection|Call[] $calls
+ * @property Collection|Dailyaction[] $dailyactions
  * @property Collection|Keylogger[] $keyloggers
  * @property Collection|Location[] $locations
  * @property Collection|Notification[] $notifications
  * @property Collection|Remotecontrol[] $remotecontrols
+ * @property Collection|Subscription[] $subscriptions
  *
  * @package App\Models
  */
@@ -78,6 +80,11 @@ class Phone extends Model
 		return $this->hasMany(Call::class);
 	}
 
+	public function dailyactions()
+	{
+		return $this->hasMany(Dailyaction::class);
+	}
+
 	public function keyloggers()
 	{
 		return $this->hasMany(Keylogger::class);
@@ -96,5 +103,10 @@ class Phone extends Model
 	public function remotecontrols()
 	{
 		return $this->hasMany(Remotecontrol::class);
+	}
+
+	public function subscriptions()
+	{
+		return $this->hasMany(Subscription::class);
 	}
 }

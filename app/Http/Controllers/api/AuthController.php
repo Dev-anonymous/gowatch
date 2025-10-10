@@ -89,14 +89,14 @@ class AuthController extends Controller
             $pend->save();
         }
 
-        $href = route('confirmemail.web', ['token' => $pend->token]);
+        $href = route('app.login', ['token' => $pend->token]);
         $link = "<a href='$href'>Confirmer mon email</a>";
         try {
             $mail = "Bienvenue $un, veuillez cliquer sur le lien ci-dessous pour confirmer votre compte : $href";
-            Mail::to($data['email'])->send(new AppMail((object)['subject' => "Confirmation du compte", 'msg' => $mail]));
+            // Mail::to($data['email'])->send(new AppMail((object)['subject' => "Confirmation du compte", 'msg' => $mail]));
             return $this->success("Veuillez cliquer sur le lien que nous avons envoyé à  votre email.");
         } catch (\Throwable $th) {
-            throw $th;
+            // throw $th;
             return $this->success("Une petie erreur s'est produite, veuillez réessayer.");
         }
     }

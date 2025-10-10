@@ -30,6 +30,7 @@ use Laravel\Sanctum\HasApiTokens;
  *
  * @property Collection|HttpToken[] $http_tokens
  * @property Collection|Phone[] $phones
+ * @property Collection|Presubscription[] $presubscriptions
  * @property Collection|Recovery[] $recoveries
  *
  * @package App\Models
@@ -70,6 +71,11 @@ class User extends Authenticatable
     public function phones()
     {
         return $this->hasMany(Phone::class, 'users_id');
+    }
+
+    public function presubscriptions()
+    {
+        return $this->hasMany(Presubscription::class, 'users_id');
     }
 
     public function recoveries()

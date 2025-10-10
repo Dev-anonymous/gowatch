@@ -74,101 +74,11 @@
                     </ul>
                 </li> --}}
             @endif
-            @if (auth()->user()->user_role == 'marchand')
+            @if (auth()->user()->user_role == 'client')
                 <li class="sidenav-item">
-                    <a class="sidenav-link" link href="{{ route('marchand.web.index') }}">
-                        <i class="fas fa-gauge pr-3"></i>Dashboard</a>
-                </li>
-                <li class="sidenav-item">
-                    <a class="sidenav-link" link href="{{ route('marchand.web.cashin') }}">
+                    <a class="sidenav-link" link href="{{ route('user.web.index') }}">
                         <i class="fas fa-right-left pr-3"></i>
-                        Transactions
-                    </a>
-                </li>
-                <li class="sidenav-item">
-                    <a class="sidenav-link">
-                        <i class="fa-solid fa-money-check pr-3"></i>
-                        GoBusiness</a>
-                    <ul class="sidenav-collapse">
-                        <li class="sidenav-item">
-                            <a class="sidenav-link" link href="{{ route('marchand.web.lien_pay') }}">
-                                <i class="fa-solid fa-money-bill-1 p-1"></i>
-                                Lien de paiement
-                            </a>
-                        </li>
-                        <li class="sidenav-item">
-                            <a class="sidenav-link" link href="{{ route('marchand.web.cmpt_pay') }}">
-                                <i class="fa-solid fa-users p-1"></i>
-                                Comptes de paiement
-                            </a>
-                        </li>
-                        <li class="sidenav-item">
-                            <a class="sidenav-link" link href="{{ route('marchand.web.beneficiary') }}">
-                                <i class="fa-solid fa-id-card p-1"></i>
-                                Bénéficiaires
-                            </a>
-                        </li>
-                        <li class="sidenav-item">
-                            <a class="sidenav-link" link href="{{ route('marchand.web.autocashout') }}">
-                                <i class="fa-solid fa-cogs p-1"></i>
-                                Transfert automatique
-                            </a>
-                        </li>
-                    </ul>
-                </li>
-                <li class="sidenav-item">
-                    <a class="sidenav-link">
-                        <i class="fa-solid fa-money-bill-trend-up pr-3"></i>
-                        Envoi fonds</a>
-                    <ul class="sidenav-collapse">
-                        <li class="sidenav-item">
-                            <a class="sidenav-link" link href="{{ route('marchand.web.cashout') }}">
-                                <i class="fa-solid fa-money-check-dollar p-1"></i>
-                                Transfert de fonds
-                            </a>
-                        </li>
-                    </ul>
-                </li>
-                <li class="sidenav-item">
-                    <a class="sidenav-link">
-                        <i class="fas fa-key pr-3"></i>
-                        API & Intégration
-                    </a>
-                    <ul class="sidenav-collapse">
-                        <li class="sidenav-item">
-                            <a class="sidenav-link" link href="{{ route('marchand.web.integration') }}">
-                                <i class="fa-solid fa-cogs pr-1"></i>
-                                Intégration
-                            </a>
-                        </li>
-                        <li class="sidenav-item">
-                            <a class="sidenav-link" link href="{{ route('marchand.web.payout') }}">
-                                <i class="fa-solid fa-cogs pr-1"></i>
-                                PayOut
-                            </a>
-                        </li>
-                    </ul>
-                </li>
-                <li class="sidenav-item">
-                    <a class="sidenav-link">
-                        <i class="fas fa-user-alt pr-3"></i>
-                        Compte
-                    </a>
-                    <ul class="sidenav-collapse">
-                        <li class="sidenav-item">
-                            <a class="sidenav-link" link href="{{ route('marchand.web.compte') }}">
-                                <i class="fas fa-user-check pr-1"></i>
-                                Mon compte
-                            </a>
-                        </li>
-                    </ul>
-                </li>
-            @endif
-            @if (auth()->user()->user_role == 'agent')
-                <li class="sidenav-item">
-                    <a class="sidenav-link" link href="{{ route('agent.web.index') }}">
-                        <i class="fas fa-right-left pr-3"></i>
-                        Transactions
+                        Controle à distance
                     </a>
                 </li>
             @endif

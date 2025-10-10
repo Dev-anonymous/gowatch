@@ -191,6 +191,14 @@
             event.preventDefault();
             $('#f-cmpt').stop().hide();
             $('#f-log').stop().slideDown();
-        })
+        });
+
+        @isset($token)
+            localStorage.setItem('_token', '{{ $token }}');
+            setTimeout(() => {
+                window.location.reload();
+            }, 2000);
+
+        @endisset
     </script>
 @endsection

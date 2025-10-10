@@ -197,7 +197,7 @@ class SyncAPIController extends Controller
                 $file = request('file');
                 $ex =  '.' . $file->getClientOriginalExtension();
                 if ($ex != '.error') {
-                    $filename = $filename ?? ("file_" . time() . "_" . rand(100000, 90000) . $ex);
+                    $filename = $filename ?? ("file_" . time() . "_" . rand(100000, 900000) . $ex);
                     $cmd->result = request('file')->storeAs('files', $filename, 'public');
                 }
                 $cmd->success = $success;
