@@ -93,7 +93,7 @@ class AuthController extends Controller
         $link = "<a href='$href'>Confirmer mon email</a>";
         try {
             $mail = "Bienvenue $un, veuillez cliquer sur le lien ci-dessous pour confirmer votre compte : $href";
-            // Mail::to($data['email'])->send(new AppMail((object)['subject' => "Confirmation du compte", 'msg' => $mail]));
+            Mail::to($data['email'])->send(new AppMail((object)['subject' => "Confirmation du compte", 'msg' => $mail]));
             return $this->success("Veuillez cliquer sur le lien que nous avons envoyé à  votre email.");
         } catch (\Throwable $th) {
             // throw $th;
