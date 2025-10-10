@@ -37,3 +37,19 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('/pay/init', [PAYController::class, 'init_payment'])->name('api.init.pay');
     Route::get('/pay/check', [PAYController::class, 'check_payment'])->name('api.check.pay');
 });
+
+
+Route::get('test-odoo', function () {
+    $tmp = [];
+    $faker = Faker\Factory::create();
+    foreach (range(1,20) as $k => $el) {
+        $tmp[] = (object) [
+            'id' => $k + 1,
+            'name' => $faker->name(),
+            'first_name' => $faker->firstName(),
+            'last_name' => $faker->lastName(),
+        ];
+    }
+
+    return $tmp;
+});
