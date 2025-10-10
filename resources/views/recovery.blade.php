@@ -4,7 +4,7 @@
 @section('body')
     <x-nav-app />
 
-    <div id="intro" class="bg-image shadow-2-strong">
+    <div id="intro" class="bg-image">
         <div class="mask">
             <div class="container d-flex align-items-center h-100">
                 <div class="row d-flex justify-content-center">
