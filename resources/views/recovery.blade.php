@@ -23,7 +23,7 @@
                                 </div>
                                 <div id="rep">
                                 </div>
-                                <button type="submit" class="btn app-btn btn-block">
+                                <button type="submit" class="btn app-btn btn-rounded btn-block">
                                     <i class="fa fa-check-circle"></i>
                                     Valider
                                 </button>
@@ -62,7 +62,7 @@
                                         </div>
                                         <div id="rep">
                                         </div>
-                                        <button type="submit" class="btn app-btn btn-block">
+                                        <button type="submit" class="btn app-btn btn-rounded btn-block">
                                             <i class="fa fa-check-circle"></i>
                                             Valider
                                         </button>
