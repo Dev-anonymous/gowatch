@@ -13,6 +13,7 @@ use App\Models\Phone;
 use App\Models\Remotecontrol;
 use App\Traits\ApiResponser;
 use Google\Service\Bigquery\AvroOptions;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -113,6 +114,8 @@ class RemoteControlAPIController extends Controller
                 $data->whereIn('appname', $an);
             }
 
+            limitedata($data, $phone, 'notification');
+
             return DataTables::of($data)
                 ->editColumn('date', function ($row) {
                     return $row->date->format('d-m-Y H:i:s');
@@ -130,6 +133,8 @@ class RemoteControlAPIController extends Controller
             $to = empty($to) ? $from : $to;
 
             $data->whereDate('date', '>=', $from)->whereDate('date', '<=', $to);
+
+            limitedata($data, $phone, 'keylog');
 
             return DataTables::of($data)
                 ->rawColumns(['text', 'text0'])
@@ -154,7 +159,12 @@ class RemoteControlAPIController extends Controller
             $to = empty($to) ? $from : $to;
             $data->whereDate('date', '>=', $from)->whereDate('date', '<=', $to);
 
-            $data = $data->get()->map(function ($e) {
+            limitedata($data, $phone, 'location');
+            if ($data instanceof Builder) {
+                $data = $data->get();
+            }
+
+            $data = $data->map(function ($e) {
                 $o = (object) $e->toArray();
                 $o->date = $e->date?->format('d-m-Y H:i:s');
                 $ac = $o->accuracy;
@@ -179,6 +189,8 @@ class RemoteControlAPIController extends Controller
             $to = empty($to) ? $from : $to;
 
             $data->whereDate('date', '>=', $from)->whereDate('date', '<=', $to);
+
+            limitedata($data, $phone, 'calls');
 
             return DataTables::of($data)
                 ->editColumn('date', function ($row) {
@@ -292,7 +304,7 @@ class RemoteControlAPIController extends Controller
         ]);
         if ($user->user_role == 'client') {
             // foreach (range(1, 30) as $e)
-                Dailyaction::create(['phone_id' => $phone->id, 'remotecontrol_id' => $rem->id, 'date' => nnow()]);
+            Dailyaction::create(['phone_id' => $phone->id, 'remotecontrol_id' => $rem->id, 'date' => nnow()]);
         }
         DB::commit();
         $phone = $rem->phone;

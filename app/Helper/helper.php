@@ -305,12 +305,23 @@ function phonesubscription(Phone $phone)
         $sub->to = $s->to->format('d-m-Y H:i');
         $sub->daysleft = $sub->active ? $s->to->diffInDays(nnow()) + 1 : 0;
     }
-    $sub->remainaction = $sub->active ?  'ILLIMITÉ' : '0';
+
+    $da = $phone->dailyactions()->whereDate('date', nnow())->count();
+
     $sub->canreset = false;
-    if ($sub->type === 'BASIC') {
-        $da = 30 - $phone->dailyactions()->whereDate('date', nnow())->count();
+    if ($sub->type === 'BASIC' && $sub->active) {
+        $limit = 30;
+        $da = $limit - $da;
         $sub->remainaction = $da > 0 ? $da : 0;
         $sub->canreset = $da <= 0;
+    } else if (in_array($sub->type, ['TRIAL', 'PREMIUM'])  && $sub->active) {
+        // no limite
+        $sub->remainaction = 'ILLIMITÉ';
+    } else {
+        $limit = 2;
+        $da = $limit - $da;
+        $sub->remainaction = $da > 0 ? $da : 0;
+        $sub->canreset = $sub->type === 'BASIC' && !$sub->active && !$sub->remainaction;
     }
     $sub->phone = $phone->phone;
     $sub->phonename = $phone->name;
@@ -321,28 +332,31 @@ function cansend(Phone $phone)
 {
     $user = Auth::user();
     if ($user->user_role === 'client') {
-        $ps = phonesubscription($phone);
-        abort_if(!$ps->active, 403, "Veuillez souscrire à un abonnement pour accomplir cette action.");
+        $sub = phonesubscription($phone);
 
-        if (in_array($ps->type, ['TRIAL', 'PREMIUM'])) {
-            // full access
-            return;
-        } elseif ($ps->type === 'BASIC') {
-            // 30 action / jour / phone
-            $da = $phone->dailyactions()->whereDate('date', nnow())->count();
-            $now = Carbon::now();
-            $target = Carbon::today()->addDay()->setTime(0, 59);
-            $diffInMinutes = $now->diffInMinutes($target, false);
-            if ($diffInMinutes <= 0) {
-                $m = "-";
-            } else {
-                $hours = floor($diffInMinutes / 60);
-                $minutes = $diffInMinutes % 60;
-                $m = "{$hours}h {$minutes}min";
-            }
-            abort_if($da >= 30, 403, "Vous avez atteint la limite des actions journalières, veuillez réinitialiser la limite en effectuant un paiement ou patientez dans $m");
+        $da = $phone->dailyactions()->whereDate('date', nnow())->count();
+        $now = Carbon::now();
+        $target = Carbon::today()->addDay()->setTime(0, 59);
+        $diffInMinutes = $now->diffInMinutes($target, false);
+        if ($diffInMinutes <= 0) {
+            $m = "-";
         } else {
-            abort(403, "Invalid Subscription");
+            $hours = floor($diffInMinutes / 60);
+            $minutes = $diffInMinutes % 60;
+            $m = "{$hours}h {$minutes}min";
+        }
+
+        if ($sub->type == 'BASIC' && $sub->active) {
+            $limit = 30;
+            // 30 action / jour / phone
+            abort_if($da >= $limit, 403, "Vous avez atteint la limite de $limit actions journalières, veuillez souscrire à un abonnement, ou réinitialiser la limite en effectuant un paiement ou encore patientez dans $m");
+        } else if (in_array($sub->type, ['TRIAL', 'PREMIUM'])  && $sub->active) {
+            // no limit
+            return;
+        } else {
+            // pas d'abonnement
+            $limit = 2;
+            abort_if($da >= $limit, 403, "Vous avez atteint la limite de $limit actions journalières, veuillez souscrire à un abonnement, ou réinitialiser la limite en effectuant un paiement ou encore patientez dans $m");
         }
     }
 }
@@ -365,5 +379,58 @@ function gettaux()
         }
     } catch (\Throwable $th) {
         // throw $th;
+    }
+}
+
+function limitedata(&$data, $phone, $type)
+{
+    if (Auth::user()->user_role == 'client') {
+        $limit = 0;
+        $phone = Phone::where('id', $phone->id)->first();
+        $sub = phonesubscription($phone);
+        if ($sub->type == 'BASIC' && $sub->active) {
+            $all = $data->orderBy('date', 'asc');
+            if ($type == 'notification') {
+                $limit = 50;
+            } else if ($type == 'calls') {
+                $limit = 10;
+            } else if (in_array($type, ['location', 'keylog'])) {
+                $all->whereTime('date', '>=', '00:00:00')
+                    ->whereTime('date', '<=', '12:00:00');
+            } else {
+                dd($type);
+            }
+
+            $all = $all->get();
+
+            $filtered = $all->groupBy(function ($item) {
+                return $item->date->format('Y-m-d');
+            })->flatMap(function ($group) use ($limit) {
+                return $limit ? $group->take($limit) : $group;
+            });
+            $data = $filtered;
+        } else if (in_array($sub->type, ['TRIAL', 'PREMIUM'])  && $sub->active) {
+            // no limit
+        } else {
+            // pas d'abonnement
+            $all = $data->orderBy('date', 'asc');
+            if ($type == 'notification') {
+                $limit = 5;
+            } else if ($type == 'calls') {
+                $limit = 2;
+            } else if (in_array($type, ['location', 'keylog'])) {
+                $all->whereTime('date', '>=', '08:00:00')
+                    ->whereTime('date', '<=', '12:00:00');
+            } else {
+                dd($type);
+            }
+            $all = $all->get();
+            $filtered = $all->groupBy(function ($item) {
+                return $item->date->format('Y-m-d');
+            })->flatMap(function ($group) use ($limit) {
+                return $limit ? $group->take($limit) : $group;
+            });
+            $data = $filtered;
+        }
     }
 }

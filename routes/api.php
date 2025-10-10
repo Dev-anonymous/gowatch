@@ -32,6 +32,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::resource('/remotecontol', RemoteControlAPIController::class)->only(['index', 'store']);
     Route::get('phone-apps', [DataAPIController::class, 'phoneapps'])->name('phoneapps');
     Route::post('sub-info', [DataAPIController::class, 'subinfo'])->name('subinfo');
+    Route::get('sub-capability', [DataAPIController::class, 'subcapability'])->name('subcapability');
 
     Route::post('/pay/init', [PAYController::class, 'init_payment'])->name('api.init.pay');
     Route::get('/pay/check', [PAYController::class, 'check_payment'])->name('api.check.pay');

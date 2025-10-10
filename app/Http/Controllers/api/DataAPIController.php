@@ -82,4 +82,54 @@ class DataAPIController extends Controller
             'payamount' => $payamount,
         ];
     }
+
+    function subcapability()
+    {
+        isHisPhone();
+        $user = Auth::user();
+        $phone_id = request('phone_id');
+        $phone = Phone::where('id', $phone_id)->first();
+        $sub = phonesubscription($phone);
+
+        $h = '';
+        if (in_array($sub->type, ['PREMIUM', 'TRIAL'])) {
+            $h = <<<T
+                <p class="font-weight-bold mb-1">
+                    Vous avez un accès quotidien
+                    <b class="text-danger">ILLIMITÉ</b> à toutes les fonctionnalité jusqu'au $sub->to.
+                </p>
+            T;
+        } else if ($sub->type == 'BASIC') {
+            $h = <<<T
+                <ul class="list-unstyled">
+                    <li> <i class="fa fa-check-circle text-primary"></i> 30 Actions quotidiennes</li>
+                    <li> <i class="fa fa-check-circle text-primary"></i> Accès aux 50 premières
+                        notifications</li>
+                    <li> <i class="fa fa-check-circle text-primary"></i> Accès à l'historique de 10
+                        premiers appels</li>
+                    <li> <i class="fa fa-check-circle text-primary"></i> Accès à l'historique de
+                        localisation de 00h jusqu'à 12h</li>
+                    <li> <i class="fa fa-check-circle text-primary"></i> Accès au Key logger de 00h à
+                        12h</li>
+                </ul>
+            T;
+        }
+
+        if (!$sub->active) {
+            $h = <<<T
+                    <ul class="list-unstyled">
+                    <li> <i class="fa fa-check-circle text-primary"></i> 2 Actions quotidiennes</li>
+                    <li> <i class="fa fa-check-circle text-primary"></i> Accès aux 5 premières
+                        notifications</li>
+                    <li> <i class="fa fa-check-circle text-primary"></i> Accès à l'historique de 2
+                        premiers appels</li>
+                    <li> <i class="fa fa-check-circle text-primary"></i> Accès à l'historique de
+                        localisation de 08h jusqu'à 12h</li>
+                    <li> <i class="fa fa-check-circle text-primary"></i> Accès au Key logger de 08h à
+                        12h</li>
+                </ul>
+            T;
+        }
+        return $h;
+    }
 }

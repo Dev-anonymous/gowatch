@@ -68,7 +68,11 @@
                                                 </div>
 
                                                 <div class="my-3 d-flex justify-content-between">
-                                                    <div class=""></div>
+                                                    <div class="">
+                                                        <button btninfo class="btn app-btn btn-rounded btn-sm input">
+                                                            <i class="fa fa-info-circle"></i>
+                                                        </button>
+                                                    </div>
                                                     <div class="">
                                                         <button btnpay class="btn btn-danger btn-rounded btn-sm input">
                                                             <i class="fa fa-money-bill-transfer"></i>
@@ -614,12 +618,12 @@
                                         <li> <i class="fa fa-check-circle text-primary"></i> 30 Actions quotidiennes</li>
                                         <li> <i class="fa fa-check-circle text-primary"></i> Accès aux 50 premières
                                             notifications</li>
-                                        <li> <i class="fa fa-check-circle text-primary"></i> Accès à l'historique de
-                                            localisation de 00h jusqu'à 12h</li>
                                         <li> <i class="fa fa-check-circle text-primary"></i> Accès à l'historique de 10
                                             premiers appels</li>
-                                        <li> <i class="fa fa-check-circle text-primary"></i> Accès au Key logger de 5
-                                            applis</li>
+                                        <li> <i class="fa fa-check-circle text-primary"></i> Accès à l'historique de
+                                            localisation de 00h jusqu'à 12h</li>
+                                        <li> <i class="fa fa-check-circle text-primary"></i> Accès au Key logger de 00h à
+                                            12h</li>
                                     </ul>
                                 </div>
                                 <div id="premiuminfo" style="display: none">
@@ -788,6 +792,28 @@
                 </div>
             </div>
         </div>
+
+        <div class="modal fade" id="mdlinfo" tabindex="-1" aria-hidden="true" data-backdrop="static">
+            <div class="modal-dialog modal-md">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title text-dark font-weight-bold">Avec votre abonnement actuelle, vous avez </h5>
+                        <i class="fa fa-times text-muted fa-2x" data-dismiss="modal" style="cursor: pointer"></i>
+                    </div>
+                    <div class="modal-body">
+                        <form action="#" f-info>
+                            <div class="w-100 text-center my-2" ldr style="display: none">
+                                <i class="spinner-border spinner-border-lg"></i>
+                            </div>
+                            <div id="resinfo"></div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-rounded btn-sm" data-dismiss="modal">Fermer</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 @endsection
 
@@ -920,6 +946,7 @@
                     $('[remainaction]').html(subscription.remainaction);
                     $('[btnresetaction]').css('display', subscription.canreset ? 'block' : 'none').attr('phone', JSON
                         .stringify(phone));
+                    $('[btninfo]').attr('phone', JSON.stringify(phone));
                     $('[btnpay]').attr('phone', JSON.stringify(phone));
                     $('[btnresetaction]').attr('phone', JSON.stringify(phone));
                     if (!subscription.active) {
@@ -1661,6 +1688,32 @@
                     });
                 });
 
+                $('[btninfo]').click(function() {
+                    var mdl = $('#mdlinfo');
+                    var phone = JSON.parse($(this).attr('phone'));
+                    var p = phone.phone;
+                    new mdb.Modal(mdl[0], {
+                        backdrop: "static"
+                    }).show();
+                    var form = $('[f-info]');
+                    var ldr = $('[ldr]', form);
+                    ldr.fadeIn();
+
+                    $.ajax({
+                        url: '{{ route('subcapability') }}',
+                        data: {
+                            phone_id: phone.id,
+                        },
+                        success: function(res) {
+                            ldr.fadeOut();
+                            $('#resinfo').html(res);
+                        },
+                        error: function(e) {
+                            ldr.fadeOut();
+                        }
+                    });
+
+                });
 
                 $('[btnpay]').click(function() {
                     var mdl = $('#mdlpay');
@@ -1697,7 +1750,6 @@
                 var canreq = true;
 
                 function callback(form) {
-                    console.log("=> callb", form);
                     $.ajax({
                         url: '{{ route('api.check.pay') }}',
                         data: {
@@ -1733,9 +1785,7 @@
                                 rep.addClass('alert alert-danger');
                             } else {
                                 if (canreq) {
-                                    console.log(form, "<");
                                     setTimeout(function() {
-                                        console.log(form, "<<<");
                                         callback(form);
                                     }, 2000);
                                 }
@@ -1784,7 +1834,6 @@
                                 btn.attr('disabled', true);
                                 REF = res.data.myref;
                                 $('[btncancel]', form).show();
-                                console.log("=> succ", form);
                                 callback(form);
                             } else {
                                 rep.removeClass().addClass('alert alert-danger').html(res.message)
