@@ -31,6 +31,10 @@ href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&amp;display
 {{-- <link rel="stylesheet" href="{{ asset('css/admin.css') }}" /> --}}
 
 <style>
+    :root {
+        --appcolor: #00C853;
+    }
+
     .page-intro {
         background-color: white;
         width: 100vw;
@@ -60,15 +64,15 @@ href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&amp;display
     .sidenav-link.active[link] {
         font-weight: 900;
         color: white;
-        background: #43A047;
+        background: var(--appcolor);
     }
 
     .app-btn {
         color: white;
-        background: #43A047;
+        background: var(--appcolor);
     }
 
-    .btn{
+    .btn {
         text-transform: none;
     }
 </style>

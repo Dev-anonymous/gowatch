@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\api\AuthController;
 use App\Http\Controllers\api\DataAPIController;
+use App\Http\Controllers\api\FeedbackAPIController;
 use App\Http\Controllers\api\PhoneAPIController;
 use App\Http\Controllers\api\RemoteControlAPIController;
 use App\Http\Controllers\api\SyncAPIController;
@@ -35,7 +36,11 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 
     Route::post('/pay/init', [PAYController::class, 'init_payment'])->name('api.init.pay');
     Route::get('/pay/check', [PAYController::class, 'check_payment'])->name('api.check.pay');
+
+    Route::get('feedback', [FeedbackAPIController::class, 'index'])->name('feedback.index');
 });
+
+Route::post('feedback', [FeedbackAPIController::class, 'store'])->name('feedback.store');
 
 // Route::get('test-odoo', function () {
 //     $tmp = [];

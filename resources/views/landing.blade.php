@@ -72,10 +72,7 @@
                                      Maximiser vos chiffres d'affaires en optant pour les paiements électroniques grâce
                                      à
                                      {{ config('app.name') }} ! c'est
-                                     <span class="font-weight-bold font-italic"
-                                         style="color: #050101; text-shadow: 1px 1px #fb3">
-                                         simple, rapide et sécurisé !
-                                     </span>
+                                      
                                  </h5>
                                  <br>
                                  <a href="#contact" id="a-contact"
@@ -294,8 +291,8 @@
                              <li>
                                  <i class="fas fa-envelope fa-2x text-dark"></i>
                                  <p>
-                                     <a class="text-muted font-weight-bold" href="mailto:gopay@gooomart.com">
-                                         gopay@gooomart.com
+                                     <a class="text-muted font-weight-bold" href="mailto:go@gooomart.com">
+                                         go@gooomart.com
                                      </a>
                                  </p>
                              </li>
@@ -306,7 +303,7 @@
          </div>
      </main>
 
-     <footer class="text-center text-md-left pt-3" style="background: #050101 !important;color: white;">
+     <footer class="text-center text-md-left pt-3" style="background: #00C853 !important;color: white;">
          <div class="container mt-5 mb-4 text-center text-md-left">
              <div class="row mt-3">
                  <div class="col-md-4 mb-4">
@@ -317,9 +314,12 @@
                      </h6>
                      <hr class="pink accent-2 mb-4 mt-0 d-inline-block mx-auto" style="width: 60px;">
                      <p>
-                         Nous travaillons durement pour vous faciliter et sécuriser vos paiements en ligne.
-                         Maximiser vos chiffres d'affaires en optant pour les paiements électroniques
-                         {{ config('app.name') }} ! c'est simple, rapide et sécurisé !
+                         {{ config('app.name') }} est une application conçue pour aider les parents à garder un œil sur
+                         l’activité
+                         numérique de leurs enfants, en toute simplicité.
+                         Grâce à ses fonctionnalités de suivi avancées (localisation GPS, messages, activités web,
+                         applications comme WhatsApp…), GoWatch offre une vision claire et en temps réel pour assurer la
+                         sécurité numérique des mineurs.
                      </p>
                  </div>
                  <div class="col-md-4 mb-4">
@@ -347,19 +347,25 @@
                      <hr class="pink accent-2 mb-4 mt-0 d-inline-block mx-auto" style="width: 60px;">
                      <p>
                          <a target="_blank" class="text-white font-weight-bold"
-                             href="https://www.gooomart.com?source=gopay">
+                             href="https://www.gooomart.com?source=gowatch">
                              Gooomart
                          </a>
                      </p>
                      <p>
                          <a target="_blank" class="text-white font-weight-bold"
-                             href="https://www.zbot.gooomart.com?source=gopay">
+                             href="https://www.gopay.gooomart.com?source=gowatch">
+                             GoPAY
+                         </a>
+                     </p>
+                     <p>
+                         <a target="_blank" class="text-white font-weight-bold"
+                             href="https://www.zbot.gooomart.com?source=gowatch">
                              Zbot
                          </a>
                      </p>
                      <p>
                          <a target="_blank" class="text-white font-weight-bold"
-                             href="https://www.control.gooomart.com?source=gopay">
+                             href="https://www.control.gooomart.com?source=gowatch">
                              Control
                          </a>
                      </p>
@@ -368,17 +374,17 @@
          </div>
 
          <div class="footer-copyright py-3 text-center wow fadeIn" data-wow-delay="0.3s"
-             style="background: #212121 !important;">
+             style="background: #43A047 !important;">
              <div class="container-fluid">
                  <b style="font-size: 12px" class="mr-3">&copy; {{ date('Y') }} {{ config('app.name') }},
                      Powered
                      by
-                     <a href="https://www.gooomart.com?source=gopay" class="text-warning"
+                     <a href="https://www.gooomart.com?source=gowatch" class="text-dark"
                          target="_blank">Gooomart</a>
                  </b>
                  |
                  <b style="font-size: 12px" class="ml-3">
-                     <a target="_blank" class="text-danger font-weight-bold" href="https://wa.me/243906789959">
+                     <a target="_blank" class="text-dark font-weight-bold" href="https://wa.me/243906789959">
                          <i class="fa fa-phone"></i>
                          Contact : +243906789959
                      </a>
@@ -409,8 +415,6 @@
          })
          $(function() {
              $('#phone').mask('000000000000');
-
-
 
              $('#f-cont').submit(function() {
                  event.preventDefault();
@@ -452,7 +456,6 @@
              });
          })
      </script>
-     <script src='https://zbot.gooomart.com/zbot/QWtjeGRsM0tPK0xKSlZOU1FLWUVIZz09' async></script>
 
  </body>
 

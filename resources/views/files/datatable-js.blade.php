@@ -10,11 +10,11 @@
 
     /* .btn.buttons-collection.dropdown-toggle,
     .buttons-html5 {
-        background-color: #43A047 !important
+        background-color: var(--appcolor) !important
     }
 
     .dt-paging-button.page-item.active>.page-link {
-        background-color: #43A047 !important;
+        background-color: var(--appcolor) !important;
         border-radius: 50% !important
     }
 
@@ -23,7 +23,7 @@
     } */
 
     div.dataTables_processing>div:last-child>div {
-        background: #43A047 !important;
+        background: var(--appcolor) !important;
     }
 
     table th,

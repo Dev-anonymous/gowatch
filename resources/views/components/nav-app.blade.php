@@ -1,6 +1,6 @@
 <x-home-css />
 
-<nav id="main-navbar" class="mb-1 navbar navbar-expand-lg fixed-top scrolling-navbar">
+<nav id="main-navbar" class="mb-1 navbar navbar-expand-lg fixed-top scrolling-navbar bg-white">
     <div class="container-fluid">
         <a class="navbar-brand" href="{{ route('app.index') }}">
             {{-- <img src="{{ asset('img/logo1.png') }}" class="img-fluidr" height="40px" width="80px" alt=""> --}}

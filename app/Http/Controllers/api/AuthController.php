@@ -97,7 +97,7 @@ class AuthController extends Controller
             return $this->success("Veuillez cliquer sur le lien que nous avons envoyé à  votre email.");
         } catch (\Throwable $th) {
             // throw $th;
-            return $this->success("Une petie erreur s'est produite, veuillez réessayer.");
+            return $this->error("Une petie erreur s'est produite, veuillez réessayer.");
         }
     }
 

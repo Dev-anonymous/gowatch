@@ -19,7 +19,7 @@
     .flatpickr-day.selected.nextMonthDay,
     .flatpickr-day.startRange.nextMonthDay,
     .flatpickr-day.endRange.nextMonthDay {
-        background: #43A047 !important;
+        background: var(--appcolor) !important;
         border-color: #9de0a1 !important;
     }
 </style>

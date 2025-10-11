@@ -9,13 +9,11 @@
         <div class="container py-3 ">
             <div class="row">
                 <div class="col-md-12 mt-5">
-
-                    <div class="card mb-3 shadow-md">
+                    <div class="card mt-5 mb-3 shadow-md">
                         <div class="card-header">
                             <div class="d-flex flex-wrap justify-content-between align-items-center">
                                 <h4 class="font-weight-bold text-nowrap"> <i class="fa fa-bug-slash"></i> Error logs</h4>
                             </div>
-
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
