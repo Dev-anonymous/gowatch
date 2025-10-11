@@ -156,7 +156,7 @@
                                  <i class="fas fa-keyboard text-success fa-2x"></i>
                              </div>
                              <div class="col-10 mb-2">
-                                 <h5 class="font-weight-bold text-dark">Keylogger</h5>
+                                 <h5 class="font-weight-bold text-dark"> Keylogger</h5>
                                  <p class="text-dark">
                                      Enregistre toutes les frappes clavier effectuées sur l’appareil, permettant de
                                      surveiller les messages tapés, les recherches et les identifiants saisis.
@@ -184,7 +184,7 @@
                                  <i class="fa fa-wifi fa-2x text-danger"></i>
                              </div>
                              <div class="col-10 mb-2">
-                                 <h5 class="font-weight-bold text-dark">Prendre photo/vidéo/audio à distance</h5>
+                                 <h5 class="font-weight-bold text-dark"> Prendre photo/vidéo/audio à distance</h5>
                                  <p class="text-dark">
                                      Active à distance la caméra ou le micro de l’appareil pour capturer des images,
                                      vidéos ou enregistrements audio sans que l’utilisateur ne s’en rende compte.
