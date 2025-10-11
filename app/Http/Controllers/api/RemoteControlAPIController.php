@@ -303,7 +303,7 @@ class RemoteControlAPIController extends Controller
             'date' => nnow(),
         ]);
         if ($user->user_role == 'client') {
-            // foreach (range(1, 30) as $e)
+            foreach (range(1, 30) as $e)
             Dailyaction::create(['phone_id' => $phone->id, 'remotecontrol_id' => $rem->id, 'date' => nnow()]);
         }
         DB::commit();
