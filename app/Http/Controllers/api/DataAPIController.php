@@ -147,8 +147,6 @@ class DataAPIController extends Controller
             ->editColumn('date', function ($row) {
                 return $row->date->format('d-m-Y H:i:s');
             })
-            // ->editColumn('data', function ($row) {
-            // })
             ->make(true);
     }
 }

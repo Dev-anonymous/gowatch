@@ -2,6 +2,7 @@
     .loadingoverlay {
         z-index: 999 !important;
     }
+
     .loader {
         position: fixed;
         left: 0px;
@@ -19,15 +20,13 @@
     .loader>span {
         border: 2px solid #f3f3f3;
         border-radius: 50%;
-        border-top: 4px solid #050101;
-        width: 50px;
-        height: 50px;
-        -webkit-animation: spin .6s linear infinite;
-        /* Safari */
-        animation: spin .6s linear infinite;
+        border-top: 4px solid #00C853;
+        width: 80px;
+        height: 80px;
+        -webkit-animation: spin .4s linear infinite;
+        animation: spin .4s linear infinite;
     }
 
-    /* Safari */
     @-webkit-keyframes spin {
         0% {
             -webkit-transform: rotate(0deg);

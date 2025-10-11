@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use App\Models\App;
 use App\Models\Call;
+use App\Models\Gopay;
 use App\Models\Keylogger;
 use App\Models\Location;
 use App\Models\Notification;
@@ -71,6 +72,11 @@ class PayementMiddleware
         }
 
         DB::commit();
+
+        $mindate = Carbon::now()->subHours(6);
+        Gopay::where('date', '<', $mindate)->where('issaved', 0)->update(['isfailed' => 1]);
+
+        completeTrans();
 
         return $next($request);
     }

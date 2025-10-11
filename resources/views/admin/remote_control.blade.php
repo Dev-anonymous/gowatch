@@ -456,7 +456,6 @@
                             </div>
                         </div>
                     </div>
-
                     <div class="card mb-3 shadow-md">
                         <div class="card-header ">
                             <div class="d-flex flex-wrap justify-content-between align-items-center">
@@ -682,7 +681,6 @@
                             sel.select2('destroy');
                             sel.html(txt);
                             sel.select2({
-                                // minimumResultsForSearch: Infinity,
                                 closeOnSelect: false,
                                 allowClear: true
                             });
@@ -691,7 +689,6 @@
                             sel.select2('destroy');
                             sel.html(txt2);
                             sel.select2({
-                                // minimumResultsForSearch: Infinity,
                                 closeOnSelect: false,
                                 allowClear: true,
                                 placeholder: "Selectionnez une application"
@@ -774,14 +771,6 @@
                             phoneStatus(json.phone);
                             return json.data;
                         }
-                    },
-                    preDrawCallback: function(settings) {
-                        // $('body').find('.tooltip').remove();
-                    },
-                    drawCallback: function(settings) {
-                        // $('[tooltip]').popover({
-                        //     html: true
-                        // });
                     },
                     order: [
                         [0, "desc"]
@@ -882,10 +871,6 @@
 
                 /////////////
                 var dtKeylogger = (new DataTable('[tkeylogger]', {
-                    // dom: 'Bfrtip',
-                    // buttons: [
-                    //     'pageLength', 'excel', 'pdf', 'print'
-                    // ],
                     lengthMenu: [
                         [10, 25, 50, 100, -1],
                         [10, 25, 50, 100, "All"]

@@ -53,14 +53,6 @@
                     ajax: {
                         url: "{{ route('applog', ['datatable' => '']) }}",
                     },
-                    preDrawCallback: function(settings) {
-                        // $('body').find('.tooltip').remove();
-                    },
-                    drawCallback: function(settings) {
-                        // $('[tooltip]').popover({
-                        //     html: true
-                        // });
-                    },
                     order: [
                         [0, "desc"]
                     ],

@@ -257,7 +257,7 @@
          </div> --}}
          <div class="container shadow-lg">
              <section id="contact" class="mb-5 ">
-                 <h3 class="text-center mt-5 pb-3 dark-grey-text font-weight-bold wow fadeIn" data-wow-delay="0.2s">
+                 <h3 class="text-center mt-5 py-3 dark-grey-text font-weight-bold wow fadeIn" data-wow-delay="0.2s">
                      <strong><i class="fa fa-money-bill"></i> Tarification</strong>
                  </h3>
                  <h4 class="text-center">Créer un compte et profitez d'une période d'essaie de <strong

@@ -20,15 +20,8 @@
     }
 </style>
 
-{{-- <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css" />
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" /> --}}
-{{-- <link
-rel="stylesheet"
-href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&amp;display=swap"
-/> --}}
 <link rel="stylesheet" href="{{ asset('css/fontawesome-6.4.2/css/all.css') }}">
 <link rel="stylesheet" href="{{ asset('css/mdb.min.css') }}" />
-{{-- <link rel="stylesheet" href="{{ asset('css/admin.css') }}" /> --}}
 
 <style>
     :root {
@@ -78,17 +71,4 @@ href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&amp;display
 </style>
 
 <link rel='shortcut icon' type='image/x-icon' href="{{ asset('img/icon.png') }}" />
-{{-- <style>
-    .bg-error {
-        background: rgba(255, 0, 0, 0.1)
-    }
-
-    [no-under]:hover {
-        text-decoration: none;
-    }
-
-    .ombre:hover {
-        box-shadow: 0 1rem 3rem rgba(0, 0, 0, .175) !important;
-    }
-</style> --}}
 <meta name="csrf-token" content="{{ csrf_token() }}">
