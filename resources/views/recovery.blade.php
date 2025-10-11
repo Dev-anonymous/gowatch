@@ -18,7 +18,8 @@
                                     Pour récuperer votre compte, veuillez entrer votre email.
                                 </div>
                                 <div class="form-outline mb-4">
-                                    <input id="form1Examplezzz" name="login" class="form-control" />
+                                    <input id="form1Examplezzz" required type="email" name="login"
+                                        class="form-control" />
                                     <label class="form-label " for="form1Examplezzz">Email</label>
                                 </div>
                                 <div id="rep">
@@ -28,8 +29,9 @@
                                     Valider
                                 </button>
                                 <div class="row mb-4 mt-4">
-                                    <a href="{{ route('app.login') }}" class=" d-flex justify-content-end"><i>Se
-                                            connecter</i></a>
+                                    <a href="{{ route('app.login') }}" class=" d-flex justify-content-end">
+                                        <i class="text-dark"> Se connecter</i>
+                                    </a>
                                 </div>
                             </form>
                         @else

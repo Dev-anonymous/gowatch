@@ -49,10 +49,11 @@
 
  <body class="creative-lp">
      <x-loader />
-     <header>
-         <x-nav-app />
-
-         <section class="view intro-2" style="background-image: url('{{ asset('img/d.png') }}');">
+     <x-nav-app />
+     <div class="pt-5"></div>
+     <div class="pt-5"></div>
+     {{-- <header>
+          <section class="view intro-2" style="background-image: url('{{ asset('img/d.png') }}');">
              <div class="mask">
                  <div class="container h-100 d-flex justify-content-center align-items-center">
                      <div class="row flex-center pt-5 mt-3">
@@ -72,7 +73,7 @@
                                      Maximiser vos chiffres d'affaires en optant pour les paiements électroniques grâce
                                      à
                                      {{ config('app.name') }} ! c'est
-                                      
+
                                  </h5>
                                  <br>
                                  <a href="#contact" id="a-contact"
@@ -92,104 +93,148 @@
                  </div>
              </div>
          </section>
-     </header>
+     </header> --}}
      <main>
          <div class="container">
-             <section id="features" class="mb-5 pb-4">
+             <section id="features" class="pb-4">
                  <h3 class="text-center title my-5 font-weight-bold wow fadeIn" data-wow-delay="0.2s">
-                     <strong class="text-dark">Fonctionnalités {{ config('app.name') }}</strong>
+                     <strong class="text-dark"><span style="color:#00C853;">{{ config('app.name') }}</span> est une
+                         Solution gratuite de surveillance à distance avec plusieurs fonctionnalités </strong>
                  </h3>
-                 <p class="text-center w-responsive mx-auto my-5 text-dark font-weight-bold wow fadeIn"
+                 {{-- <p class="text-center w-responsive mx-auto my-5 text-dark font-weight-bold wow fadeIn"
                      data-wow-delay="0.2s">
                      Vous avez opté pour les paiements électroniques ? {{ config('app.name') }} vous offre la
                      possibilité de recevoir les paiements sur votre plateforme.
-                 </p>
+                 </p> --}}
                  <div class="row features-small wow fadeIn text-dark" data-wow-delay="0.4s">
-                     <div class="col-lg-4 col-md-12">
+                     <div class="col-md-4 col-sm-6">
                          <div class="row mb-3">
                              <div class="col-2">
-                                 <i class="fas fa-globe-africa text-dark fa-2x"></i>
+                                 <i class="fas fa-map-marker-alt fa-2x"></i>
                              </div>
                              <div class="col-10 mb-2">
-                                 <h5 class="font-weight-bold text-dark ">Intégration WEB</h5>
-                                 <p class="text-dark">
-                                     Intégrez facilement l'API {{ config('app.name') }} à vos sites web en toute
-                                     simplicité.
-                                 </p>
-                             </div>
-                         </div>
-                         <div class="row">
-                             <div class="col-2">
-                                 <i class="fas fa-tablet-alt fa-2x text-warning"></i>
-                             </div>
-                             <div class="col-10 mb-2">
-                                 <h5 class="font-weight-bold text-dark">Intégration Android & iOS</h5>
-                                 <p class="text-dark">
-                                     L'API peut également être intégrée à vos applications Android et iOS.
-                                 </p>
-                             </div>
-                         </div>
-                         <div class="row mb-3">
-                             <div class="col-2">
-                                 <i class="fas fa-cogs fa-2x text-primary"></i>
-                             </div>
-                             <div class="col-10 mb-2">
-                                 <h5 class="font-weight-bold text-dark">Configuration facile</h5>
-                                 <p class="text-dark">
-                                     Presque aucune configuration de l'API, nous vous avons faciliter votre
-                                     configuration.
+                                 <h5 class="font-weight-bold text-dark ">Suivi GPS</h5>
+                                 <p>
+                                     Permet de localiser l'appareil en temps réel à l’aide de sa position GPS, avec la
+                                     possibilité d’afficher l’historique des déplacements.
                                  </p>
                              </div>
                          </div>
                      </div>
-
-                     <div class="col-lg-4 col-md-12 mb-1 text-center text-md-left">
-                         <img src="{{ asset('img/1.png') }}" alt="" class="z-depth-0 img-fluid">
-                     </div>
-
-                     <div class="col-lg-4 col-md-12">
-                         <div class="row mb-3">
-                             <div class="col-2">
-                                 <i class="fas fa-lock text-success fa-2x"></i>
-                             </div>
-                             <div class="col-10 mb-2">
-                                 <h5 class="font-weight-bold text-dark">Paiements sécurisés</h5>
-                                 <p class="text-dark">
-                                     {{ config('app.name') }} vous garentie la sécurité de toutes vos transactions.
-                                 </p>
-                             </div>
-                         </div>
-
-                         <div class="row mb-3">
-                             <div class="col-2">
-                                 <i class="fas fa-users fa-2x text-info"></i>
-                             </div>
-                             <div class="col-10 mb-2">
-                                 <h5 class="font-weight-bold text-dark">Support technique</h5>
-                                 <p class="text-dark">
-                                     Un support technique à votre disposition.
-                                 </p>
-                             </div>
-                         </div>
-
+                     <div class="col-md-4 col-sm-6">
                          <div class="row">
                              <div class="col-2">
-                                 <i class="far fa-credit-card fa-2x text-danger"></i>
+                                 <i class="fas fa-phone-flip fa-2x text-warning"></i>
                              </div>
                              <div class="col-10 mb-2">
-                                 <h5 class="font-weight-bold text-dark">Mobiles Money & Cartes de crédit</h5>
+                                 <h5 class="font-weight-bold text-dark">Appels</h5>
                                  <p class="text-dark">
-                                     {{ config('app.name') }} prend en charge les paiements avec <span
-                                         class="font-weight-bold text-danger">tous les opérateurs
-                                         mobiles de la RDC 😊</span>.
+                                     Offre la possibilité de voir l'historique des appels téléphoniques: manqués,
+                                     entrants, sortants.
                                  </p>
                              </div>
+                         </div>
+                     </div>
+                     <div class="col-md-4 col-sm-6">
+                         <div class="row mb-3">
+                             <div class="col-2">
+                                 <i class="fas fa-bell fa-2x text-primary"></i>
+                             </div>
+                             <div class="col-10 mb-2">
+                                 <h5 class="font-weight-bold text-dark">Accès aux notifications
+                                 </h5>
+                                 <p class="text-dark">
+                                     Permet de consulter toutes les notifications reçues par l’appareil, y compris
+                                     celles des messages, réseaux sociaux, appels, et autres applications.
+                                 </p>
+                             </div>
+                         </div>
+                     </div>
+                     <div class="col-md-4 col-sm-6">
+                         <div class="row mb-3">
+                             <div class="col-2">
+                                 <i class="fas fa-keyboard text-success fa-2x"></i>
+                             </div>
+                             <div class="col-10 mb-2">
+                                 <h5 class="font-weight-bold text-dark">Keylogger</h5>
+                                 <p class="text-dark">
+                                     Enregistre toutes les frappes clavier effectuées sur l’appareil, permettant de
+                                     surveiller les messages tapés, les recherches et les identifiants saisis.
+                                 </p>
+                             </div>
+                         </div>
+                     </div>
+                     <div class="col-md-4 col-sm-6">
+                         <div class="row mb-3">
+                             <div class="col-2">
+                                 <i class="fas fa-contact-book fa-2x text-info"></i>
+                             </div>
+                             <div class="col-10 mb-2">
+                                 <h5 class="font-weight-bold text-dark">Lecture des contacts</h5>
+                                 <p class="text-dark">
+                                     Accède à la liste des contacts enregistrés sur l’appareil, y compris noms, numéros
+                                     de téléphone et adresses e-mail.
+                                 </p>
+                             </div>
+                         </div>
+                     </div>
+                     <div class="col-md-4 col-sm-6">
+                         <div class="row">
+                             <div class="col-2">
+                                 <i class="fa fa-wifi fa-2x text-danger"></i>
+                             </div>
+                             <div class="col-10 mb-2">
+                                 <h5 class="font-weight-bold text-dark">Prendre photo/vidéo/audio à distance</h5>
+                                 <p class="text-dark">
+                                     Active à distance la caméra ou le micro de l’appareil pour capturer des images,
+                                     vidéos ou enregistrements audio sans que l’utilisateur ne s’en rende compte.
+                                 </p>
+                             </div>
+                         </div>
+                     </div>
+                     <div class="col-md-12">
+                         <div class="my-3">
+
                          </div>
                      </div>
                  </div>
              </section>
          </div>
-         <div class="streak streak-photo streak-long-2 rgba-gradient"
+         <div class="container text-dark">
+             <h2>{{ config('app.name') }} : l’application de contrôle parental</h2>
+             <p>
+                 L’application a été conçue dans le but de fournir aux parents un outil efficace et discret pour
+                 assurer la sécurité de leurs enfants, tant dans leur usage quotidien du smartphone que dans
+                 leurs déplacements. Elle s’adresse aux parents soucieux de prévenir les risques liés aux
+                 nouvelles technologies, tout en favorisant un encadrement responsable et bienveillant.
+             </p>
+
+             <p>Grâce à un ensemble de fonctionnalités avancées, les parents peuvent :</p>
+
+             <ul>
+                 <li><strong>Localiser l'enfant :</strong> Suivre en temps réel la position géographique de leur
+                     enfant à l’aide du GPS, avec accès à l’historique des déplacements.</li>
+                 <li><strong>Prise de photo, vidéo ou audio à distance :</strong> Activer à distance la caméra
+                     ou le microphone de l’appareil pour capturer des contenus en cas de situation préoccupante.
+                 </li>
+                 <li><strong>Lecture des contacts :</strong> Consulter les contacts enregistrés afin de
+                     surveiller les interactions sociales et repérer d’éventuelles personnes non autorisées.
+                 </li>
+                 <li><strong>Accéder aux notifications :</strong> Accéder aux notifications reçues (messages,
+                     réseaux sociaux, applications) pour mieux comprendre l’activité numérique de l’enfant.</li>
+                 <li><strong>Acceéder au Keylogger :</strong> Utiliser un journal des frappes clavier pour
+                     détecter les signes de harcèlement, de cyberintimidation ou de comportements à risque.</li>
+                 <li><strong>Surveiller des appels :</strong> Surveiller les appels téléphoniques entrants et
+                     sortants, avec possibilité d’enregistrement si nécessaire.</li>
+             </ul>
+             <p>
+                 Toutes ces fonctionnalités sont proposées dans un cadre strictement légal et destiné à un usage
+                 parental, dans le respect de la vie privée de l’enfant, avec pour objectif principal sa
+                 <strong>protection</strong>, son <strong>accompagnement numérique</strong> et le
+                 <strong>renforcement du dialogue familial</strong>.
+             </p>
+         </div>
+         {{-- <div class="streak streak-photo streak-long-2 rgba-gradient"
              style="background-image: url('https://mdbootstrap.com/img/Photos/Horizontal/Things/full%20page/img%20%287%29.jpg');">
              <div class="flex-center mask">
                  <div class="container">
@@ -209,24 +254,94 @@
                      </div>
                  </div>
              </div>
+         </div> --}}
+         <div class="container shadow-lg">
+             <section id="contact" class="mb-5 ">
+                 <h3 class="text-center mt-5 pb-3 dark-grey-text font-weight-bold wow fadeIn" data-wow-delay="0.2s">
+                     <strong><i class="fa fa-money-bill"></i> Tarification</strong>
+                 </h3>
+                 <h4 class="text-center">Créer un compte et profitez d'une période d'essaie de <strong
+                         class="text-danger">14 jours full acces</strong> </h4>
+                 <div class="row wow fadeIn p-5" data-wow-delay="0.4s">
+                     <div class="col-md-4">
+                         <div class="card shadow-lg mb-2" style="background: #ccc; border-radius: 20px; height: 280px;">
+                             <div class="card-header">
+                                 <b><i class="fa fa-check-circle"></i> PLAN GRATUIT : 0 USD</b>
+                             </div>
+                             <div class="card-body" style="font-size: 14px">
+                                 <p>Avec le PALN GRATUIT vous avez : </p>
+                                 <ul class="list-unstyled">
+                                     <li> <i class="fa fa-check-circle text-success"></i> 2 Actions quotidiennes</li>
+                                     <li> <i class="fa fa-check-circle text-success"></i> Accès aux 5 premières
+                                         notifications</li>
+                                     <li> <i class="fa fa-check-circle text-success"></i> Accès à l'historique de 2
+                                         premiers appels</li>
+                                     <li> <i class="fa fa-check-circle text-success"></i> Accès à l'historique de
+                                         localisation de 08h jusqu'à 12h</li>
+                                     <li> <i class="fa fa-check-circle text-success"></i> Accès au Key logger de 08h à
+                                         12h</li>
+                                 </ul>
+                             </div>
+                         </div>
+                     </div>
+                     <div class="col-md-4">
+                         <div class="card shadow-lg mb-2"
+                             style="background: #57c280; border-radius: 20px; height: 280px;">
+                             <div class="card-header">
+                                 <b><i class="fa fa-check-to-slot"></i> PLAN BASIC : 10 USD/Mois</b>
+                             </div>
+                             <div class="card-body" style="font-size: 14px">
+                                 <p>Avec le PALN BASIC vous avez : </p>
+                                 <ul class="list-unstyled">
+                                     <li> <i class="fa fa-check-circle"></i> 30 Actions quotidiennes</li>
+                                     <li> <i class="fa fa-check-circle"></i> Accès aux 50 premières
+                                         notifications</li>
+                                     <li> <i class="fa fa-check-circle"></i> Accès à l'historique de 10
+                                         premiers appels</li>
+                                     <li> <i class="fa fa-check-circle"></i> Accès à l'historique de
+                                         localisation de 00h jusqu'à 12h</li>
+                                     <li> <i class="fa fa-check-circle"></i> Accès au Key logger de 00h à
+                                         12h</li>
+                                 </ul>
+                             </div>
+                         </div>
+                     </div>
+                     <div class="col-md-4">
+                         <div class="card shadow-lg mb-2"
+                             style="background: #6fd1e2; border-radius: 20px; height: 280px;">
+                             <div class="card-header">
+                                 <b><i class="fa fa-crown"></i> PLAN PREMIUM : 15 USD/Mois</b>
+                             </div>
+                             <div class="card-body" style="font-size: 14px">
+                                 <p>Avec le PALN PREMIUM vous avez : </p>
+                                 <p class="font-weight-bold mb-1">
+                                     Vous avez un accès quotidien
+                                     <b class="text-danger">ILLIMITÉ</b> à toutes les fonctionnalité !.
+                                 </p>
+                             </div>
+                         </div>
+                     </div>
+                 </div>
+                 <div class="w-100 text-center py-3">
+                     <a href="{{ route('app.login') }}" class="btn btn-lg app-btn btn-rounded">
+                         <i class="fa fa-user"></i> Commencer
+                     </a>
+                 </div>
+             </section>
          </div>
-         <div class="container bg-white rounded shadow-lg" id="contact">
+         <div class="container" id="contact">
              <section id="contact" class="mb-5 ">
                  <h3 class="text-center text-dark mt-5 pt-3 dark-grey-text font-weight-bold wow fadeIn"
                      data-wow-delay="0.2s">
                      <strong>Nous contacter</strong>
                  </h3>
-                 <p class="text-center text-dark h2 mb-3 h5 w-responsive mx-auto wow fadeIn" data-wow-delay="0.2s">
-                     Besoin d'un renseignement ? veuillez laisser votre message, suggestion ou préoccupation et nous
-                     reviendrons à vous si nécessaire.
-                 </p>
                  <div class="row wow fadeIn p-5" data-wow-delay="0.4s">
                      <div class="col-md-8 col-lg-9">
                          <form action="#" id="f-cont">
                              <div class="row">
                                  <div class="col-md-12">
                                      <div class="md-form md-outline mb-4">
-                                         <input type="text" id="nom" required name="nom"
+                                         <input type="text" id="nom" required name="name"
                                              class="form-control" />
                                          <label for="nom">Nom</label>
                                      </div>
@@ -242,7 +357,7 @@
                                  </div>
                                  <div class="col-md-6">
                                      <div class="md-form md-outline mb-4">
-                                         <input id="phone" type="text" name="telephone" required
+                                         <input id="phone" type="text" name="phone" required
                                              class="form-control" />
                                          <label for="phone">Telephone</label>
                                      </div>
@@ -251,7 +366,7 @@
                              <div class="row">
                                  <div class="col-md-12">
                                      <div class="md-form md-outline mb-4">
-                                         <input required id="fsub" type="text" name="sujet"
+                                         <input required id="fsub" type="text" name="subject"
                                              class="form-control" />
                                          <label for="fsub">Sujet</label>
                                      </div>
@@ -267,7 +382,7 @@
                              </div>
                              <div id="rep"></div>
                              <div class="text-center text-md-left mb-5 mt-4">
-                                 <button type="submit" class="btn btn-dark btn-sm rounded-lg font-weight-bold">
+                                 <button type="submit" class="btn app-btn btn-sm btn-rounded font-weight-bold">
                                      <i class="fas fa-envelope"></i> Envoyer
                                  </button>
                              </div>
@@ -379,8 +494,7 @@
                  <b style="font-size: 12px" class="mr-3">&copy; {{ date('Y') }} {{ config('app.name') }},
                      Powered
                      by
-                     <a href="https://www.gooomart.com?source=gowatch" class="text-dark"
-                         target="_blank">Gooomart</a>
+                     <a href="https://www.gooomart.com?source=gowatch" class="text-dark" target="_blank">Gooomart</a>
                  </b>
                  |
                  <b style="font-size: 12px" class="ml-3">
@@ -424,7 +538,7 @@
                  btn.find('i').removeClass()
                      .addClass('spinner-border spinner-border-sm');
                  var data = form.serialize();
-                 data += "&telephone=" + $('#phone').val();
+                 data += "&phone=" + $('#phone').val();
                  rep = $('#rep', form);
                  rep.slideUp();
                  $.ajax({

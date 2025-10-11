@@ -13,7 +13,10 @@
             margin-top: -58.59px;
         }
     }
-
+    .app-btn {
+        color: white;
+        background: var(--appcolor);
+    }
     a.nav-link {
         transition: transform .3s;
         color: var(--appcolor) !important;
