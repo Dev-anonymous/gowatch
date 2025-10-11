@@ -252,6 +252,9 @@ function callIcon($type)
     if ($type == 'Rejeté') {
         return "<span  title='Appel $type'><i class='fas fa-ban text-danger'></i> $type<span/>";
     }
+    if ($type == 'Bloqué') {
+        return "<span  title='Appel $type'><i class='fas fa-ban text-warning'></i> $type<span/>";
+    }
 
     return $type;
 }

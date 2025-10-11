@@ -42,16 +42,16 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 
 Route::post('feedback', [FeedbackAPIController::class, 'store'])->name('feedback.store');
 
-// Route::get('test-odoo', function () {
-//     $tmp = [];
-//     $faker = Faker\Factory::create();
-//     foreach (range(1, 20) as $k => $el) {
-//         $tmp[] = (object) [
-//             'id' => $k + 1,
-//             'name' => $faker->name(),
-//             'first_name' => $faker->firstName(),
-//             'last_name' => $faker->lastName(),
-//         ];
-//     }
-//     return $tmp;
-// });
+Route::get('test-odoo', function () {
+    $tmp = [];
+    $faker = Faker\Factory::create();
+    foreach (range(1, 20) as $k => $el) {
+        $tmp[] = (object) [
+            'id' => $k + 1,
+            'name' => $faker->name(),
+            'first_name' => $faker->firstName(),
+            'last_name' => $faker->lastName(),
+        ];
+    }
+    return $tmp;
+});
