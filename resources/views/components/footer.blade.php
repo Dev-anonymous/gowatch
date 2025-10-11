@@ -1,4 +1,4 @@
-<footer class="fixed-bottom">
+<footer class="fixed-bottome">
     <div class="text-right py-2 px-3">
         <b style="font-size: 12px" class="mr-3">&copy; {{ date('Y') }} {{ config('app.name') }}, Powered by
             <a href="https://www.gooomart.com?source=gowatch" class="text-warning" target="_blank">Gooomart</a>
