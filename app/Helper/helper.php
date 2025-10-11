@@ -98,8 +98,8 @@ function saveData($paydata, $trans)
             if ($action == 'subscription') {
                 $phone = Phone::where('id', $d['phone_id'])->first();
                 $sub = $phone->subscriptions()->first();
+                $end = nnow()->addDays(29);
                 if ($sub) {
-                    $end = nnow()->addDays(29);
                     $sub->update(['to' => $end, 'date' => nnow(), 'type' => strtoupper($d['subtype'])]);
                     $sub->histories()->create(['to' => $end, 'amount' => $d['montant'], 'currency' => $d['devise'], 'type' => strtoupper($d['subtype'])]);
                 } else {
