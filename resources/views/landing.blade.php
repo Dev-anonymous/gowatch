@@ -264,7 +264,7 @@
                          class="text-danger">14 jours full acces</strong> </h4>
                  <div class="row wow fadeIn p-5" data-wow-delay="0.4s">
                      <div class="col-md-4">
-                         <div class="card shadow-lg mb-2" style="background: #ccc; border-radius: 20px; height: 280px;">
+                         <div class="card shadow-lg mb-2" style="background: #ccc; border-radius: 20px; min-height: 280px;">
                              <div class="card-header">
                                  <b><i class="fa fa-check-circle"></i> PLAN GRATUIT : 0 USD</b>
                              </div>
@@ -286,7 +286,7 @@
                      </div>
                      <div class="col-md-4">
                          <div class="card shadow-lg mb-2"
-                             style="background: #57c280; border-radius: 20px; height: 280px;">
+                             style="background: #57c280; border-radius: 20px; min-height: 280px;">
                              <div class="card-header">
                                  <b><i class="fa fa-check-to-slot"></i> PLAN BASIC : 10 USD/Mois</b>
                              </div>
@@ -308,7 +308,7 @@
                      </div>
                      <div class="col-md-4">
                          <div class="card shadow-lg mb-2"
-                             style="background: #6fd1e2; border-radius: 20px; height: 280px;">
+                             style="background: #6fd1e2; border-radius: 20px; min-height: 280px;">
                              <div class="card-header">
                                  <b><i class="fa fa-crown"></i> PLAN PREMIUM : 15 USD/Mois</b>
                              </div>
