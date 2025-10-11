@@ -480,7 +480,7 @@
                             </div>
                         </div>
                     @else
-                        <div class="card shadow-lg mt-5">
+                        <div class="card shadow-lg mb-3 mt-5">
                             <div class="card-body d-flex justify-content-center align-items-center"
                                 style="min-height: 60vh">
                                 <div class="text-center">
