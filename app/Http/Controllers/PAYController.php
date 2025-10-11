@@ -98,7 +98,7 @@ class PAYController extends Controller
             'isfailed' => 0,
             'paydata' => json_encode($paydata),
         ]);
-        $r = gopay_init_payment($payamount = 500, $data['devise'] = 'CDF', $tel, $myref);
+        $r = gopay_init_payment($payamount, $data['devise'], $tel, $myref);
 
         $ref = null;
         if ($r->success) {
