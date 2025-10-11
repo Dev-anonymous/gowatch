@@ -128,12 +128,12 @@
                     </p>
 
                     <h2>3. Décharge de responsabilité</h2>
-                    <p>
+                    <p class="text-danger">
                         Le développeur et l’équipe de <strong>{{ config('app.name') }}</strong> déclinent <strong>toute
                             responsabilité</strong> en cas d’utilisation abusive, illégale ou non autorisée de
                         l’application.
                     </p>
-                    <p>
+                    <p class="text-danger">
                         L’utilisateur est seul responsable de s’assurer que l’utilisation de l’application est conforme aux
                         <strong>lois locales</strong> en vigueur.
                     </p>

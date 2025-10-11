@@ -2,7 +2,9 @@
     data-scroll-container="#scrollContainer">
     <div class="mt-4">
         <div id="header-content" class="pl-3 d-flex justify-content-center">
-            {{-- <img src="{{ asset('img/logo2.png') }}" alt="" class="mb-3" height="70px" width="130px" /> --}}
+            <a href="{{ route('app.index') }}">
+                <x-logo size="24" />
+            </a>
         </div>
         <hr class="mb-0" />
     </div>

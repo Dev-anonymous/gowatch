@@ -99,7 +99,7 @@
              <section id="features" class="pb-4">
                  <h3 class="text-center title my-5 font-weight-bold wow fadeIn" data-wow-delay="0.2s">
                      <strong class="text-dark"><span style="color:#00C853;">{{ config('app.name') }}</span> est une
-                         Solution gratuite de surveillance à distance avec plusieurs fonctionnalités </strong>
+                         Solution gratuite de surveillance sur Android à distance avec plusieurs fonctionnalités </strong>
                  </h3>
                  {{-- <p class="text-center w-responsive mx-auto my-5 text-dark font-weight-bold wow fadeIn"
                      data-wow-delay="0.2s">
@@ -201,9 +201,9 @@
              </section>
          </div>
          <div class="container text-dark">
-             <h2>{{ config('app.name') }} : l’application de contrôle parental</h2>
+             <h2>{{ config('app.name') }} : l’application de contrôle parental (Android)</h2>
              <p>
-                 L’application a été conçue dans le but de fournir aux parents un outil efficace et discret pour
+                 L’application <b class="text-danger">Android</b> a été conçue dans le but de fournir aux parents un outil efficace et discret pour
                  assurer la sécurité de leurs enfants, tant dans leur usage quotidien du smartphone que dans
                  leurs déplacements. Elle s’adresse aux parents soucieux de prévenir les risques liés aux
                  nouvelles technologies, tout en favorisant un encadrement responsable et bienveillant.

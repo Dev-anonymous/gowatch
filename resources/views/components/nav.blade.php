@@ -5,7 +5,7 @@
         </button>
 
         <a class="navbar-brand" href="{{ route('app.index') }}">
-            <img src="{{ asset('img/logo1.png') }}" class="img-fluidr" height="40px" width="80px" alt="">
+            <x-logo/>
         </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#app-nav"
             aria-controls="app-nav" aria-expanded="false" aria-label="Toggle navigation">

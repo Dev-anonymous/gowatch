@@ -434,3 +434,16 @@ function limitedata(&$data, $phone, $type)
         }
     }
 }
+
+
+function apkSize()
+{
+    try {
+        $path = public_path('app.apk');
+        $sizeInBytes = filesize($path);
+        $sizeInMegabytes = $sizeInBytes / 1048576;
+        return round($sizeInMegabytes) . ' Mo';
+    } catch (\Throwable $th) {
+        return "~ Mo";
+    }
+}

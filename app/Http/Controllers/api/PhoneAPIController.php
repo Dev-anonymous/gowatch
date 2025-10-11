@@ -17,12 +17,13 @@ class PhoneAPIController extends Controller
     public function index()
     {
         $user = Auth::user();
-        abort_if(!in_array($user->user_role, ['admin']), 403, "No permission");
-        $user_id = request('user_id');
-
+        abort_if(!in_array($user->user_role, ['admin', 'client']), 403, "No permission");
         if ($user->user_role == 'admin') {
+            $user_id = request('user_id');
             $phones = Phone::orderBy('id', 'desc')->where('users_id', $user_id)->get();
             return $phones;
+        } else {
+            return $user->phones;
         }
     }
 

@@ -291,7 +291,7 @@ class RemoteControlAPIController extends Controller
         } else {
             abort(403, "Not allowed");
         }
-        // if (in_array($action, ['p1.0', 'p1.1', 'p0.0', 'p0.1', 'c'])) {}
+
         DB::beginTransaction();
         $rem = Remotecontrol::create([
             'phone_id' => $phone_id,

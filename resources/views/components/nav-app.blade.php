@@ -3,7 +3,7 @@
 <nav id="main-navbar" class="mb-1 navbar navbar-expand-lg fixed-top scrolling-navbar bg-white">
     <div class="container-fluid">
         <a class="navbar-brand" href="{{ route('app.index') }}">
-            {{-- <img src="{{ asset('img/logo1.png') }}" class="img-fluidr" height="40px" width="80px" alt=""> --}}
+            <x-logo />
         </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#app-nav" aria-controls="app-nav"
             aria-expanded="false" aria-label="Toggle navigation">
@@ -23,7 +23,12 @@
                 <li class="nav-item">
                     <a class="nav-link font-weight-bold @if (Route::is('app.login')) active @endif"
                         href="{{ route('app.login') }}">
-                        <span><i class="fa fa-user-alt"></i> Connexion</span>
+                        @auth
+                            <span><i class="fa fa-gauge-high"></i> Dashboard</span>
+                        @endauth
+                        @guest
+                            <span><i class="fa fa-user-alt"></i> Connexion</span>
+                        @endguest
                     </a>
                 </li>
             </ul>
