@@ -482,7 +482,7 @@
                     @else
                         <div class="card shadow-lg mb-3 mt-5">
                             <div class="card-body d-flex justify-content-center align-items-center"
-                                style="min-height: 60vh">
+                                style="min-height: 50vh">
                                 <div class="text-center">
                                     <h5 class="font-weight-bold text-danger">
                                         <i class="fa fa-phone-slash"></i> Aucun téléphone
