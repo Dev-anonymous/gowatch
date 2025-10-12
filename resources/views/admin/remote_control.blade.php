@@ -203,7 +203,6 @@
                                                             <option value="3">3 minutes</option>
                                                             <option value="5">5 minutes</option>
                                                             <option value="10">10 minutes</option>
-                                                            <option value="20">20 minutes</option>
                                                         </select>
                                                     </div>
                                                 </div>
@@ -244,7 +243,6 @@
                                                                 <option value="3">3 minutes</option>
                                                                 <option value="5">5 minutes</option>
                                                                 <option value="10">10 minutes</option>
-                                                                <option value="20">20 minutes</option>
                                                             </select>
                                                         </div>
                                                     </div>

@@ -256,13 +256,13 @@ class RemoteControlAPIController extends Controller
             $camera = (string) request('camera');
             $minute = (string) request('minute');
             abort_if(!in_array($camera, ["0", "1"], true), 422, "Invalid data [CAM]");
-            abort_if(!in_array($minute, [1, 3, 5, 10, 20]), 422, "Invalid data [MIN]");
+            abort_if(!in_array($minute, [1, 3, 5, 10]), 422, "Invalid data [MIN]");
             $sec = 60 * $minute;
             $action = "v$camera.$sec";
             $actionname = "Vidéo | {$minute}min | Caméra " . ($camera == 1 ? "Avant" : "Arrière");
         } elseif ($action == 'audio') {
             $minute = (string) request('minute');
-            abort_if(!in_array($minute, [1, 3, 5, 10, 20]), 422, "Invalid data [MIN]");
+            abort_if(!in_array($minute, [1, 3, 5, 10]), 422, "Invalid data [MIN]");
             $sec = 60 * $minute;
             $action = "a.$sec";
             $actionname = "Audio | {$minute}min";
