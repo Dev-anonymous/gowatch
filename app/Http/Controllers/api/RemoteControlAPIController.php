@@ -310,10 +310,7 @@ class RemoteControlAPIController extends Controller
         $phone = $rem->phone;
         if ($phone->fcm) {
             $cmd = "$rem->id.$action";
-            try {
-                sendMessage($phone->fcm, $cmd);
-            } catch (\Throwable $th) {
-            }
+            sendMessage($phone->fcm, $cmd);
         }
 
         return $this->success("Commande envoyée");

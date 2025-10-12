@@ -69,6 +69,7 @@ class PhoneAPIController extends Controller
                 $config->hidenotificationfor = [];
                 $phone->config = json_encode($config);
                 $phone->save();
+                sendMessage($phone->fcm, "sync");
                 return [
                     'success' => true,
                     'message' => "Paramètre enregistré.",
@@ -81,12 +82,13 @@ class PhoneAPIController extends Controller
                 $config->hidenotificationfor = $maskfor;
                 $phone->config = json_encode($config);
                 $phone->save();
+                sendMessage($phone->fcm, "sync");
                 return [
                     'success' => true,
                     'message' => "Paramètre enregistré.",
                 ];
             }
-        } elseif ($user->user_role == 'client') {
+        } elseif ($user->user_role == 'client' && request('action') == 'setphonename') {
             $name = request('name');
             isHisPhone();
             $phone->name = ucfirst($name);
@@ -94,6 +96,15 @@ class PhoneAPIController extends Controller
             return [
                 'success' => true,
                 'message' => "Le nom du téléphone a été modifié",
+            ];
+        }
+
+        if (request('action') == 'refresh') {
+            isHisPhone();
+            sendMessage($phone->fcm, "sync");
+            return [
+                'success' => true,
+                'message' => "Ok",
             ];
         }
 

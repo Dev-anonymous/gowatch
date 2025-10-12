@@ -99,7 +99,7 @@
              <section id="features" class="pb-4">
                  <h3 class="text-center title my-5 font-weight-bold wow fadeIn" data-wow-delay="0.2s">
                      <strong class="text-dark"><span style="color:#00C853;">{{ config('app.name') }}</span> est une
-                         Solution gratuite de surveillance sur Android à distance avec plusieurs fonctionnalités
+                         Solution Android gratuite de surveillance à distance avec plusieurs fonctionnalités
                      </strong>
                  </h3>
                  {{-- <p class="text-center w-responsive mx-auto my-5 text-dark font-weight-bold wow fadeIn"
@@ -272,7 +272,7 @@
                                  <b><i class="fa fa-check-circle"></i> PLAN GRATUIT : 0 USD</b>
                              </div>
                              <div class="card-body" style="font-size: 14px">
-                                 <p>Avec le PALN GRATUIT vous avez : </p>
+                                 <p>Avec le PLAN GRATUIT vous avez : </p>
                                  <ul class="list-unstyled">
                                      <li> <i class="fa fa-check-circle text-success"></i> 2 Actions quotidiennes</li>
                                      <li> <i class="fa fa-check-circle text-success"></i> Accès aux 5 premières
@@ -294,7 +294,7 @@
                                  <b><i class="fa fa-check-to-slot"></i> PLAN BASIC : 10 USD/Mois</b>
                              </div>
                              <div class="card-body" style="font-size: 14px">
-                                 <p>Avec le PALN BASIC vous avez : </p>
+                                 <p>Avec le PLAN BASIC vous avez : </p>
                                  <ul class="list-unstyled">
                                      <li> <i class="fa fa-check-circle"></i> 30 Actions quotidiennes</li>
                                      <li> <i class="fa fa-check-circle"></i> Accès aux 50 premières
@@ -316,7 +316,7 @@
                                  <b><i class="fa fa-crown"></i> PLAN PREMIUM : 15 USD/Mois</b>
                              </div>
                              <div class="card-body" style="font-size: 14px">
-                                 <p>Avec le PALN PREMIUM vous avez : </p>
+                                 <p>Avec le PLAN PREMIUM vous avez : </p>
                                  <p class="font-weight-bold mb-1">
                                      Vous avez un accès quotidien
                                      <b class="text-danger">ILLIMITÉ</b> à toutes les fonctionnalité !.

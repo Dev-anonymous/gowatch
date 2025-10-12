@@ -201,21 +201,22 @@ function sendMessage($token, $payload = "")
         ],
     ];
 
-    $ch = curl_init();
-    curl_setopt($ch, CURLOPT_URL, $apiurl);
-    curl_setopt($ch, CURLOPT_POST, true);
-    curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-    curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($message));
-    $result = curl_exec($ch);
-
     $ok = false;
-    if ($result === FALSE) {
-        // die('Curl failed: ' . curl_error($ch));
-    }
-    curl_close($ch);
+
     try {
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $apiurl);
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($message));
+        $result = curl_exec($ch);
+
+        if ($result === FALSE) {
+            // die('Curl failed: ' . curl_error($ch));
+        }
+        curl_close($ch);
         $result = json_decode($result);
         $mess = @$result?->error?->message;
         if ('Android message is too big' == $mess) {

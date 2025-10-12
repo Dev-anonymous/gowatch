@@ -74,7 +74,24 @@
                     </div>
                     <div class="card mb-3 shadow-md">
                         <div class="card-header">
-                            <h4 class="font-weight-bold m-0"> <i class="fa fa-phone"></i> <span phonename></span> </h4>
+                            <div class="d-flex flex-wrap justify-content-between align-items-center">
+                                <div class="">
+                                    <h4 class="font-weight-bold"> <i class="fa fa-phone"></i> <span phonename></span>
+                                        <button class="btn btn-sm shadow-md btn-rounded input m-0" id="btneditphone">
+                                            <i class="fa fa-edit"></i>
+                                        </button>
+                                    </h4>
+                                    <span phonename2></span>
+                                </div>
+                                <div class="d-flex flex-column flex-sm-row flex-wrap">
+                                    <div class="mb-2 mb-sm-0 mr-sm-2">
+                                        <button class="btn btn-sm app-btn btn-rounded" btnrefresh
+                                            title="Actualiser les infos">
+                                            <i class="fa fa-refresh"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                         <div class="card-body">
                             <p class="m-1">
@@ -751,7 +768,26 @@
                     }).always(function() {
                         $('.input').attr('disabled', false);
                     });
-                })
+                });
+
+                $('[btnrefresh]').click(function() {
+                    var pid = phonesel.val();
+                    var btn = $(this);
+                    var i = btn.find('i');
+                    i.addClass('fa-spin');
+                    btn.attr('disabled', true);
+                    $.ajax({
+                        url: '{{ route('phone.update', '') }}/' + pid,
+                        type: 'put',
+                        contentType: 'application/json',
+                        data: JSON.stringify({
+                            action: 'refresh'
+                        }),
+                    }).always(function() {
+                        btn.attr('disabled', false);
+                        i.removeClass('fa-spin');
+                    });
+                });
 
                 var dtResult = (new DataTable('[tresult]', {
                     searching: false,

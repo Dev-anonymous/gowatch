@@ -97,13 +97,23 @@
                     @if (count($phones))
                         <div class="card mb-3 shadow-md">
                             <div class="card-header">
-                                <div class="">
-                                    <h4 class="font-weight-bold"> <i class="fa fa-phone"></i> <span phonename></span>
-                                        <button class="btn btn-sm shadow-md btn-rounded input m-0" id="btneditphone">
-                                            <i class="fa fa-edit"></i>
-                                        </button>
-                                    </h4>
-                                    <span phonename2></span>
+                                <div class="d-flex flex-wrap justify-content-between align-items-center">
+                                    <div class="">
+                                        <h4 class="font-weight-bold"> <i class="fa fa-phone"></i> <span phonename></span>
+                                            <button class="btn btn-sm shadow-md btn-rounded input m-0" id="btneditphone">
+                                                <i class="fa fa-edit"></i>
+                                            </button>
+                                        </h4>
+                                        <span phonename2></span>
+                                    </div>
+                                    <div class="d-flex flex-column flex-sm-row flex-wrap">
+                                        <div class="mb-2 mb-sm-0 mr-sm-2">
+                                            <button class="btn btn-sm app-btn btn-rounded" btnrefresh
+                                                title="Actualiser les infos">
+                                                <i class="fa fa-refresh"></i>
+                                            </button>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                             <div class="card-body">
@@ -489,7 +499,7 @@
                                     </h5>
                                     <div class="mt-3">
                                         <b>
-                                            Veuillez ajouter au moins un téléphone pour commencer la surveillance à
+                                            Veuillez ajouter un téléphone pour commencer la surveillance à
                                             distance.
                                         </b>
                                     </div>
@@ -537,7 +547,7 @@
                     </div>
                     <div class="modal-body" style="max-height: 60vh; overflow:auto;">
                         <h5 class="mb-3">
-                           Prenez le téléphone <b>Android</b> de la personne que vous voulez surveiller :
+                            Prenez le téléphone <b>Android</b> de la personne que vous voulez surveiller :
                         </h5>
                         <ul>
                             <li>
@@ -1024,6 +1034,26 @@
                         $('.input').attr('disabled', false);
                     });
                 }
+
+                $('[btnrefresh]').click(function() {
+                    var pid = phonesel.val();
+                    var btn = $(this);
+                    var i = btn.find('i');
+                    i.addClass('fa-spin');
+                    btn.attr('disabled', true);
+                    $.ajax({
+                        url: '{{ route('phone.update', '') }}/' + pid,
+                        type: 'put',
+                        contentType: 'application/json',
+                        data: JSON.stringify({
+                            action: 'refresh',
+                            phone_id: pid,
+                        }),
+                    }).always(function() {
+                        btn.attr('disabled', false);
+                        i.removeClass('fa-spin');
+                    });
+                });
 
                 var dtResult = (new DataTable('[tresult]', {
                     searching: false,
