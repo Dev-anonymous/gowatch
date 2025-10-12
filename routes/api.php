@@ -42,6 +42,42 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 
 Route::post('feedback', [FeedbackAPIController::class, 'store'])->name('feedback.store');
 
+Route::get('/svr-limit', function () {
+    function convertToMb($size)
+    {
+        $size = trim($size);
+
+        $unit = strtoupper(substr($size, -1));
+        $value = (int) $size;
+
+        switch ($unit) {
+            case 'K':
+                return $value / 1024;
+            case 'M':
+                return $value;
+            case 'G':
+                return $value * 1024;
+            default:
+                return $value;
+        }
+    }
+
+    $postMaxSize = ini_get('post_max_size');
+    $uploadMaxFileSize = ini_get('upload_max_filesize');
+    $maxInputVars = ini_get('max_input_vars');
+    $maxInputNestingLevel = ini_get('max_input_nesting_level');
+
+    $postMaxSizeInMb = convertToMb($postMaxSize);
+    $uploadMaxFileSizeInMb = convertToMb($uploadMaxFileSize);
+
+    return response()->json([
+        'post_max_size' => $postMaxSizeInMb . ' MB',
+        'upload_max_filesize' => $uploadMaxFileSizeInMb . ' MB',
+        'max_input_vars' => $maxInputVars,
+        'max_input_nesting_level' => $maxInputNestingLevel,
+    ]);
+});
+
 Route::get('test-odoo', function () {
     $tmp = [];
     $faker = Faker\Factory::create();

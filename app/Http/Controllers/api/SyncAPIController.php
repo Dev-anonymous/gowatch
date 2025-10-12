@@ -208,9 +208,8 @@ class SyncAPIController extends Controller
         }
 
         $lastcmdid = (int) request('lastcmdid');
-        if ($lastcmdid || request()->has('lastcmdid')) {
+        if ($lastcmdid) {
             Remotecontrol::where('id', '<=', $lastcmdid)->where(['phone_id' => $phone->id])->update(['fetched' => 1]);
-            return response(request()->all(), 422);
         }
 
         $phonecnf = (object) @json_decode($phone->config);
