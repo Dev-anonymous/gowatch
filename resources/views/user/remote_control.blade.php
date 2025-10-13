@@ -1053,7 +1053,8 @@
                         type: 'put',
                         contentType: 'application/json',
                         data: JSON.stringify({
-                            action: 'refresh'
+                            action: 'refresh',
+                            phone_id: pid,
                         }),
                     }).always(function() {
                         btn.attr('disabled', false);
