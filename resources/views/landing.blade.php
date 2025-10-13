@@ -262,7 +262,7 @@
                  <h3 class="text-center mt-5 py-3 dark-grey-text font-weight-bold wow fadeIn" data-wow-delay="0.2s">
                      <strong><i class="fa fa-money-bill"></i> Tarification</strong>
                  </h3>
-                 <h4 class="text-center">Créer un compte et profitez d'une période d'essaie de <strong
+                 <h4 class="text-center">Créer <b>gratuitement</b> votre compte et profitez d'une période d'essaie de <strong
                          class="text-danger">14 jours full acces</strong> </h4>
                  <div class="row wow fadeIn p-5" data-wow-delay="0.4s">
                      <div class="col-md-4">
