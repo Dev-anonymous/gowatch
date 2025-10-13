@@ -53,7 +53,9 @@
                                                 <select id="user" class="form-control form-control-sm select2 input"
                                                     style="width: 100%">
                                                     @foreach ($users as $el)
-                                                        <option value="{{ $el->id }}">{{ $el->name }}</option>
+                                                        <option value="{{ $el->id }}">{{ $el->name }}
+                                                            ({{ $el->phones()->count() }})
+                                                        </option>
                                                     @endforeach
                                                 </select>
                                             </div>
@@ -509,7 +511,7 @@
 
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-dark btn-sm" data-dismiss="modal">Fermer</button>
+                        <button type="button" class="btn btn-rounded btn-sm" data-dismiss="modal">Fermer</button>
                     </div>
                 </div>
             </div>
@@ -522,10 +524,8 @@
         @include('files.flatpickr')
         @include('files.select')
 
-        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-            integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
-        <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
-            integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="" />
+        <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
         <link rel="stylesheet" href="https://unpkg.com/leaflet-gesture-handling/dist/leaflet-gesture-handling.min.css">
         <script src="https://unpkg.com/leaflet-gesture-handling"></script>
         <link rel="stylesheet" href="https://unpkg.com/leaflet.fullscreen/Control.FullScreen.css" />
@@ -769,8 +769,12 @@
                 });
 
                 $('[btnrefresh]').click(function() {
+                    refresh(false);
+                });
+
+                function refresh(interval = true) {
                     var pid = phonesel.val();
-                    var btn = $(this);
+                    var btn = $('[btnrefresh]');
                     var i = btn.find('i');
                     i.addClass('fa-spin');
                     btn.attr('disabled', true);
@@ -784,8 +788,15 @@
                     }).always(function() {
                         btn.attr('disabled', false);
                         i.removeClass('fa-spin');
+                        if (interval) {
+                            setTimeout(() => {
+                                refresh(true);
+                            }, 5000);
+                        }
                     });
-                });
+                }
+
+                refresh(true);
 
                 var dtResult = (new DataTable('[tresult]', {
                     searching: false,

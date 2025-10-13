@@ -1,5 +1,5 @@
 @extends('layouts.main')
-@section('title', 'App logs')
+@section('title', 'Users')
 
 @section('body')
     <x-sidebar />
@@ -12,7 +12,8 @@
                     <div class="card mt-5 mb-3 shadow-md">
                         <div class="card-header">
                             <div class="d-flex flex-wrap justify-content-between align-items-center">
-                                <h4 class="font-weight-bold text-nowrap"> <i class="fa fa-bug-slash"></i> Error logs</h4>
+                                <h4 class="font-weight-bold text-nowrap"> <i class="fa fa-bug-slash"></i> Comptes utilisateurs
+                                </h4>
                             </div>
                         </div>
                         <div class="card-body">
@@ -22,8 +23,11 @@
                                     style="width: 100%">
                                     <thead>
                                         <th>ID</th>
-                                        <th>Data</th>
-                                        <th>Date</th>
+                                        <th>Nom</th>
+                                        <th>Email</th>
+                                        <th>Appareils</th>
+                                        <th>Date connexion</th>
+                                        <th>Date création</th>
                                     </thead>
                                     <tbody></tbody>
                                 </table>
@@ -50,7 +54,7 @@
                     processing: true,
                     serverSide: true,
                     ajax: {
-                        url: "{{ route('applog', ['datatable' => '']) }}",
+                        url: "{{ route('users.index', ['datatable' => '']) }}",
                     },
                     order: [
                         [0, "desc"]
@@ -69,12 +73,25 @@
                             name: 'id'
                         },
                         {
-                            data: 'data',
-                            name: 'data',
+                            data: 'name',
+                            name: 'name',
                         },
                         {
-                            data: 'date',
-                            name: 'date',
+                            data: 'email',
+                            name: 'email',
+                        },
+                        {
+                            data: 'phones',
+                            name: 'phones',
+                        },
+                        {
+                            data: 'derniere_connexion',
+                            name: 'derniere_connexion',
+                            class: 'text-nowrap'
+                        },
+                        {
+                            data: 'created_at',
+                            name: 'created_at',
                             class: 'text-nowrap text-right'
                         },
                     ]

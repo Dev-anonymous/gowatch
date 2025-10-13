@@ -22,32 +22,24 @@ class FeedbackAPIController extends Controller
      */
     public function index()
     {
-        $user = auth()->user();
-        abort_if($user->user_role != 'admin', 403);
+        // $user = auth()->user();
+        // abort_if($user->user_role != 'admin', 403);
 
-        $data = Feedback::orderBy('id', 'desc')->get();
-        $tab = [];
-        foreach ($data as $e) {
-            $o = (object) $e->toArray();
-            $o->date = $e->date->format('Y-m-d H:i:s');
-            $tab[] = $o;
-        }
-        $n = count($tab);
+        // $data = Feedback::query();
 
-        if (request()->has('datatable')) {
-            $data = Feedback::all();
-            $dtable = DataTables::of($data)
-                ->addIndexColumn()
-                ->rawColumns(['contact'])
-                ->addColumn('contact', function ($data) {
-                    $s = $data->telephone . "<br><small class='text-muted mt-1'>$data->email</small>";
-                    return $s;
-                })->editColumn('date', function ($data) {
-                    return $data->date?->format('d-m-Y H:i:s');
-                });
+        // if (request()->has('datatable')) {
+        //     $dtable = DataTables::of($data)
+        //         ->addIndexColumn()
+        //         ->rawColumns(['contact'])
+        //         ->addColumn('contact', function ($data) {
+        //             $s = $data->telephone . "<br><small class='text-muted mt-1'>$data->email</small>";
+        //             return $s;
+        //         })->editColumn('date', function ($data) {
+        //             return $data->date?->format('d-m-Y H:i:s');
+        //         });
 
-            return $dtable->make(true);
-        }
+        //     return $dtable->make(true);
+        // }
     }
 
     /**

@@ -6,6 +6,7 @@ use App\Http\Controllers\api\FeedbackAPIController;
 use App\Http\Controllers\api\PhoneAPIController;
 use App\Http\Controllers\api\RemoteControlAPIController;
 use App\Http\Controllers\api\SyncAPIController;
+use App\Http\Controllers\api\UsersAPIController;
 use App\Http\Controllers\PAYController;
 use App\Models\Errorlog;
 use Illuminate\Support\Facades\Route;
@@ -33,6 +34,8 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('sub-info', [DataAPIController::class, 'subinfo'])->name('subinfo');
     Route::get('applog', [DataAPIController::class, 'applog'])->name('applog');
     Route::get('sub-capability', [DataAPIController::class, 'subcapability'])->name('subcapability');
+
+    Route::resource('users', UsersAPIController::class)->only(['index']);
 
     Route::post('/pay/init', [PAYController::class, 'init_payment'])->name('api.init.pay');
     Route::get('/pay/check', [PAYController::class, 'check_payment'])->name('api.check.pay');

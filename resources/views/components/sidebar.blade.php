@@ -23,6 +23,20 @@
                 </li>
                 <li class="sidenav-item">
                     <a class="sidenav-link">
+                        <i class="fas fa-user-alt pr-3"></i>
+                        Comptes
+                    </a>
+                    <ul class="sidenav-collapse">
+                        <li class="sidenav-item">
+                            <a class="sidenav-link" link href="{{ route('admin.web.users') }}">
+                                <i class="fas fa-users pr-1"></i>
+                                Utilisateurs
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="sidenav-item">
+                    <a class="sidenav-link">
                         <i class="fas fa-file pr-3"></i>
                         Logs
                     </a>

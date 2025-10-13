@@ -32,6 +32,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
             Route::get('', [AdminWebController::class, 'index'])->name('admin.web.index');
             Route::get('remote-control', [AdminWebController::class, 'remote_control'])->name('admin.remote_control');
             Route::get('applogs', [AdminWebController::class, 'applogs'])->name('admin.web.applog');
+            Route::get('users', [AdminWebController::class, 'users'])->name('admin.web.users');
         });
     });
 

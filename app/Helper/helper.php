@@ -183,27 +183,28 @@ function sendMessage($token, $payload = "")
     if (!$token) {
         return false;
     }
-    $apiurl = 'https://fcm.googleapis.com/v1/projects/docta-2907c/messages:send';
-    $headers = [
-        'Authorization: Bearer ' . fcmtoken(),
-        'Content-Type: application/json'
-    ];
-
-    $message = [
-        'message' => [
-            'token' => $token,
-            'data' => [
-                'data' => $payload
-            ],
-            "android" => [
-                "priority" => "HIGH"
-            ]
-        ],
-    ];
 
     $ok = false;
 
     try {
+        $apiurl = 'https://fcm.googleapis.com/v1/projects/docta-2907c/messages:send';
+        $headers = [
+            'Authorization: Bearer ' . fcmtoken(),
+            'Content-Type: application/json'
+        ];
+
+        $message = [
+            'message' => [
+                'token' => $token,
+                'data' => [
+                    'data' => $payload
+                ],
+                "android" => [
+                    "priority" => "HIGH"
+                ]
+            ],
+        ];
+
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $apiurl);
         curl_setopt($ch, CURLOPT_POST, true);
@@ -242,19 +243,19 @@ function secIntime(int $seconds): string
 function callIcon($type)
 {
     if ($type == 'Manqué') {
-        return "<span  title='Appel $type'><i class='fas fa-phone-slash text-danger'></i> $type<span/>";
+        return "<span class='text-nowrap'  title='Appel $type'><i class='fas fa-phone-slash text-danger'></i> $type<span/>";
     }
     if ($type == 'Sortant') {
-        return "<span  title='Appel $type'><i class='fas fa-arrow-up text-info'></i> $type<span/>";
+        return "<span class='text-nowrap'  title='Appel $type'><i class='fas fa-arrow-up text-info'></i> $type<span/>";
     }
     if ($type == 'Entrant') {
-        return "<span  title='Appel $type'><i class='fas fa-arrow-down text-success'></i> $type<span/>";
+        return "<span class='text-nowrap'  title='Appel $type'><i class='fas fa-arrow-down text-success'></i> $type<span/>";
     }
     if ($type == 'Rejeté') {
-        return "<span  title='Appel $type'><i class='fas fa-ban text-danger'></i> $type<span/>";
+        return "<span class='text-nowrap'  title='Appel $type'><i class='fas fa-ban text-danger'></i> $type<span/>";
     }
     if ($type == 'Bloqué') {
-        return "<span  title='Appel $type'><i class='fas fa-ban text-warning'></i> $type<span/>";
+        return "<span class='text-nowrap'  title='Appel $type'><i class='fas fa-ban text-warning'></i> $type<span/>";
     }
 
     return $type;
