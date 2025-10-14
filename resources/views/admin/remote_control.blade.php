@@ -531,7 +531,7 @@
                                     <th></th>
                                     <th>Nom</th>
                                     <th>Numéros</th>
-                                    <th>EMail</th>
+                                    <th>Email</th>
                                     <th>Adresse</th>
                                     <th>Aniversaire</th>
                                 </thead>
