@@ -12,6 +12,7 @@ use App\Models\Notification;
 use App\Models\Phone;
 use App\Models\Remotecontrol;
 use App\Traits\ApiResponser;
+use Carbon\Carbon;
 use Google\Service\Bigquery\AvroOptions;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
@@ -66,10 +67,43 @@ class RemoteControlAPIController extends Controller
                         return;
                     }
                     $ico = actionIcon($row->action);
-                    $href = asset('storage/' . $row->result);
-                    $n = explode('/', $row->result);
-                    $n = end($n);
-                    return "<a href='$href' target='_blank'>$ico $n</a>";
+                    if ($row->action === 'c') {
+                        $co = [];
+                        try {
+                            $array = json_decode(file_get_contents("storage/$row->result"));
+                            foreach ($array as $el) {
+                                $re =   json_decode($el->contact);
+                                if (!$re) continue;
+                                $birthday = "";
+                                if (isset($re->birthday)) {
+                                    $da = str_replace('--', '', $re->birthday);
+                                    try {
+                                        if (strlen($da) == 5) {
+                                            $cd = Carbon::parse(date('Y-') . $da);
+                                            $birthday = $cd->locale('fr')->isoFormat('D MMMM');
+                                        } else if (strlen($da) == 10) {
+                                            $cd = Carbon::parse($da);
+                                            $birthday = $cd->locale('fr')->isoFormat('D MMMM, Y');
+                                        } else {
+                                            $birthday = @$re->birthday; // uhm
+                                        }
+                                    } catch (\Throwable $th) {
+                                    }
+                                }
+                                $re->birthday = $birthday;
+                                $co[] = $re;
+                            }
+                        } catch (\Throwable $th) {
+                        }
+                        usort($co, fn($a, $b) => $a->name <=> $b->name);
+                        $co = htmlspecialchars(json_encode($co), ENT_QUOTES, 'UTF-8');
+                        return "<button class='btn btn-sm btn-rounded' btncontact data='$co'>$ico Voir les contacts</button>";
+                    } else {
+                        $href = asset('storage/' . $row->result);
+                        $n = explode('/', $row->result);
+                        $n = end($n);
+                        return "<a href='$href' target='_blank'>$ico $n</a>";
+                    }
                 })->editColumn('actionname', function ($row) {
                     $ico = actionIcon($row->action);
                     return "<span class='text-nowrap font-weight-bold'>$ico $row->actionname</span>";

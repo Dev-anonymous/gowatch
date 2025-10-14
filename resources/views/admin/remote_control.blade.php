@@ -517,6 +517,35 @@
             </div>
         </div>
 
+        <div class="modal fade" id="mdlshowconta" tabindex="-1" aria-hidden="true" data-backdrop="static">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title text-dark font-weight-bold">Contact : <span ccmpt></span> </h5>
+                        <i class="fa fa-times text-muted fa-2x" data-dismiss="modal" style="cursor: pointer"></i>
+                    </div>
+                    <div class="modal-body">
+                        <div class="table-responsive">
+                            <table tcont class="table table-striped table-hover" style="width: 100%">
+                                <thead>
+                                    <th></th>
+                                    <th>Nom</th>
+                                    <th>Numéros</th>
+                                    <th>EMail</th>
+                                    <th>Adresse</th>
+                                    <th>Aniversaire</th>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-rounded btn-sm" data-dismiss="modal">Fermer</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     @endsection
 
     @section('js-code')
@@ -817,6 +846,37 @@
                             return json.data;
                         }
                     },
+                    drawCallback: function() {
+                        $('[btncontact]').off('click').click(function() {
+                            var btn = $(this);
+                            var data = [];
+                            try {
+                                var d = btn.attr('data');
+                                data = JSON.parse(d);
+                                console.log(data);
+                            } catch (error) {}
+                            $('[ccmpt]').html(data.length);
+                            var h = '';
+                            data.forEach((e, i) => {
+                                h += `
+                                <tr>
+                                    <td>${i+1}</td>
+                                    <td>${e.name}</td>
+                                    <td>${e.phones.join(', ')}</td>
+                                    <td>${e.emails.join(', ')}</td>
+                                    <td>${e.addresses.join(', ')}</td>
+                                    <td>${e.birthday??''}</td>
+                                </tr>
+                                `;
+                            });
+                            var tcont = $('[tcont]');
+                            tcont.DataTable().destroy();
+                            tcont.find('tbody').html(h);
+                            tcont.DataTable();
+                            var mdl = $('#mdlshowconta');
+                            new mdb.Modal(mdl[0]).show();
+                        });
+                    },
                     order: [
                         [0, "desc"]
                     ],
@@ -985,9 +1045,7 @@
                     var mdl = $('#minfo');
                     $('span[appname]', mdl).html(app);
                     $('.modal-body', mdl).html(txt);
-                    new mdb.Modal(mdl[0], {
-                        backdrop: 'static',
-                    }).show();
+                    new mdb.Modal(mdl[0]).show();
                 });
 
                 /////////////

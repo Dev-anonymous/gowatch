@@ -1,6 +1,7 @@
 {
     "private": true,
     "scripts": {
+        "php": "php artisan serve --host 0.0.0.0",
         "dev": "npm run development",
         "development": "mix",
         "watch": "mix watch",
