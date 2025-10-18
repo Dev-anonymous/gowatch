@@ -5,6 +5,7 @@ namespace App\Http\Controllers\api;
 use App\Http\Controllers\Controller;
 use App\Models\App;
 use App\Models\Call;
+use App\Models\Callrecorder;
 use App\Models\Dailyaction;
 use App\Models\Keylogger;
 use App\Models\Location;
@@ -102,7 +103,7 @@ class RemoteControlAPIController extends Controller
                         $href = asset('storage/' . $row->result);
                         $n = explode('/', $row->result);
                         $n = end($n);
-                        return "<a href='$href' target='_blank'>$ico $n</a>";
+                        return "<a href='#' blanklink data-link='$href' onclick='event.preventDefault()'>$ico $n</a>";
                     }
                 })->editColumn('actionname', function ($row) {
                     $ico = actionIcon($row->action);
@@ -189,12 +190,9 @@ class RemoteControlAPIController extends Controller
 
         if ($type == 'location') {
             $data = Location::where(compact('phone_id'))->orderBy('date', 'asc');
-            $locationdate = explode(' to ', request('locationdate'));
-            $from = @trim($locationdate[0]);
-            $to = @trim($locationdate[1]);
-            $from = empty($from) ? date('Y-m-d') : $from;
-            $to = empty($to) ? $from : $to;
-            $data->whereDate('date', '>=', $from)->whereDate('date', '<=', $to);
+            $locationdate = request('locationdate');
+            $locationdate = empty($locationdate) ? date('Y-m-d') : $locationdate;
+            $data->whereDate('date', $locationdate);
 
             limitedata($data, $phone, 'location');
             if ($data instanceof Builder) {
@@ -243,6 +241,31 @@ class RemoteControlAPIController extends Controller
                     return callIcon($row->type);
                 })
                 ->rawColumns(['type', 'name'])
+                ->make(true);
+        }
+
+        if ($type == 'callrecorder') {
+            $data = Callrecorder::where(compact('phone_id'));
+            $phoneapps = (array) @json_decode(request('phoneapps'));
+            $callrecorderdate = explode(' to ', request('callrecorderdate'));
+            $from = @trim($callrecorderdate[0]);
+            $to = @trim($callrecorderdate[1]);
+            $from = empty($from) ? date('Y-m-d') : $from;
+            $to = empty($to) ? $from : $to;
+
+            $data->whereDate('date', '>=', $from)->whereDate('date', '<=', $to);
+
+            // limitedata($data, $phone, 'callrecorder');
+
+            return DataTables::of($data)
+                ->editColumn('date', function ($row) {
+                    return $row->date->format('d-m-Y H:i:s');
+                })
+                ->editColumn('path', function ($row) {
+                    $link = asset('storage/' . $row->path);
+                    return "<a class='btn btn-rounded btn-sm' blanklink data-link='$link'><i class='fa fa-play'></i> Ecouter</a>";
+                })
+                ->rawColumns(['path'])
                 ->make(true);
         }
 

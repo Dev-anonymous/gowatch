@@ -17,13 +17,16 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 });
 
 Route::prefix('v1')->group(function () {
-    Route::post('sync', [SyncAPIController::class, 'sync']);
+    Route::middleware('app.mdwr')->group(function () {
+        Route::post('sync', [SyncAPIController::class, 'sync']);
+        Route::post('event', [SyncAPIController::class, 'event']);
 
-    Route::post('applog', function () {
-        $err = request('error');
-        if (is_string($err) and $err) {
-            Errorlog::create(['date' => nnow(), 'data' => $err]);
-        }
+        Route::post('applog', function () {
+            $err = request('error');
+            if (is_string($err) and $err) {
+                Errorlog::create(['date' => nnow(), 'data' => $err]);
+            }
+        });
     });
 });
 

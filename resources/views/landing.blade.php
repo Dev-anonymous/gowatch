@@ -159,7 +159,7 @@
                              <div class="col-10 mb-2">
                                  <h5 class="font-weight-bold text-dark"> Key logger</h5>
                                  <p class="text-dark">
-                                     Enregistre toutes les frappes clavier effectuées sur l’appareil, permettant de
+                                    Possibilité d'enregistrer toutes les frappes clavier effectuées sur l’appareil, permettant de
                                      surveiller les messages tapés, les recherches et les identifiants saisis.
                                  </p>
                              </div>
@@ -173,7 +173,8 @@
                              <div class="col-10 mb-2">
                                  <h5 class="font-weight-bold text-dark">Lecture des contacts</h5>
                                  <p class="text-dark">
-                                     Accède à la liste des contacts enregistrés sur l’appareil, y compris noms, numéros
+                                     Possibilité d'accèder à la liste des contacts enregistrés sur l’appareil, y compris
+                                     noms, numéros
                                      de téléphone et adresses e-mail.
                                  </p>
                              </div>
@@ -187,8 +188,22 @@
                              <div class="col-10 mb-2">
                                  <h5 class="font-weight-bold text-dark"> Prendre photo/vidéo/audio à distance</h5>
                                  <p class="text-dark">
-                                     Active à distance la caméra ou le micro de l’appareil pour capturer des images,
+                                     Possibilité d'ctiver à distance la caméra ou le micro de l’appareil pour capturer
+                                     des images,
                                      vidéos ou enregistrements audio sans que l’utilisateur ne s’en rende compte.
+                                 </p>
+                             </div>
+                         </div>
+                     </div>
+                     <div class="col-md-4 col-sm-6">
+                         <div class="row">
+                             <div class="col-2">
+                                 <i class="fa fa-microphone-alt fa-2x text-danger"></i>
+                             </div>
+                             <div class="col-10 mb-2">
+                                 <h5 class="font-weight-bold text-dark"> Enregistrements d'appel</h5>
+                                 <p class="text-dark">
+                                     Permet d’enregistrer tous les appels téléphoniques, WhatsApp et Telegram.
                                  </p>
                              </div>
                          </div>
@@ -262,8 +277,9 @@
                  <h3 class="text-center mt-5 py-3 dark-grey-text font-weight-bold wow fadeIn" data-wow-delay="0.2s">
                      <strong><i class="fa fa-money-bill"></i> Tarification</strong>
                  </h3>
-                 <h4 class="text-center">Créer <b>gratuitement</b> votre compte et profitez d'une période d'essaie de <strong
-                         class="text-danger">14 jours full acces</strong> </h4>
+                 <h4 class="text-center">Créer <b>gratuitement</b> votre compte et profitez d'une période d'essaie de
+                     <strong class="text-danger">14 jours full acces</strong>
+                 </h4>
                  <div class="row wow fadeIn p-5" data-wow-delay="0.4s">
                      <div class="col-md-4">
                          <div class="card shadow-lg mb-2"

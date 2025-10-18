@@ -213,11 +213,11 @@ function sendMessage($token, $payload = "")
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
         curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($message));
         $result = curl_exec($ch);
+        curl_close($ch);
 
         if ($result === FALSE) {
             // die('Curl failed: ' . curl_error($ch));
         }
-        curl_close($ch);
         $result = json_decode($result);
         $mess = @$result?->error?->message;
         if ('Android message is too big' == $mess) {
@@ -450,4 +450,11 @@ function apkSize()
     } catch (\Throwable $th) {
         return "~ Mo";
     }
+}
+
+function getPhone()
+{
+    $at = request()->header('x-app-token');
+    $token = HttpToken::where('token', $at)->first();
+    return Phone::where('token', $token->token)->first();
 }

