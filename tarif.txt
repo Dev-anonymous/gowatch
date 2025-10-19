@@ -13,6 +13,7 @@ Basic : 10USD/mois
 - 30 action/jour
 - 50 premiers notification
 - 10 premiers appels
+- 5 premiers enregistrements appels
 - historique localisation de 00h a 12h
 - keylogger de 00h a 12h
 

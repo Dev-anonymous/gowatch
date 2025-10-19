@@ -611,7 +611,7 @@
         </style>
         <script>
             $(function() {
-                var mindate = "{{ now()->subDays(7)->format('Y-m-d') }}";
+                var mindate = "{{ now()->subDays(6)->format('Y-m-d') }}";
                 flatpickr(".flatpicker", {
                     mode: "range",
                     minDate: mindate,

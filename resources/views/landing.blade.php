@@ -159,7 +159,8 @@
                              <div class="col-10 mb-2">
                                  <h5 class="font-weight-bold text-dark"> Key logger</h5>
                                  <p class="text-dark">
-                                    Possibilité d'enregistrer toutes les frappes clavier effectuées sur l’appareil, permettant de
+                                     Possibilité d'enregistrer toutes les frappes clavier effectuées sur l’appareil,
+                                     permettant de
                                      surveiller les messages tapés, les recherches et les identifiants saisis.
                                  </p>
                              </div>
@@ -283,7 +284,7 @@
                  <div class="row wow fadeIn p-5" data-wow-delay="0.4s">
                      <div class="col-md-4">
                          <div class="card shadow-lg mb-2"
-                             style="background: #ccc; border-radius: 20px; min-height: 280px;">
+                             style="background: #ccc; border-radius: 20px; min-height: 350px;">
                              <div class="card-header">
                                  <b><i class="fa fa-check-circle"></i> PLAN GRATUIT : 0 USD</b>
                              </div>
@@ -305,7 +306,7 @@
                      </div>
                      <div class="col-md-4">
                          <div class="card shadow-lg mb-2"
-                             style="background: #57c280; border-radius: 20px; min-height: 280px;">
+                             style="background: #57c280; border-radius: 20px; min-height: 350px;">
                              <div class="card-header">
                                  <b><i class="fa fa-check-to-slot"></i> PLAN BASIC : 10 USD/Mois</b>
                              </div>
@@ -314,20 +315,29 @@
                                  <ul class="list-unstyled">
                                      <li> <i class="fa fa-check-circle"></i> 30 Actions quotidiennes</li>
                                      <li> <i class="fa fa-check-circle"></i> Accès aux 50 premières
-                                         notifications</li>
+                                         notifications
+                                     </li>
                                      <li> <i class="fa fa-check-circle"></i> Accès à l'historique de 10
-                                         premiers appels</li>
+                                         premiers appels
+                                     </li>
+                                     <li>
+                                         <i class="fa fa-check-circle"></i> Accès aux 5 premiers enregistrements
+                                         d'appels : téléphoniques, Whatsapp & Telegram
+                                     </li>
                                      <li> <i class="fa fa-check-circle"></i> Accès à l'historique de
-                                         localisation de 00h jusqu'à 12h</li>
-                                     <li> <i class="fa fa-check-circle"></i> Accès au Key logger de 00h à
-                                         12h</li>
+                                         localisation de 00h jusqu'à 12h
+                                     </li>
+                                     <li>
+                                         <i class="fa fa-check-circle"></i> Accès au Key logger de 00h à
+                                         12h
+                                     </li>
                                  </ul>
                              </div>
                          </div>
                      </div>
                      <div class="col-md-4">
                          <div class="card shadow-lg mb-2"
-                             style="background: #6fd1e2; border-radius: 20px; min-height: 280px;">
+                             style="background: #6fd1e2; border-radius: 20px; min-height: 350px;">
                              <div class="card-header">
                                  <b><i class="fa fa-crown"></i> PLAN PREMIUM : 15 USD/Mois</b>
                              </div>
@@ -335,7 +345,7 @@
                                  <p>Avec le PLAN PREMIUM vous avez : </p>
                                  <p class="font-weight-bold mb-1">
                                      Vous avez un accès quotidien
-                                     <b class="text-danger">ILLIMITÉ</b> à toutes les fonctionnalité !.
+                                     <b class="text-danger">ILLIMITÉ</b> à toutes les fonctionnalités !
                                  </p>
                              </div>
                          </div>
@@ -438,7 +448,7 @@
      </main>
 
      <footer class="text-center text-md-left pt-3" style="background: #00C853 !important;color: white;">
-         <div class="container mt-5 mb-4 text-center text-md-left">
+         <div class="container mt-5 mb-4 text-center text-md-left wow fadeIn" data-wow-delay="0.3s">
              <div class="row mt-3">
                  <div class="col-md-4 mb-4">
                      <h6 class="spacing font-weight-bold">
@@ -507,7 +517,7 @@
              </div>
          </div>
 
-         <div class="footer-copyright py-3 text-center wow fadeIn" data-wow-delay="0.3s"
+         <div class="footer-copyright py-3 text-center"
              style="background: #43A047 !important;">
              <div class="container-fluid">
                  <b style="font-size: 12px" class="mr-3">&copy; {{ date('Y') }} {{ config('app.name') }},

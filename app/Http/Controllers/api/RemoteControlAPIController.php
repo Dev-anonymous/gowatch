@@ -255,7 +255,7 @@ class RemoteControlAPIController extends Controller
 
             $data->whereDate('date', '>=', $from)->whereDate('date', '<=', $to);
 
-            // limitedata($data, $phone, 'callrecorder');
+            limitedata($data, $phone, 'callrecorder');
 
             return DataTables::of($data)
                 ->editColumn('date', function ($row) {

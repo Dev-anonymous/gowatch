@@ -680,6 +680,11 @@
                                             notifications</li>
                                         <li> <i class="fa fa-check-circle text-primary"></i> Accès à l'historique de 10
                                             premiers appels</li>
+                                        <li>
+                                            <i class="fa fa-check-circle text-primary"></i> Accès aux 5 premiers
+                                            enregistrements
+                                            d'appels : téléphoniques, Whatsapp & Telegram
+                                        </li>
                                         <li> <i class="fa fa-check-circle text-primary"></i> Accès à l'historique de
                                             localisation de 00h jusqu'à 12h</li>
                                         <li> <i class="fa fa-check-circle text-primary"></i> Accès au Key logger de 00h à
@@ -869,7 +874,7 @@
             <div class="modal-dialog modal-md">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title text-dark font-weight-bold">Avec votre abonnement actuelle, vous avez </h5>
+                        <h5 class="modal-title text-dark font-weight-bold">Options disponibles pour votre abonnement actuel</h5>
                         <i class="fa fa-times text-muted fa-2x" data-dismiss="modal" style="cursor: pointer"></i>
                     </div>
                     <div class="modal-body">
@@ -952,7 +957,7 @@
     @if (count($phones))
         <script>
             $(function() {
-                var mindate = "{{ now()->subDays(7)->format('Y-m-d') }}";
+                var mindate = "{{ now()->subDays(6)->format('Y-m-d') }}";
                 flatpickr(".flatpicker", {
                     mode: "range",
                     minDate: mindate,

@@ -109,6 +109,11 @@ class DataAPIController extends Controller
                         notifications</li>
                     <li> <i class="fa fa-check-circle text-primary"></i> Accès à l'historique de 10
                         premiers appels</li>
+                    <li>
+                        <i class="fa fa-check-circle text-primary"></i> Accès aux 5 premiers
+                        enregistrements
+                        d'appels : téléphoniques, Whatsapp & Telegram
+                    </li>
                     <li> <i class="fa fa-check-circle text-primary"></i> Accès à l'historique de
                         localisation de 00h jusqu'à 12h</li>
                     <li> <i class="fa fa-check-circle text-primary"></i> Accès au Key logger de 00h à

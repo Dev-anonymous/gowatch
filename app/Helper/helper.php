@@ -402,6 +402,8 @@ function limitedata(&$data, $phone, $type)
             } else if (in_array($type, ['location', 'keylog'])) {
                 $all->whereTime('date', '>=', '00:00:00')
                     ->whereTime('date', '<=', '12:00:00');
+            } elseif ($type == 'callrecorder') {
+                $limit = 5;
             } else {
                 dd($type);
             }
@@ -426,6 +428,8 @@ function limitedata(&$data, $phone, $type)
             } else if (in_array($type, ['location', 'keylog'])) {
                 $all->whereTime('date', '>=', '08:00:00')
                     ->whereTime('date', '<=', '12:00:00');
+            } elseif ($type == 'callrecorder') {
+                $all->whereTime('date', 'uhm');
             } else {
                 dd($type);
             }
