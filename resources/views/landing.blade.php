@@ -344,7 +344,7 @@
                              <div class="card-body" style="font-size: 14px">
                                  <p>Avec le PLAN PREMIUM vous avez : </p>
                                  <p class="font-weight-bold mb-1">
-                                     Vous avez un accès quotidien
+                                     Un accès quotidien
                                      <b class="text-danger">ILLIMITÉ</b> à toutes les fonctionnalités !
                                  </p>
                              </div>

@@ -457,7 +457,7 @@
                                 <p class="text-muted mb-2">
                                     <i class="fa fa-info-circle"></i>
                                     L'historique de tous les appels Téléphoniques, Whatsapp et Télégram (attention : cette
-                                    fonctionnalité est garentie à 90%)
+                                    fonctionnalité est garantie à 90%)
                                 </p>
                             </div>
                             <div class="card-body">
