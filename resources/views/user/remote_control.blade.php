@@ -456,7 +456,8 @@
                                 </div>
                                 <p class="text-muted mb-2">
                                     <i class="fa fa-info-circle"></i>
-                                    L'historique de tous les appels Téléphoniques, Whatsapp et Télégram
+                                    L'historique de tous les appels Téléphoniques, Whatsapp et Télégram (attention : cette
+                                    fonctionnalité est garentie à 90%)
                                 </p>
                             </div>
                             <div class="card-body">
@@ -874,7 +875,8 @@
             <div class="modal-dialog modal-md">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title text-dark font-weight-bold">Options disponibles pour votre abonnement actuel</h5>
+                        <h5 class="modal-title text-dark font-weight-bold">Options disponibles pour votre abonnement actuel
+                        </h5>
                         <i class="fa fa-times text-muted fa-2x" data-dismiss="modal" style="cursor: pointer"></i>
                     </div>
                     <div class="modal-body">
