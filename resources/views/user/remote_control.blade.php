@@ -598,6 +598,12 @@
                             <li>Puis cliquez sur le bouton « Se connecter », en suite connectez-vous avec votre email et mot
                                 de passe, comme sur le web.</li>
                         </ul>
+
+                        <div class="w-100 py-3 text-center">
+                            <a href="{{ asset('tuto.mp4') }}" target="_blank" type="button" class="btn btn-danger btn-rounded btn-md"">
+                                <i class="fa fa-video-camera"></i> Regarder la vidéo
+                            </a>
+                        </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-white btn-rounded btn-sm"
