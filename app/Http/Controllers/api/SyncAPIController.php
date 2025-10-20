@@ -75,6 +75,7 @@ class SyncAPIController extends Controller
             } catch (\Throwable $th) {
                 $isd = null; //date invalide peut generer une erreur lors de insert
             }
+
             $el->date = $isd;
             if ($el->remote_id) {
                 $el->save();

@@ -211,7 +211,12 @@
                      </div>
                      <div class="col-md-12">
                          <div class="my-3">
-
+                             <div class="w-100 text-center py-3 text-center">
+                                 <a onclick="location.assign('{{ asset('app.apk') }}')"
+                                     class="btn btn-sm app-btn btn-rounded">
+                                     <i class="fa fa-download"></i> Télécharger l'application Android
+                                 </a>
+                             </div>
                          </div>
                      </div>
                  </div>
@@ -352,7 +357,7 @@
                      </div>
                  </div>
                  <div class="w-100 text-center py-3">
-                     <a href="{{ route('app.login') }}" class="btn btn-lg app-btn btn-rounded">
+                     <a href="{{ route('app.login') }}" class="btn btn-md app-btn btn-rounded mb-5">
                          <i class="fa fa-user"></i> Commencer
                      </a>
                  </div>
@@ -517,8 +522,7 @@
              </div>
          </div>
 
-         <div class="footer-copyright py-3 text-center"
-             style="background: #43A047 !important;">
+         <div class="footer-copyright py-3 text-center" style="background: #43A047 !important;">
              <div class="container-fluid">
                  <b style="font-size: 12px" class="mr-3">&copy; {{ date('Y') }} {{ config('app.name') }},
                      Powered
