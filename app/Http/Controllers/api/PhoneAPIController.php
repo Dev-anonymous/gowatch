@@ -100,9 +100,8 @@ class PhoneAPIController extends Controller
         }
 
         if (request('action') == 'refresh') {
-            abort(502);
             isHisPhone();
-            // sendMessage($phone->fcm, "sync");
+            sendMessage($phone->fcm, "sync");
             return [
                 'success' => true,
                 'message' => "Ok",
