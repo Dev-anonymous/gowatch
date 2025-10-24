@@ -38,8 +38,9 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-9 d-flex justify-content-lg-end justify-content-md-end">
-                                        <div class="" style="font-size: 12px">
+                                    <div class="col-md-5"></div>
+                                    <div class="col-md-4">
+                                        <div class="w-100" style="font-size: 12px">
                                             <h4 class="font-weight-bold text-dark"><i class="fa fa-money-bill"></i> Mon
                                                 abonnement
                                             </h4>
@@ -74,7 +75,8 @@
                                                         </button>
                                                     </div>
                                                     <div class="">
-                                                        <button btnpay class="btn btn-danger btn-rounded btn-sm input">
+                                                        <button btnpay style="display: none"
+                                                            class="btn btn-danger btn-rounded btn-sm input">
                                                             <i class="fa fa-money-bill-transfer"></i>
                                                             Payer un abonnement
                                                         </button>
@@ -457,7 +459,7 @@
                                 <p class="text-muted mb-2">
                                     <i class="fa fa-info-circle"></i>
                                     L'historique de tous les appels Téléphoniques, Whatsapp et Télégram (attention : cette
-                                    fonctionnalité est garantie à 90%)
+                                    fonctionnalité est garantie à 60% et ne fonctionne pas sur android 10+)
                                 </p>
                             </div>
                             <div class="card-body">
@@ -600,7 +602,8 @@
                         </ul>
 
                         <div class="w-100 py-3 text-center">
-                            <a href="{{ asset('tuto.mp4') }}" target="_blank" type="button" class="btn btn-danger btn-rounded btn-md"">
+                            <a href="{{ asset('tuto.mp4') }}" target="_blank" type="button"
+                                class="btn btn-danger btn-rounded btn-md"">
                                 <i class="fa fa-video-camera"></i> Regarder la vidéo
                             </a>
                         </div>
