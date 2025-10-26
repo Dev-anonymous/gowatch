@@ -11,6 +11,7 @@ use App\Models\User;
 use App\Traits\ApiResponser;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
@@ -76,6 +77,21 @@ class AuthController extends Controller
             return $this->error(implode(' ', $validator->errors()->all()));
         }
         $data = $validator->validated();
+
+        $forget = false;
+        $cfa = Cookie::get('father');
+        if ($cfa) {
+            $id = encode($cfa, false);
+            $user = User::where('id', $id)->first();
+            if ($user) {
+                $cuser = @auth()->user()->id;
+                if ($user->id != $cuser) {
+                    $data['users_id'] = $user->id;
+                    $forget = true;
+                }
+            }
+        }
+
         $data['name'] = ucfirst($data['name']);
         $data['email'] = strtolower($data['email']);
         $un = $data['name'];
@@ -94,6 +110,9 @@ class AuthController extends Controller
         try {
             $mail = "Bienvenue $un, veuillez cliquer sur le lien ci-dessous pour confirmer votre compte : $href";
             Mail::to($data['email'])->send(new AppMail((object)['subject' => "Confirmation du compte", 'msg' => $mail]));
+            if ($forget) {
+                Cookie::queue(Cookie::forget('father'));
+            }
             return $this->success("Veuillez cliquer sur le lien que nous avons envoyé à  votre email.");
         } catch (\Throwable $th) {
             // throw $th;

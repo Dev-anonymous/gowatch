@@ -5,15 +5,20 @@ namespace App\Http\Controllers\api;
 use App\Http\Controllers\Controller;
 use App\Models\App;
 use App\Models\Errorlog;
+use App\Models\Pendingmail;
 use App\Models\Phone;
 use App\Models\Taux;
+use App\Models\Withdraw;
+use App\Traits\ApiResponser;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Yajra\DataTables\DataTables;
 
 class DataAPIController extends Controller
 {
+    use ApiResponser;
     function phoneapps()
     {
         $user = Auth::user();
@@ -142,7 +147,6 @@ class DataAPIController extends Controller
 
     function applog()
     {
-
         abort_if(Auth::user()->user_role != 'admin', 403, "WTF");
 
         $data = Errorlog::query();
@@ -153,5 +157,53 @@ class DataAPIController extends Controller
                 return $row->date->format('d-m-Y H:i:s');
             })
             ->make(true);
+    }
+
+    function withdraw()
+    {
+        abort_if(Auth::user()->user_role != 'client', 403, "WTF");
+        $validator = Validator::make(request()->all(), [
+            'devise' => 'required|in:CDF,USD',
+            'phone' => ['required', 'numeric', 'regex:/(90|99|97|98|80|81|82|83|84|85|89)[0-9]{7}/']
+        ]);
+
+        if ($validator->fails()) {
+            return $this->error(implode(", ", $validator->errors()->all()));
+        }
+
+        $user = auth()->user();
+        $d = [];
+        $d['date'] = nnow();
+        $d['currency'] = $dev =  request('devise');
+        $d['number'] = $phone = request('phone');
+        $d['status'] = 0;
+        $d['users_id'] = $user->id;
+        $bal = $user->balances()->where('currency', $dev)->sum('amount');
+        abort_if(!$bal, 422, "Votre balance $dev est insufisant.");
+        $d['amount'] = $bal;
+        $phone  = "0$phone";
+
+        DB::beginTransaction();
+        Withdraw::create($d);
+        $user->balances()->where('currency', $dev)->update(['amount' => 0]);
+
+        $mess = "Envoi fonds de parrainage pour $user->name, " .  v($bal, $dev) . " au $phone";
+        Pendingmail::create([
+            'subject' => "Envoi fonds de Parrainage",
+            'to' => 'go@gooomart.com',
+            'text' => $mess,
+            'date' => nnow(),
+        ]);
+
+        $mess = "Bonjour $user->name, votre retrait de " .  v($bal, $dev) . " au $phone a été soumis avec succès et sera traité sous peu.";
+        Pendingmail::create([
+            'subject' => "Retrait fonds de Parrainage",
+            'to' => $user->email,
+            'text' => $mess,
+            'date' => nnow(),
+        ]);
+
+        DB::commit();
+        return $this->success("Votre retrait de " .  v($bal, $dev) . " au $phone sera traité sous peu, merci de patienter.");
     }
 }

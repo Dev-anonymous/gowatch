@@ -37,6 +37,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('sub-info', [DataAPIController::class, 'subinfo'])->name('subinfo');
     Route::get('applog', [DataAPIController::class, 'applog'])->name('applog');
     Route::get('sub-capability', [DataAPIController::class, 'subcapability'])->name('subcapability');
+    Route::post('withdraw', [DataAPIController::class, 'withdraw'])->name('withdraw');
 
     Route::resource('users', UsersAPIController::class)->only(['index']);
 
@@ -84,16 +85,3 @@ Route::get('/svr-limit', function () {
     ]);
 });
 
-Route::get('test-odoo', function () {
-    $tmp = [];
-    $faker = Faker\Factory::create();
-    foreach (range(1, 20) as $k => $el) {
-        $tmp[] = (object) [
-            'id' => $k + 1,
-            'name' => $faker->name(),
-            'first_name' => $faker->firstName(),
-            'last_name' => $faker->lastName(),
-        ];
-    }
-    return $tmp;
-});

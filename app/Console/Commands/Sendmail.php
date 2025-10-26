@@ -5,6 +5,7 @@ namespace App\Console\Commands;
 use App\Mail\AppMail;
 use App\Models\Pendingmail;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 
 class Sendmail extends Command
@@ -40,6 +41,7 @@ class Sendmail extends Command
      */
     public function handle()
     {
+        DB::beginTransaction();
         Pendingmail::where('retry', '>', 20)->delete();
         foreach (Pendingmail::lockForUpdate()->get() as $mail) {
             try {
@@ -50,6 +52,7 @@ class Sendmail extends Command
                 //throw $th;
             }
         }
+        DB::commit();
         return 0;
     }
 }

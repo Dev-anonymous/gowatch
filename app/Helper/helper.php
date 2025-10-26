@@ -462,3 +462,32 @@ function getPhone()
     $token = HttpToken::where('token', $at)->first();
     return Phone::where('token', $token->token)->first();
 }
+
+
+function encode($str, $encrypt = true)
+{
+    $output = false;
+    $encrypt_method = "AES-256-CBC";
+    $secret_key = '1001';
+    $secret_iv = '2002';
+    $key = hash('sha256', $secret_key);
+    $iv = substr(hash('sha256', $secret_iv), 0, 16);
+    if ($encrypt == true) {
+        $output = openssl_encrypt($str, $encrypt_method, $key, 0, $iv);
+        $output = base64_encode($output);
+    } else {
+        $output = openssl_decrypt(base64_decode($str), $encrypt_method, $key, 0, $iv);
+    }
+    return $output;
+}
+
+function slink()
+{
+    if (Auth::check()) {
+        $user = auth()->user();
+        $id = encode($user->id);
+        $href = route('app.index', ['u' => $id]);
+        return $href;
+    }
+    abort(403);
+}

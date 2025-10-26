@@ -26,6 +26,8 @@
                                         <th>Nom</th>
                                         <th>Email</th>
                                         <th>Appareils</th>
+                                        <th>Filleuls</th>
+                                        <th>Solde</th>
                                         <th>Date connexion</th>
                                         <th>Date création</th>
                                     </thead>
@@ -83,6 +85,19 @@
                         {
                             data: 'phones',
                             name: 'phones',
+                        },
+                        {
+                            data: 'filleuls',
+                            name: 'filleuls',
+                            sortable: false,
+                            searchable: false,
+                        },
+                        {
+                            data: 'solde',
+                            name: 'solde',
+                            sortable: false,
+                            searchable: false,
+                            class: 'text-nowrap'
                         },
                         {
                             data: 'derniere_connexion',

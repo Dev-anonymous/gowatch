@@ -97,7 +97,7 @@
      <main>
          <div class="container">
              <section id="features" class="pb-4">
-                 <h3 class="text-center title my-5 font-weight-bold wow fadeIn" data-wow-delay="0.2s">
+                 <h3 class="text-center title my-5 font-weight-bold wow fadeInRight" data-wow-delay="0.2s">
                      <strong class="text-dark"><span style="color:#00C853;">{{ config('app.name') }}</span> est une
                          Solution Android gratuite de surveillance à distance avec plusieurs fonctionnalités
                      </strong>
@@ -107,7 +107,7 @@
                      Vous avez opté pour les paiements électroniques ? {{ config('app.name') }} vous offre la
                      possibilité de recevoir les paiements sur votre plateforme.
                  </p> --}}
-                 <div class="row features-small wow fadeIn text-dark" data-wow-delay="0.4s">
+                 <div class="row features-small wow fadeInUp text-dark" data-wow-delay="0.4s">
                      <div class="col-md-4 col-sm-6">
                          <div class="row mb-3">
                              <div class="col-2">
@@ -222,7 +222,7 @@
                  </div>
              </section>
          </div>
-         <div class="container text-dark">
+         <div class="container text-dark wow fadeIn">
              <h2>{{ config('app.name') }} : l’application de contrôle parental (Android)</h2>
              <p>
                  L’application <b class="text-danger">Android</b> a été conçue dans le but de fournir aux parents un
@@ -233,7 +233,6 @@
              </p>
 
              <p>Grâce à un ensemble de fonctionnalités avancées, les parents peuvent :</p>
-
              <ul>
                  <li><strong>Localiser l'enfant :</strong> Suivre en temps réel la position géographique de leur
                      enfant à l’aide du GPS, avec accès à l’historique des déplacements.</li>
@@ -257,6 +256,42 @@
                  <strong>renforcement du dialogue familial</strong>.
              </p>
          </div>
+         <div class="container text-dark py-5" id="money">
+             <h3 class="text-center title mt-5 mb-3 font-weight-bold wow fadeInLeft" data-wow-delay="0.2s">
+                 <strong class="text-dark">
+                     <i class="fa fa-hand-holding-dollar"></i> Gagner de l'argent grâce à <span
+                         style="color:#00C853;">{{ config('app.name') }}</span> : 🎉 Programme de parrainage
+                 </strong>
+             </h3>
+             <div class="wow fadeInRight">
+                 <h2>Recommandez l’application à d’autres parents et gagnez de l’argent !</h2>
+                 <p>
+                     C’est simple : 👉 Chaque fois qu’un parent s’inscrit avec votre code et paie un premier abonnement,
+                     <b class="font-weight-bold">vous recevez 50% du montant payé.</b>
+                 </p>
+                 <p>
+                     Exemple :
+                     Votre filleul <b class="font-weight-bold">paie 10 USD → vous gagnez 5 USD</b> <br>
+                     Paiement confirmé = récompense immédiate <br>
+                 </p>
+                 <p class="font-weight-bold">📲 Comment ça marche :</p>
+                 <ul>
+                     <li><i class="fa fa-check-circle text-success"></i> Connectez-vous et copiez votre code de
+                         parrainage depuis le panel</li>
+                     <li><i class="fa fa-check-circle text-success"></i> Partagez-le avec d’autres parents</li>
+                     <li><i class="fa fa-check-circle text-success"></i> Suivez vos gains dans votre tableau de bord
+                     </li>
+                     <li><i class="fa fa-check-circle text-success"></i> Plus vous parrainez, plus vous gagnez. Aidez
+                         d’autres familles à protéger leurs enfants tout en
+                         profitant d’un bonus bien mérité.</li>
+                 </ul>
+                 <div class="w-100 text-center py-3">
+                    <a href="{{ route('app.login') }}" class="btn btn-md btn-rounded mb-5">
+                        <i class="fa fa-user"></i> Commencer
+                    </a>
+                </div>
+             </div>
+         </div>
          {{-- <div class="streak streak-photo streak-long-2 rgba-gradient"
              style="background-image: url('https://mdbootstrap.com/img/Photos/Horizontal/Things/full%20page/img%20%287%29.jpg');">
              <div class="flex-center mask">
@@ -278,7 +313,7 @@
                  </div>
              </div>
          </div> --}}
-         <div class="container shadow-lg">
+         <div class="container shadow-lg wow fadeInUp">
              <section id="contact" class="mb-5 ">
                  <h3 class="text-center mt-5 py-3 dark-grey-text font-weight-bold wow fadeIn" data-wow-delay="0.2s">
                      <strong><i class="fa fa-money-bill"></i> Tarification</strong>
@@ -363,13 +398,12 @@
                  </div>
              </section>
          </div>
-         <div class="container" id="contact">
+         <div class="container wow fadeInRight" id="contact">
              <section id="contact" class="mb-5 ">
-                 <h3 class="text-center text-dark mt-5 pt-3 dark-grey-text font-weight-bold wow fadeIn"
-                     data-wow-delay="0.2s">
+                 <h3 class="text-center text-dark mt-5 pt-3 dark-grey-text font-weight-bold">
                      <strong>Nous contacter</strong>
                  </h3>
-                 <div class="row wow fadeIn p-5" data-wow-delay="0.4s">
+                 <div class="row p-5">
                      <div class="col-md-8 col-lg-9">
                          <form action="#" id="f-cont">
                              <div class="row">

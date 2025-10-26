@@ -11,6 +11,10 @@ use Illuminate\Support\Facades\DB;
 
 class AdminWebController extends Controller
 {
+    function index()
+    {
+        return redirect(route('admin.remote_control'));
+    }
     function remote_control()
     {
         $users = User::where('user_role', 'client')->orderBy('name')->get();

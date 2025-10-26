@@ -23,7 +23,7 @@ class UsersAPIController extends Controller
             $data = User::where('user_role', 'client');
             $dtable = DataTables::of($data)
                 ->addIndexColumn()
-                ->rawColumns(['contact'])
+                ->rawColumns(['contact', 'solde'])
                 ->addColumn('contact', function ($data) {
                     $s = $data->telephone . "<br><small class='text-muted mt-1'>$data->email</small>";
                     return $s;
@@ -34,6 +34,16 @@ class UsersAPIController extends Controller
                 })->addColumn('phones', function ($data) {
                     $s = $data->phones->pluck('phone')->all();
                     return implode(', ', $s);
+                })->addColumn('filleuls', function ($data) {
+                    $s = $data->users()->pluck('name')->all();
+                    return implode(', ', $s);
+                })->addColumn('solde', function ($data) {
+                    $s = $data->balances;
+                    $t = [];
+                    foreach ($s as $e) {
+                        $t[] = v($e->amount, $e->currency);
+                    }
+                    return implode('<br/>', $t);
                 });
 
             return $dtable->make(true);

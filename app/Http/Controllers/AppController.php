@@ -3,12 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Mail\RecoveryMail;
+use App\Models\Pendingmail;
 use App\Models\Pendinguser;
 use App\Models\Recovery;
 use App\Models\User;
 use App\Traits\ApiResponser;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
@@ -19,6 +21,18 @@ class AppController extends Controller
     use ApiResponser;
     public function index()
     {
+        $u = request('u');
+        if ($u) {
+            $id = encode($u, false);
+            $user = User::where('id', $id)->first();
+            if ($user) {
+                $cuser = @auth()->user()->id;
+                if ($user->id != $cuser) {
+                    Cookie::queue('father', $u, 60 * 24 * 14);
+                    return redirect(route('app.index'));
+                }
+            }
+        }
         return view('landing');
     }
 
@@ -33,6 +47,22 @@ class AppController extends Controller
             try {
                 $user = User::create($data);
                 Auth::login($user);
+                $father = $user->user;
+                if ($father) {
+                    $mess = "Bonjour $father->name, $user->name vient de créer un compte grâce à votre lien de parrainage! si $user->name effectue un abonnement, vous gagnerez 50%  sur le montant de l'abonnement et vous pouvez retirer cet argent à tout moment.";
+                    Pendingmail::create([
+                        'subject' => "Nouveau filleul",
+                        'to' => $father->email,
+                        'text' => $mess,
+                        'date' => nnow(),
+                    ]);
+                    Pendingmail::create([
+                        'subject' => "Nouveau filleul",
+                        'to' => "go@gooomart.com",
+                        'text' => $mess,
+                        'date' => nnow(),
+                    ]);
+                }
             } catch (\Throwable $th) {
             }
             $user = Auth::user();

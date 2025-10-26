@@ -27,11 +27,17 @@ use Laravel\Sanctum\HasApiTokens;
  * @property string|null $phone
  * @property string|null $avatar
  * @property string $user_role
+ * @property int|null $users_id
  *
+ * @property User|null $user
+ * @property Collection|Balance[] $balances
  * @property Collection|HttpToken[] $http_tokens
  * @property Collection|Phone[] $phones
  * @property Collection|Presubscription[] $presubscriptions
  * @property Collection|Recovery[] $recoveries
+ * @property Collection|Sponsorpay[] $sponsorpays
+ * @property Collection|User[] $users
+ * @property Collection|Withdraw[] $withdraws
  *
  * @package App\Models
  */
@@ -40,6 +46,10 @@ class User extends Authenticatable
     use HasApiTokens, HasFactory, Notifiable;
 
     protected $table = 'users';
+
+    protected $casts = [
+        'users_id' => 'int'
+    ];
 
     protected $dates = [
         'email_verified_at',
@@ -60,8 +70,19 @@ class User extends Authenticatable
         'derniere_connexion',
         'phone',
         'avatar',
-        'user_role'
+        'user_role',
+        'users_id'
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'users_id');
+    }
+
+    public function balances()
+    {
+        return $this->hasMany(Balance::class, 'users_id');
+    }
 
     public function http_tokens()
     {
@@ -81,5 +102,20 @@ class User extends Authenticatable
     public function recoveries()
     {
         return $this->hasMany(Recovery::class, 'users_id');
+    }
+
+    public function sponsorpays()
+    {
+        return $this->hasMany(Sponsorpay::class, 'users_id');
+    }
+
+    public function users()
+    {
+        return $this->hasMany(User::class, 'users_id');
+    }
+
+    public function withdraws()
+    {
+        return $this->hasMany(Withdraw::class, 'users_id');
     }
 }

@@ -57,6 +57,20 @@
                         Controle à distance
                     </a>
                 </li>
+                <li class="sidenav-item">
+                    <a class="sidenav-link">
+                        <i class="fas fa-user-alt pr-3"></i>
+                        Parrainage
+                    </a>
+                    <ul class="sidenav-collapse">
+                        <li class="sidenav-item">
+                            <a class="sidenav-link" link href="{{ route('user.web.sponsorship') }}">
+                                <i class="fas fa-users pr-1"></i>
+                                Filleuls & Gains
+                            </a>
+                        </li>
+                    </ul>
+                </li>
             @endif
         </ul>
     </div>

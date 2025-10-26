@@ -39,6 +39,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::middleware('user.mdwr')->group(function () {
         Route::prefix('user-dash')->group(function () {
             Route::get('', [UserWebController::class, 'index'])->name('user.web.index');
+            Route::get('sponsorship', [UserWebController::class, 'sponsorship'])->name('user.web.sponsorship');
         });
     });
 });
